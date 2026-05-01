@@ -1,0 +1,907 @@
+YEAR,ACPR_CODE_2018,ACPR_NAME_2018,CARE_TYPE,INDIGENOUS_STATUS,count
+2024,101,Central Coast,Home care,Indigenous,55
+2024,101,Central Coast,Home care,Non-Indigenous,1380
+2024,101,Central Coast,Home care,Unknown,201
+2024,101,Central Coast,Permanent residential care,Indigenous,26
+2024,101,Central Coast,Permanent residential care,Non-Indigenous,1307
+2024,101,Central Coast,Permanent residential care,Unknown,192
+2024,101,Central Coast,Respite residential care,Indigenous,45
+2024,101,Central Coast,Respite residential care,Non-Indigenous,1699
+2024,101,Central Coast,Respite residential care,Unknown,283
+2024,101,Central Coast,Short-term restorative care,Indigenous,8
+2024,101,Central Coast,Short-term restorative care,Non-Indigenous,303
+2024,101,Central Coast,Short-term restorative care,Unknown,87
+2024,101,Central Coast,Transition care,Indigenous,6
+2024,101,Central Coast,Transition care,Non-Indigenous,302
+2024,101,Central Coast,Transition care,Unknown,90
+2024,102,Central West,Home care,Indigenous,340
+2024,102,Central West,Home care,Non-Indigenous,1862
+2024,102,Central West,Home care,Unknown,142
+2024,102,Central West,Permanent residential care,Indigenous,12
+2024,102,Central West,Permanent residential care,Non-Indigenous,504
+2024,102,Central West,Permanent residential care,Unknown,118
+2024,102,Central West,Respite residential care,Indigenous,23
+2024,102,Central West,Respite residential care,Non-Indigenous,641
+2024,102,Central West,Respite residential care,Unknown,152
+2024,102,Central West,Short-term restorative care,Indigenous,6
+2024,102,Central West,Short-term restorative care,Non-Indigenous,69
+2024,102,Central West,Short-term restorative care,Unknown,15
+2024,102,Central West,Transition care,Indigenous,13
+2024,102,Central West,Transition care,Non-Indigenous,180
+2024,102,Central West,Transition care,Unknown,57
+2024,103,Far North Coast,Home care,Indigenous,58
+2024,103,Far North Coast,Home care,Non-Indigenous,1023
+2024,103,Far North Coast,Home care,Unknown,137
+2024,103,Far North Coast,Permanent residential care,Indigenous,12
+2024,103,Far North Coast,Permanent residential care,Non-Indigenous,1140
+2024,103,Far North Coast,Permanent residential care,Unknown,163
+2024,103,Far North Coast,Respite residential care,Indigenous,11
+2024,103,Far North Coast,Respite residential care,Non-Indigenous,1224
+2024,103,Far North Coast,Respite residential care,Unknown,149
+2024,103,Far North Coast,Short-term restorative care,Non-Indigenous,9
+2024,103,Far North Coast,Short-term restorative care,Unknown,2
+2024,103,Far North Coast,Transition care,Indigenous,2
+2024,103,Far North Coast,Transition care,Non-Indigenous,196
+2024,103,Far North Coast,Transition care,Unknown,65
+2024,104,Hunter,Home care,Indigenous,75
+2024,104,Hunter,Home care,Non-Indigenous,1582
+2024,104,Hunter,Home care,Unknown,211
+2024,104,Hunter,Permanent residential care,Indigenous,37
+2024,104,Hunter,Permanent residential care,Non-Indigenous,2115
+2024,104,Hunter,Permanent residential care,Unknown,412
+2024,104,Hunter,Respite residential care,Indigenous,28
+2024,104,Hunter,Respite residential care,Non-Indigenous,1929
+2024,104,Hunter,Respite residential care,Unknown,348
+2024,104,Hunter,Short-term restorative care,Indigenous,7
+2024,104,Hunter,Short-term restorative care,Non-Indigenous,199
+2024,104,Hunter,Short-term restorative care,Unknown,65
+2024,104,Hunter,Transition care,Indigenous,12
+2024,104,Hunter,Transition care,Non-Indigenous,242
+2024,104,Hunter,Transition care,Unknown,102
+2024,105,Illawarra,Home care,Indigenous,21
+2024,105,Illawarra,Home care,Non-Indigenous,977
+2024,105,Illawarra,Home care,Unknown,91
+2024,105,Illawarra,Permanent residential care,Indigenous,11
+2024,105,Illawarra,Permanent residential care,Non-Indigenous,1267
+2024,105,Illawarra,Permanent residential care,Unknown,232
+2024,105,Illawarra,Respite residential care,Indigenous,16
+2024,105,Illawarra,Respite residential care,Non-Indigenous,1093
+2024,105,Illawarra,Respite residential care,Unknown,185
+2024,105,Illawarra,Short-term restorative care,Indigenous,1
+2024,105,Illawarra,Short-term restorative care,Non-Indigenous,53
+2024,105,Illawarra,Short-term restorative care,Unknown,10
+2024,105,Illawarra,Transition care,Indigenous,8
+2024,105,Illawarra,Transition care,Non-Indigenous,235
+2024,105,Illawarra,Transition care,Unknown,85
+2024,106,Inner West,Home care,Indigenous,6
+2024,106,Inner West,Home care,Non-Indigenous,1798
+2024,106,Inner West,Home care,Unknown,166
+2024,106,Inner West,Permanent residential care,Indigenous,12
+2024,106,Inner West,Permanent residential care,Non-Indigenous,896
+2024,106,Inner West,Permanent residential care,Unknown,144
+2024,106,Inner West,Respite residential care,Indigenous,9
+2024,106,Inner West,Respite residential care,Non-Indigenous,1406
+2024,106,Inner West,Respite residential care,Unknown,227
+2024,106,Inner West,Short-term restorative care,Non-Indigenous,304
+2024,106,Inner West,Short-term restorative care,Unknown,97
+2024,106,Inner West,Transition care,Indigenous,4
+2024,106,Inner West,Transition care,Non-Indigenous,191
+2024,106,Inner West,Transition care,Unknown,58
+2024,107,Mid North Coast,Home care,Indigenous,78
+2024,107,Mid North Coast,Home care,Non-Indigenous,1774
+2024,107,Mid North Coast,Home care,Unknown,294
+2024,107,Mid North Coast,Permanent residential care,Indigenous,33
+2024,107,Mid North Coast,Permanent residential care,Non-Indigenous,1347
+2024,107,Mid North Coast,Permanent residential care,Unknown,179
+2024,107,Mid North Coast,Respite residential care,Indigenous,52
+2024,107,Mid North Coast,Respite residential care,Non-Indigenous,2334
+2024,107,Mid North Coast,Respite residential care,Unknown,296
+2024,107,Mid North Coast,Short-term restorative care,Indigenous,4
+2024,107,Mid North Coast,Short-term restorative care,Non-Indigenous,167
+2024,107,Mid North Coast,Short-term restorative care,Unknown,91
+2024,107,Mid North Coast,Transition care,Indigenous,13
+2024,107,Mid North Coast,Transition care,Non-Indigenous,276
+2024,107,Mid North Coast,Transition care,Unknown,102
+2024,108,Nepean,Home care,Indigenous,15
+2024,108,Nepean,Home care,Non-Indigenous,650
+2024,108,Nepean,Home care,Unknown,73
+2024,108,Nepean,Permanent residential care,Indigenous,18
+2024,108,Nepean,Permanent residential care,Non-Indigenous,694
+2024,108,Nepean,Permanent residential care,Unknown,154
+2024,108,Nepean,Respite residential care,Indigenous,20
+2024,108,Nepean,Respite residential care,Non-Indigenous,816
+2024,108,Nepean,Respite residential care,Unknown,190
+2024,108,Nepean,Transition care,Indigenous,6
+2024,108,Nepean,Transition care,Non-Indigenous,110
+2024,108,Nepean,Transition care,Unknown,73
+2024,109,New England,Home care,Indigenous,38
+2024,109,New England,Home care,Non-Indigenous,367
+2024,109,New England,Home care,Unknown,58
+2024,109,New England,Permanent residential care,Indigenous,22
+2024,109,New England,Permanent residential care,Non-Indigenous,543
+2024,109,New England,Permanent residential care,Unknown,110
+2024,109,New England,Respite residential care,Indigenous,40
+2024,109,New England,Respite residential care,Non-Indigenous,619
+2024,109,New England,Respite residential care,Unknown,137
+2024,109,New England,Short-term restorative care,Indigenous,3
+2024,109,New England,Short-term restorative care,Non-Indigenous,71
+2024,109,New England,Short-term restorative care,Unknown,33
+2024,109,New England,Transition care,Indigenous,12
+2024,109,New England,Transition care,Non-Indigenous,235
+2024,109,New England,Transition care,Unknown,101
+2024,110,Northern Sydney,Home care,Indigenous,40
+2024,110,Northern Sydney,Home care,Non-Indigenous,2953
+2024,110,Northern Sydney,Home care,Unknown,296
+2024,110,Northern Sydney,Permanent residential care,Indigenous,2
+2024,110,Northern Sydney,Permanent residential care,Non-Indigenous,2357
+2024,110,Northern Sydney,Permanent residential care,Unknown,351
+2024,110,Northern Sydney,Respite residential care,Indigenous,8
+2024,110,Northern Sydney,Respite residential care,Non-Indigenous,3808
+2024,110,Northern Sydney,Respite residential care,Unknown,627
+2024,110,Northern Sydney,Short-term restorative care,Indigenous,1
+2024,110,Northern Sydney,Short-term restorative care,Non-Indigenous,137
+2024,110,Northern Sydney,Short-term restorative care,Unknown,33
+2024,110,Northern Sydney,Transition care,Non-Indigenous,251
+2024,110,Northern Sydney,Transition care,Unknown,69
+2024,111,Orana Far West,Home care,Indigenous,50
+2024,111,Orana Far West,Home care,Non-Indigenous,312
+2024,111,Orana Far West,Home care,Unknown,37
+2024,111,Orana Far West,Permanent residential care,Indigenous,19
+2024,111,Orana Far West,Permanent residential care,Non-Indigenous,396
+2024,111,Orana Far West,Permanent residential care,Unknown,56
+2024,111,Orana Far West,Respite residential care,Indigenous,30
+2024,111,Orana Far West,Respite residential care,Non-Indigenous,630
+2024,111,Orana Far West,Respite residential care,Unknown,75
+2024,111,Orana Far West,Short-term restorative care,Indigenous,7
+2024,111,Orana Far West,Short-term restorative care,Non-Indigenous,16
+2024,111,Orana Far West,Short-term restorative care,Unknown,14
+2024,111,Orana Far West,Transition care,Non-Indigenous,8
+2024,112,Riverina/Murray,Home care,Indigenous,49
+2024,112,Riverina/Murray,Home care,Non-Indigenous,1906
+2024,112,Riverina/Murray,Home care,Unknown,396
+2024,112,Riverina/Murray,Permanent residential care,Indigenous,14
+2024,112,Riverina/Murray,Permanent residential care,Non-Indigenous,869
+2024,112,Riverina/Murray,Permanent residential care,Unknown,133
+2024,112,Riverina/Murray,Respite residential care,Indigenous,20
+2024,112,Riverina/Murray,Respite residential care,Non-Indigenous,1280
+2024,112,Riverina/Murray,Respite residential care,Unknown,190
+2024,112,Riverina/Murray,Short-term restorative care,Indigenous,1
+2024,112,Riverina/Murray,Short-term restorative care,Non-Indigenous,18
+2024,112,Riverina/Murray,Short-term restorative care,Unknown,6
+2024,112,Riverina/Murray,Transition care,Indigenous,10
+2024,112,Riverina/Murray,Transition care,Non-Indigenous,282
+2024,112,Riverina/Murray,Transition care,Unknown,152
+2024,113,South East Sydney,Home care,Indigenous,109
+2024,113,South East Sydney,Home care,Non-Indigenous,4476
+2024,113,South East Sydney,Home care,Unknown,403
+2024,113,South East Sydney,Permanent residential care,Indigenous,21
+2024,113,South East Sydney,Permanent residential care,Non-Indigenous,2348
+2024,113,South East Sydney,Permanent residential care,Unknown,321
+2024,113,South East Sydney,Respite residential care,Indigenous,35
+2024,113,South East Sydney,Respite residential care,Non-Indigenous,4044
+2024,113,South East Sydney,Respite residential care,Unknown,574
+2024,113,South East Sydney,Short-term restorative care,Indigenous,2
+2024,113,South East Sydney,Short-term restorative care,Non-Indigenous,108
+2024,113,South East Sydney,Short-term restorative care,Unknown,35
+2024,113,South East Sydney,Transition care,Indigenous,6
+2024,113,South East Sydney,Transition care,Non-Indigenous,522
+2024,113,South East Sydney,Transition care,Unknown,75
+2024,114,South West Sydney,Home care,Indigenous,48
+2024,114,South West Sydney,Home care,Non-Indigenous,2200
+2024,114,South West Sydney,Home care,Unknown,215
+2024,114,South West Sydney,Permanent residential care,Indigenous,30
+2024,114,South West Sydney,Permanent residential care,Non-Indigenous,1981
+2024,114,South West Sydney,Permanent residential care,Unknown,478
+2024,114,South West Sydney,Respite residential care,Indigenous,52
+2024,114,South West Sydney,Respite residential care,Non-Indigenous,3100
+2024,114,South West Sydney,Respite residential care,Unknown,690
+2024,114,South West Sydney,Short-term restorative care,Non-Indigenous,107
+2024,114,South West Sydney,Short-term restorative care,Unknown,29
+2024,114,South West Sydney,Transition care,Indigenous,8
+2024,114,South West Sydney,Transition care,Non-Indigenous,227
+2024,114,South West Sydney,Transition care,Unknown,121
+2024,115,Southern Highlands,Home care,Indigenous,15
+2024,115,Southern Highlands,Home care,Non-Indigenous,479
+2024,115,Southern Highlands,Home care,Unknown,46
+2024,115,Southern Highlands,Permanent residential care,Indigenous,13
+2024,115,Southern Highlands,Permanent residential care,Non-Indigenous,721
+2024,115,Southern Highlands,Permanent residential care,Unknown,82
+2024,115,Southern Highlands,Respite residential care,Indigenous,16
+2024,115,Southern Highlands,Respite residential care,Non-Indigenous,1092
+2024,115,Southern Highlands,Respite residential care,Unknown,92
+2024,115,Southern Highlands,Short-term restorative care,Non-Indigenous,2
+2024,115,Southern Highlands,Transition care,Indigenous,4
+2024,115,Southern Highlands,Transition care,Non-Indigenous,179
+2024,115,Southern Highlands,Transition care,Unknown,28
+2024,116,Western Sydney,Home care,Indigenous,88
+2024,116,Western Sydney,Home care,Non-Indigenous,3927
+2024,116,Western Sydney,Home care,Unknown,490
+2024,116,Western Sydney,Permanent residential care,Indigenous,23
+2024,116,Western Sydney,Permanent residential care,Non-Indigenous,1699
+2024,116,Western Sydney,Permanent residential care,Unknown,327
+2024,116,Western Sydney,Respite residential care,Indigenous,26
+2024,116,Western Sydney,Respite residential care,Non-Indigenous,2778
+2024,116,Western Sydney,Respite residential care,Unknown,542
+2024,116,Western Sydney,Short-term restorative care,Indigenous,32
+2024,116,Western Sydney,Short-term restorative care,Non-Indigenous,204
+2024,116,Western Sydney,Short-term restorative care,Unknown,67
+2024,116,Western Sydney,Transition care,Indigenous,2
+2024,116,Western Sydney,Transition care,Non-Indigenous,214
+2024,116,Western Sydney,Transition care,Unknown,112
+2024,201,Barwon-South Western,Home care,Indigenous,13
+2024,201,Barwon-South Western,Home care,Non-Indigenous,1327
+2024,201,Barwon-South Western,Home care,Unknown,113
+2024,201,Barwon-South Western,Permanent residential care,Indigenous,5
+2024,201,Barwon-South Western,Permanent residential care,Non-Indigenous,1587
+2024,201,Barwon-South Western,Permanent residential care,Unknown,254
+2024,201,Barwon-South Western,Respite residential care,Indigenous,10
+2024,201,Barwon-South Western,Respite residential care,Non-Indigenous,2659
+2024,201,Barwon-South Western,Respite residential care,Unknown,286
+2024,201,Barwon-South Western,Short-term restorative care,Non-Indigenous,130
+2024,201,Barwon-South Western,Short-term restorative care,Unknown,36
+2024,201,Barwon-South Western,Transition care,Indigenous,3
+2024,201,Barwon-South Western,Transition care,Non-Indigenous,241
+2024,201,Barwon-South Western,Transition care,Unknown,73
+2024,202,Eastern Metro,Home care,Indigenous,67
+2024,202,Eastern Metro,Home care,Non-Indigenous,6224
+2024,202,Eastern Metro,Home care,Unknown,663
+2024,202,Eastern Metro,Permanent residential care,Indigenous,10
+2024,202,Eastern Metro,Permanent residential care,Non-Indigenous,3421
+2024,202,Eastern Metro,Permanent residential care,Unknown,523
+2024,202,Eastern Metro,Respite residential care,Indigenous,13
+2024,202,Eastern Metro,Respite residential care,Non-Indigenous,5855
+2024,202,Eastern Metro,Respite residential care,Unknown,695
+2024,202,Eastern Metro,Short-term restorative care,Indigenous,2
+2024,202,Eastern Metro,Short-term restorative care,Non-Indigenous,601
+2024,202,Eastern Metro,Short-term restorative care,Unknown,174
+2024,202,Eastern Metro,Transition care,Indigenous,1
+2024,202,Eastern Metro,Transition care,Non-Indigenous,447
+2024,202,Eastern Metro,Transition care,Unknown,90
+2024,203,Gippsland,Home care,Indigenous,35
+2024,203,Gippsland,Home care,Non-Indigenous,1104
+2024,203,Gippsland,Home care,Unknown,141
+2024,203,Gippsland,Permanent residential care,Indigenous,18
+2024,203,Gippsland,Permanent residential care,Non-Indigenous,1019
+2024,203,Gippsland,Permanent residential care,Unknown,173
+2024,203,Gippsland,Respite residential care,Indigenous,23
+2024,203,Gippsland,Respite residential care,Non-Indigenous,1690
+2024,203,Gippsland,Respite residential care,Unknown,222
+2024,203,Gippsland,Short-term restorative care,Non-Indigenous,35
+2024,203,Gippsland,Short-term restorative care,Unknown,8
+2024,203,Gippsland,Transition care,Non-Indigenous,100
+2024,203,Gippsland,Transition care,Unknown,39
+2024,204,Grampians,Home care,Indigenous,15
+2024,204,Grampians,Home care,Non-Indigenous,563
+2024,204,Grampians,Home care,Unknown,33
+2024,204,Grampians,Permanent residential care,Indigenous,6
+2024,204,Grampians,Permanent residential care,Non-Indigenous,913
+2024,204,Grampians,Permanent residential care,Unknown,132
+2024,204,Grampians,Respite residential care,Indigenous,3
+2024,204,Grampians,Respite residential care,Non-Indigenous,1029
+2024,204,Grampians,Respite residential care,Unknown,78
+2024,204,Grampians,Short-term restorative care,Indigenous,3
+2024,204,Grampians,Short-term restorative care,Non-Indigenous,140
+2024,204,Grampians,Short-term restorative care,Unknown,41
+2024,204,Grampians,Transition care,Indigenous,1
+2024,204,Grampians,Transition care,Non-Indigenous,136
+2024,204,Grampians,Transition care,Unknown,44
+2024,205,Hume,Home care,Indigenous,40
+2024,205,Hume,Home care,Non-Indigenous,958
+2024,205,Hume,Home care,Unknown,72
+2024,205,Hume,Permanent residential care,Indigenous,4
+2024,205,Hume,Permanent residential care,Non-Indigenous,976
+2024,205,Hume,Permanent residential care,Unknown,157
+2024,205,Hume,Respite residential care,Indigenous,7
+2024,205,Hume,Respite residential care,Non-Indigenous,1442
+2024,205,Hume,Respite residential care,Unknown,177
+2024,205,Hume,Short-term restorative care,Indigenous,4
+2024,205,Hume,Short-term restorative care,Non-Indigenous,155
+2024,205,Hume,Short-term restorative care,Unknown,52
+2024,205,Hume,Transition care,Indigenous,1
+2024,205,Hume,Transition care,Non-Indigenous,188
+2024,205,Hume,Transition care,Unknown,74
+2024,206,Loddon-Mallee,Home care,Indigenous,17
+2024,206,Loddon-Mallee,Home care,Non-Indigenous,693
+2024,206,Loddon-Mallee,Home care,Unknown,57
+2024,206,Loddon-Mallee,Permanent residential care,Indigenous,10
+2024,206,Loddon-Mallee,Permanent residential care,Non-Indigenous,1199
+2024,206,Loddon-Mallee,Permanent residential care,Unknown,217
+2024,206,Loddon-Mallee,Respite residential care,Indigenous,17
+2024,206,Loddon-Mallee,Respite residential care,Non-Indigenous,1477
+2024,206,Loddon-Mallee,Respite residential care,Unknown,207
+2024,206,Loddon-Mallee,Short-term restorative care,Indigenous,2
+2024,206,Loddon-Mallee,Short-term restorative care,Non-Indigenous,27
+2024,206,Loddon-Mallee,Short-term restorative care,Unknown,6
+2024,206,Loddon-Mallee,Transition care,Indigenous,2
+2024,206,Loddon-Mallee,Transition care,Non-Indigenous,242
+2024,206,Loddon-Mallee,Transition care,Unknown,70
+2024,207,Northern Metro,Home care,Indigenous,19
+2024,207,Northern Metro,Home care,Non-Indigenous,2707
+2024,207,Northern Metro,Home care,Unknown,242
+2024,207,Northern Metro,Permanent residential care,Indigenous,4
+2024,207,Northern Metro,Permanent residential care,Non-Indigenous,2120
+2024,207,Northern Metro,Permanent residential care,Unknown,325
+2024,207,Northern Metro,Respite residential care,Indigenous,7
+2024,207,Northern Metro,Respite residential care,Non-Indigenous,3631
+2024,207,Northern Metro,Respite residential care,Unknown,412
+2024,207,Northern Metro,Short-term restorative care,Indigenous,1
+2024,207,Northern Metro,Short-term restorative care,Non-Indigenous,242
+2024,207,Northern Metro,Short-term restorative care,Unknown,51
+2024,207,Northern Metro,Transition care,Indigenous,1
+2024,207,Northern Metro,Transition care,Non-Indigenous,352
+2024,207,Northern Metro,Transition care,Unknown,70
+2024,208,Southern Metro,Home care,Indigenous,43
+2024,208,Southern Metro,Home care,Non-Indigenous,4465
+2024,208,Southern Metro,Home care,Unknown,465
+2024,208,Southern Metro,Permanent residential care,Indigenous,10
+2024,208,Southern Metro,Permanent residential care,Non-Indigenous,3896
+2024,208,Southern Metro,Permanent residential care,Unknown,765
+2024,208,Southern Metro,Respite residential care,Indigenous,19
+2024,208,Southern Metro,Respite residential care,Non-Indigenous,5927
+2024,208,Southern Metro,Respite residential care,Unknown,884
+2024,208,Southern Metro,Short-term restorative care,Indigenous,1
+2024,208,Southern Metro,Short-term restorative care,Non-Indigenous,34
+2024,208,Southern Metro,Short-term restorative care,Unknown,19
+2024,208,Southern Metro,Transition care,Indigenous,4
+2024,208,Southern Metro,Transition care,Non-Indigenous,590
+2024,208,Southern Metro,Transition care,Unknown,152
+2024,209,Western Metro,Home care,Indigenous,40
+2024,209,Western Metro,Home care,Non-Indigenous,2205
+2024,209,Western Metro,Home care,Unknown,183
+2024,209,Western Metro,Permanent residential care,Indigenous,5
+2024,209,Western Metro,Permanent residential care,Non-Indigenous,1726
+2024,209,Western Metro,Permanent residential care,Unknown,293
+2024,209,Western Metro,Respite residential care,Indigenous,21
+2024,209,Western Metro,Respite residential care,Non-Indigenous,3058
+2024,209,Western Metro,Respite residential care,Unknown,398
+2024,209,Western Metro,Short-term restorative care,Indigenous,4
+2024,209,Western Metro,Short-term restorative care,Non-Indigenous,309
+2024,209,Western Metro,Short-term restorative care,Unknown,74
+2024,209,Western Metro,Transition care,Non-Indigenous,416
+2024,209,Western Metro,Transition care,Unknown,84
+2024,301,Brisbane North,Home care,Indigenous,196
+2024,301,Brisbane North,Home care,Non-Indigenous,6407
+2024,301,Brisbane North,Home care,Unknown,657
+2024,301,Brisbane North,Permanent residential care,Indigenous,8
+2024,301,Brisbane North,Permanent residential care,Non-Indigenous,1355
+2024,301,Brisbane North,Permanent residential care,Unknown,281
+2024,301,Brisbane North,Respite residential care,Indigenous,4
+2024,301,Brisbane North,Respite residential care,Non-Indigenous,1331
+2024,301,Brisbane North,Respite residential care,Unknown,243
+2024,301,Brisbane North,Short-term restorative care,Indigenous,1
+2024,301,Brisbane North,Short-term restorative care,Non-Indigenous,78
+2024,301,Brisbane North,Short-term restorative care,Unknown,29
+2024,301,Brisbane North,Transition care,Indigenous,6
+2024,301,Brisbane North,Transition care,Non-Indigenous,342
+2024,301,Brisbane North,Transition care,Unknown,99
+2024,302,Brisbane South,Home care,Indigenous,135
+2024,302,Brisbane South,Home care,Non-Indigenous,4141
+2024,302,Brisbane South,Home care,Unknown,561
+2024,302,Brisbane South,Permanent residential care,Indigenous,20
+2024,302,Brisbane South,Permanent residential care,Non-Indigenous,1994
+2024,302,Brisbane South,Permanent residential care,Unknown,430
+2024,302,Brisbane South,Respite residential care,Indigenous,16
+2024,302,Brisbane South,Respite residential care,Non-Indigenous,2404
+2024,302,Brisbane South,Respite residential care,Unknown,431
+2024,302,Brisbane South,Transition care,Indigenous,2
+2024,302,Brisbane South,Transition care,Non-Indigenous,280
+2024,302,Brisbane South,Transition care,Unknown,119
+2024,303,Cabool,Home care,Indigenous,119
+2024,303,Cabool,Home care,Non-Indigenous,1709
+2024,303,Cabool,Home care,Unknown,172
+2024,303,Cabool,Permanent residential care,Indigenous,15
+2024,303,Cabool,Permanent residential care,Non-Indigenous,1308
+2024,303,Cabool,Permanent residential care,Unknown,253
+2024,303,Cabool,Respite residential care,Indigenous,8
+2024,303,Cabool,Respite residential care,Non-Indigenous,1160
+2024,303,Cabool,Respite residential care,Unknown,188
+2024,303,Cabool,Short-term restorative care,Indigenous,7
+2024,303,Cabool,Short-term restorative care,Non-Indigenous,208
+2024,303,Cabool,Short-term restorative care,Unknown,74
+2024,304,Central West,Home care,Non-Indigenous,15
+2024,304,Central West,Home care,Unknown,1
+2024,304,Central West,Permanent residential care,Indigenous,1
+2024,304,Central West,Permanent residential care,Non-Indigenous,29
+2024,304,Central West,Permanent residential care,Unknown,4
+2024,304,Central West,Respite residential care,Non-Indigenous,41
+2024,304,Central West,Respite residential care,Unknown,4
+2024,304,Central West,Short-term restorative care,Non-Indigenous,16
+2024,304,Central West,Short-term restorative care,Unknown,10
+2024,305,Darling Downs,Home care,Indigenous,55
+2024,305,Darling Downs,Home care,Non-Indigenous,1002
+2024,305,Darling Downs,Home care,Unknown,177
+2024,305,Darling Downs,Permanent residential care,Indigenous,10
+2024,305,Darling Downs,Permanent residential care,Non-Indigenous,844
+2024,305,Darling Downs,Permanent residential care,Unknown,158
+2024,305,Darling Downs,Respite residential care,Indigenous,7
+2024,305,Darling Downs,Respite residential care,Non-Indigenous,877
+2024,305,Darling Downs,Respite residential care,Unknown,143
+2024,305,Darling Downs,Short-term restorative care,Indigenous,1
+2024,305,Darling Downs,Short-term restorative care,Non-Indigenous,50
+2024,305,Darling Downs,Short-term restorative care,Unknown,36
+2024,305,Darling Downs,Transition care,Indigenous,2
+2024,305,Darling Downs,Transition care,Non-Indigenous,139
+2024,305,Darling Downs,Transition care,Unknown,58
+2024,306,Far North,Home care,Indigenous,72
+2024,306,Far North,Home care,Non-Indigenous,1017
+2024,306,Far North,Home care,Unknown,129
+2024,306,Far North,Permanent residential care,Indigenous,84
+2024,306,Far North,Permanent residential care,Non-Indigenous,584
+2024,306,Far North,Permanent residential care,Unknown,100
+2024,306,Far North,Respite residential care,Indigenous,98
+2024,306,Far North,Respite residential care,Non-Indigenous,904
+2024,306,Far North,Respite residential care,Unknown,127
+2024,306,Far North,Short-term restorative care,Indigenous,18
+2024,306,Far North,Short-term restorative care,Non-Indigenous,236
+2024,306,Far North,Short-term restorative care,Unknown,43
+2024,306,Far North,Transition care,Indigenous,11
+2024,306,Far North,Transition care,Non-Indigenous,94
+2024,306,Far North,Transition care,Unknown,50
+2024,307,Fitzroy,Home care,Indigenous,41
+2024,307,Fitzroy,Home care,Non-Indigenous,416
+2024,307,Fitzroy,Home care,Unknown,127
+2024,307,Fitzroy,Permanent residential care,Indigenous,17
+2024,307,Fitzroy,Permanent residential care,Non-Indigenous,480
+2024,307,Fitzroy,Permanent residential care,Unknown,63
+2024,307,Fitzroy,Respite residential care,Indigenous,6
+2024,307,Fitzroy,Respite residential care,Non-Indigenous,243
+2024,307,Fitzroy,Respite residential care,Unknown,20
+2024,307,Fitzroy,Short-term restorative care,Indigenous,2
+2024,307,Fitzroy,Short-term restorative care,Non-Indigenous,67
+2024,307,Fitzroy,Short-term restorative care,Unknown,33
+2024,307,Fitzroy,Transition care,Indigenous,2
+2024,307,Fitzroy,Transition care,Non-Indigenous,78
+2024,307,Fitzroy,Transition care,Unknown,24
+2024,308,Logan River Valley,Home care,Indigenous,19
+2024,308,Logan River Valley,Home care,Non-Indigenous,426
+2024,308,Logan River Valley,Home care,Unknown,42
+2024,308,Logan River Valley,Permanent residential care,Indigenous,16
+2024,308,Logan River Valley,Permanent residential care,Non-Indigenous,681
+2024,308,Logan River Valley,Permanent residential care,Unknown,166
+2024,308,Logan River Valley,Respite residential care,Indigenous,12
+2024,308,Logan River Valley,Respite residential care,Non-Indigenous,734
+2024,308,Logan River Valley,Respite residential care,Unknown,150
+2024,309,Mackay,Home care,Indigenous,2
+2024,309,Mackay,Home care,Non-Indigenous,81
+2024,309,Mackay,Home care,Unknown,8
+2024,309,Mackay,Permanent residential care,Indigenous,10
+2024,309,Mackay,Permanent residential care,Non-Indigenous,274
+2024,309,Mackay,Permanent residential care,Unknown,73
+2024,309,Mackay,Respite residential care,Indigenous,3
+2024,309,Mackay,Respite residential care,Non-Indigenous,203
+2024,309,Mackay,Respite residential care,Unknown,31
+2024,309,Mackay,Short-term restorative care,Indigenous,1
+2024,309,Mackay,Short-term restorative care,Non-Indigenous,17
+2024,309,Mackay,Short-term restorative care,Unknown,7
+2024,309,Mackay,Transition care,Indigenous,2
+2024,309,Mackay,Transition care,Non-Indigenous,57
+2024,309,Mackay,Transition care,Unknown,38
+2024,310,North West,Home care,Indigenous,10
+2024,310,North West,Home care,Non-Indigenous,1
+2024,310,North West,Home care,Unknown,1
+2024,310,North West,Permanent residential care,Indigenous,1
+2024,310,North West,Permanent residential care,Non-Indigenous,2
+2024,310,North West,Permanent residential care,Unknown,1
+2024,310,North West,Respite residential care,Indigenous,2
+2024,310,North West,Respite residential care,Non-Indigenous,5
+2024,310,North West,Respite residential care,Unknown,1
+2024,311,Northern,Home care,Indigenous,188
+2024,311,Northern,Home care,Non-Indigenous,3406
+2024,311,Northern,Home care,Unknown,378
+2024,311,Northern,Permanent residential care,Indigenous,34
+2024,311,Northern,Permanent residential care,Non-Indigenous,616
+2024,311,Northern,Permanent residential care,Unknown,109
+2024,311,Northern,Respite residential care,Indigenous,15
+2024,311,Northern,Respite residential care,Non-Indigenous,362
+2024,311,Northern,Respite residential care,Unknown,52
+2024,311,Northern,Short-term restorative care,Non-Indigenous,10
+2024,311,Northern,Short-term restorative care,Unknown,3
+2024,311,Northern,Transition care,Indigenous,5
+2024,311,Northern,Transition care,Non-Indigenous,84
+2024,311,Northern,Transition care,Unknown,33
+2024,312,South Coast,Home care,Indigenous,31
+2024,312,South Coast,Home care,Non-Indigenous,921
+2024,312,South Coast,Home care,Unknown,107
+2024,312,South Coast,Permanent residential care,Indigenous,8
+2024,312,South Coast,Permanent residential care,Non-Indigenous,1408
+2024,312,South Coast,Permanent residential care,Unknown,355
+2024,312,South Coast,Respite residential care,Indigenous,3
+2024,312,South Coast,Respite residential care,Non-Indigenous,1446
+2024,312,South Coast,Respite residential care,Unknown,298
+2024,312,South Coast,Short-term restorative care,Indigenous,17
+2024,312,South Coast,Short-term restorative care,Non-Indigenous,593
+2024,312,South Coast,Short-term restorative care,Unknown,195
+2024,312,South Coast,Transition care,Indigenous,2
+2024,312,South Coast,Transition care,Non-Indigenous,229
+2024,312,South Coast,Transition care,Unknown,123
+2024,313,South West,Home care,Indigenous,22
+2024,313,South West,Home care,Non-Indigenous,130
+2024,313,South West,Home care,Unknown,8
+2024,313,South West,Permanent residential care,Indigenous,3
+2024,313,South West,Permanent residential care,Non-Indigenous,45
+2024,313,South West,Permanent residential care,Unknown,9
+2024,313,South West,Respite residential care,Indigenous,3
+2024,313,South West,Respite residential care,Non-Indigenous,49
+2024,313,South West,Respite residential care,Unknown,7
+2024,314,Sunshine Coast,Home care,Indigenous,37
+2024,314,Sunshine Coast,Home care,Non-Indigenous,2057
+2024,314,Sunshine Coast,Home care,Unknown,480
+2024,314,Sunshine Coast,Permanent residential care,Indigenous,11
+2024,314,Sunshine Coast,Permanent residential care,Non-Indigenous,1693
+2024,314,Sunshine Coast,Permanent residential care,Unknown,227
+2024,314,Sunshine Coast,Respite residential care,Indigenous,19
+2024,314,Sunshine Coast,Respite residential care,Non-Indigenous,2641
+2024,314,Sunshine Coast,Respite residential care,Unknown,323
+2024,314,Sunshine Coast,Short-term restorative care,Indigenous,12
+2024,314,Sunshine Coast,Short-term restorative care,Non-Indigenous,466
+2024,314,Sunshine Coast,Short-term restorative care,Unknown,188
+2024,314,Sunshine Coast,Transition care,Non-Indigenous,162
+2024,314,Sunshine Coast,Transition care,Unknown,49
+2024,315,West Moreton,Home care,Indigenous,11
+2024,315,West Moreton,Home care,Non-Indigenous,281
+2024,315,West Moreton,Home care,Unknown,39
+2024,315,West Moreton,Permanent residential care,Indigenous,10
+2024,315,West Moreton,Permanent residential care,Non-Indigenous,406
+2024,315,West Moreton,Permanent residential care,Unknown,118
+2024,315,West Moreton,Respite residential care,Indigenous,3
+2024,315,West Moreton,Respite residential care,Non-Indigenous,283
+2024,315,West Moreton,Respite residential care,Unknown,49
+2024,315,West Moreton,Transition care,Indigenous,2
+2024,315,West Moreton,Transition care,Non-Indigenous,114
+2024,315,West Moreton,Transition care,Unknown,67
+2024,316,Wide Bay,Home care,Indigenous,23
+2024,316,Wide Bay,Home care,Non-Indigenous,709
+2024,316,Wide Bay,Home care,Unknown,127
+2024,316,Wide Bay,Permanent residential care,Indigenous,26
+2024,316,Wide Bay,Permanent residential care,Non-Indigenous,859
+2024,316,Wide Bay,Permanent residential care,Unknown,160
+2024,316,Wide Bay,Respite residential care,Indigenous,22
+2024,316,Wide Bay,Respite residential care,Non-Indigenous,700
+2024,316,Wide Bay,Respite residential care,Unknown,99
+2024,316,Wide Bay,Transition care,Indigenous,8
+2024,316,Wide Bay,Transition care,Non-Indigenous,138
+2024,316,Wide Bay,Transition care,Unknown,67
+2024,401,Eyre Peninsula,Home care,Indigenous,8
+2024,401,Eyre Peninsula,Home care,Non-Indigenous,720
+2024,401,Eyre Peninsula,Home care,Unknown,88
+2024,401,Eyre Peninsula,Permanent residential care,Non-Indigenous,77
+2024,401,Eyre Peninsula,Permanent residential care,Unknown,7
+2024,401,Eyre Peninsula,Respite residential care,Indigenous,1
+2024,401,Eyre Peninsula,Respite residential care,Non-Indigenous,113
+2024,401,Eyre Peninsula,Respite residential care,Unknown,14
+2024,402,"Hills, Mallee & Southern",Home care,Indigenous,4
+2024,402,"Hills, Mallee & Southern",Home care,Non-Indigenous,390
+2024,402,"Hills, Mallee & Southern",Home care,Unknown,61
+2024,402,"Hills, Mallee & Southern",Permanent residential care,Indigenous,5
+2024,402,"Hills, Mallee & Southern",Permanent residential care,Non-Indigenous,525
+2024,402,"Hills, Mallee & Southern",Permanent residential care,Unknown,58
+2024,402,"Hills, Mallee & Southern",Respite residential care,Indigenous,7
+2024,402,"Hills, Mallee & Southern",Respite residential care,Non-Indigenous,869
+2024,402,"Hills, Mallee & Southern",Respite residential care,Unknown,131
+2024,402,"Hills, Mallee & Southern",Short-term restorative care,Indigenous,1
+2024,402,"Hills, Mallee & Southern",Short-term restorative care,Non-Indigenous,39
+2024,402,"Hills, Mallee & Southern",Short-term restorative care,Unknown,23
+2024,402,"Hills, Mallee & Southern",Transition care,Non-Indigenous,224
+2024,402,"Hills, Mallee & Southern",Transition care,Unknown,43
+2024,403,Metropolitan East,Home care,Indigenous,56
+2024,403,Metropolitan East,Home care,Non-Indigenous,2399
+2024,403,Metropolitan East,Home care,Unknown,339
+2024,403,Metropolitan East,Permanent residential care,Indigenous,1
+2024,403,Metropolitan East,Permanent residential care,Non-Indigenous,844
+2024,403,Metropolitan East,Permanent residential care,Unknown,96
+2024,403,Metropolitan East,Respite residential care,Non-Indigenous,1367
+2024,403,Metropolitan East,Respite residential care,Unknown,174
+2024,403,Metropolitan East,Short-term restorative care,Indigenous,4
+2024,403,Metropolitan East,Short-term restorative care,Non-Indigenous,157
+2024,403,Metropolitan East,Short-term restorative care,Unknown,36
+2024,404,Metropolitan North,Home care,Indigenous,13
+2024,404,Metropolitan North,Home care,Non-Indigenous,742
+2024,404,Metropolitan North,Home care,Unknown,95
+2024,404,Metropolitan North,Permanent residential care,Indigenous,11
+2024,404,Metropolitan North,Permanent residential care,Non-Indigenous,1054
+2024,404,Metropolitan North,Permanent residential care,Unknown,180
+2024,404,Metropolitan North,Respite residential care,Indigenous,17
+2024,404,Metropolitan North,Respite residential care,Non-Indigenous,1745
+2024,404,Metropolitan North,Respite residential care,Unknown,285
+2024,404,Metropolitan North,Short-term restorative care,Indigenous,2
+2024,404,Metropolitan North,Short-term restorative care,Non-Indigenous,36
+2024,404,Metropolitan North,Short-term restorative care,Unknown,15
+2024,404,Metropolitan North,Transition care,Indigenous,1
+2024,404,Metropolitan North,Transition care,Non-Indigenous,200
+2024,404,Metropolitan North,Transition care,Unknown,41
+2024,405,Metropolitan South,Home care,Indigenous,13
+2024,405,Metropolitan South,Home care,Non-Indigenous,1164
+2024,405,Metropolitan South,Home care,Unknown,194
+2024,405,Metropolitan South,Permanent residential care,Indigenous,6
+2024,405,Metropolitan South,Permanent residential care,Non-Indigenous,1297
+2024,405,Metropolitan South,Permanent residential care,Unknown,198
+2024,405,Metropolitan South,Respite residential care,Indigenous,10
+2024,405,Metropolitan South,Respite residential care,Non-Indigenous,2054
+2024,405,Metropolitan South,Respite residential care,Unknown,311
+2024,405,Metropolitan South,Short-term restorative care,Indigenous,1
+2024,405,Metropolitan South,Short-term restorative care,Non-Indigenous,71
+2024,405,Metropolitan South,Short-term restorative care,Unknown,33
+2024,405,Metropolitan South,Transition care,Indigenous,1
+2024,405,Metropolitan South,Transition care,Non-Indigenous,162
+2024,405,Metropolitan South,Transition care,Unknown,60
+2024,406,Metropolitan West,Home care,Indigenous,153
+2024,406,Metropolitan West,Home care,Non-Indigenous,767
+2024,406,Metropolitan West,Home care,Unknown,178
+2024,406,Metropolitan West,Permanent residential care,Indigenous,7
+2024,406,Metropolitan West,Permanent residential care,Non-Indigenous,768
+2024,406,Metropolitan West,Permanent residential care,Unknown,126
+2024,406,Metropolitan West,Respite residential care,Indigenous,10
+2024,406,Metropolitan West,Respite residential care,Non-Indigenous,1345
+2024,406,Metropolitan West,Respite residential care,Unknown,220
+2024,406,Metropolitan West,Short-term restorative care,Non-Indigenous,47
+2024,406,Metropolitan West,Short-term restorative care,Unknown,23
+2024,406,Metropolitan West,Transition care,Indigenous,2
+2024,406,Metropolitan West,Transition care,Non-Indigenous,302
+2024,406,Metropolitan West,Transition care,Unknown,85
+2024,407,Mid North,Home care,Indigenous,3
+2024,407,Mid North,Home care,Non-Indigenous,110
+2024,407,Mid North,Home care,Unknown,19
+2024,407,Mid North,Permanent residential care,Non-Indigenous,132
+2024,407,Mid North,Permanent residential care,Unknown,11
+2024,407,Mid North,Respite residential care,Non-Indigenous,143
+2024,407,Mid North,Respite residential care,Unknown,16
+2024,408,Riverland,Home care,Indigenous,17
+2024,408,Riverland,Home care,Non-Indigenous,196
+2024,408,Riverland,Home care,Unknown,33
+2024,408,Riverland,Permanent residential care,Non-Indigenous,121
+2024,408,Riverland,Permanent residential care,Unknown,13
+2024,408,Riverland,Respite residential care,Non-Indigenous,215
+2024,408,Riverland,Respite residential care,Unknown,23
+2024,409,South East,Home care,Indigenous,3
+2024,409,South East,Home care,Non-Indigenous,175
+2024,409,South East,Home care,Unknown,22
+2024,409,South East,Permanent residential care,Indigenous,2
+2024,409,South East,Permanent residential care,Non-Indigenous,188
+2024,409,South East,Permanent residential care,Unknown,26
+2024,409,South East,Respite residential care,Indigenous,4
+2024,409,South East,Respite residential care,Non-Indigenous,368
+2024,409,South East,Respite residential care,Unknown,40
+2024,410,Flinders & Far North,Home care,Indigenous,1
+2024,410,Flinders & Far North,Home care,Non-Indigenous,66
+2024,410,Flinders & Far North,Home care,Unknown,10
+2024,410,Flinders & Far North,Permanent residential care,Indigenous,4
+2024,410,Flinders & Far North,Permanent residential care,Non-Indigenous,54
+2024,410,Flinders & Far North,Permanent residential care,Unknown,7
+2024,410,Flinders & Far North,Respite residential care,Indigenous,11
+2024,410,Flinders & Far North,Respite residential care,Non-Indigenous,77
+2024,410,Flinders & Far North,Respite residential care,Unknown,10
+2024,411,"Yorke, Lower North & Barossa",Home care,Indigenous,8
+2024,411,"Yorke, Lower North & Barossa",Home care,Non-Indigenous,272
+2024,411,"Yorke, Lower North & Barossa",Home care,Unknown,36
+2024,411,"Yorke, Lower North & Barossa",Permanent residential care,Indigenous,2
+2024,411,"Yorke, Lower North & Barossa",Permanent residential care,Non-Indigenous,352
+2024,411,"Yorke, Lower North & Barossa",Permanent residential care,Unknown,78
+2024,411,"Yorke, Lower North & Barossa",Respite residential care,Indigenous,4
+2024,411,"Yorke, Lower North & Barossa",Respite residential care,Non-Indigenous,616
+2024,411,"Yorke, Lower North & Barossa",Respite residential care,Unknown,88
+2024,501,Goldfields,Home care,Indigenous,2
+2024,501,Goldfields,Home care,Non-Indigenous,51
+2024,501,Goldfields,Home care,Unknown,5
+2024,501,Goldfields,Permanent residential care,Indigenous,15
+2024,501,Goldfields,Permanent residential care,Non-Indigenous,80
+2024,501,Goldfields,Permanent residential care,Unknown,23
+2024,501,Goldfields,Respite residential care,Indigenous,10
+2024,501,Goldfields,Respite residential care,Non-Indigenous,64
+2024,501,Goldfields,Respite residential care,Unknown,5
+2024,502,Great Southern,Home care,Indigenous,1
+2024,502,Great Southern,Home care,Non-Indigenous,147
+2024,502,Great Southern,Home care,Unknown,9
+2024,502,Great Southern,Permanent residential care,Indigenous,3
+2024,502,Great Southern,Permanent residential care,Non-Indigenous,165
+2024,502,Great Southern,Permanent residential care,Unknown,18
+2024,502,Great Southern,Respite residential care,Indigenous,2
+2024,502,Great Southern,Respite residential care,Non-Indigenous,81
+2024,502,Great Southern,Respite residential care,Unknown,3
+2024,502,Great Southern,Short-term restorative care,Non-Indigenous,6
+2024,502,Great Southern,Short-term restorative care,Unknown,3
+2024,502,Great Southern,Transition care,Indigenous,1
+2024,502,Great Southern,Transition care,Non-Indigenous,36
+2024,502,Great Southern,Transition care,Unknown,6
+2024,503,Kimberley,Home care,Indigenous,13
+2024,503,Kimberley,Home care,Non-Indigenous,5
+2024,503,Kimberley,Permanent residential care,Indigenous,31
+2024,503,Kimberley,Permanent residential care,Non-Indigenous,12
+2024,503,Kimberley,Permanent residential care,Unknown,3
+2024,503,Kimberley,Respite residential care,Indigenous,30
+2024,503,Kimberley,Respite residential care,Non-Indigenous,5
+2024,503,Kimberley,Respite residential care,Unknown,4
+2024,503,Kimberley,Transition care,Indigenous,20
+2024,503,Kimberley,Transition care,Non-Indigenous,1
+2024,503,Kimberley,Transition care,Unknown,1
+2024,504,Metropolitan East,Home care,Indigenous,57
+2024,504,Metropolitan East,Home care,Non-Indigenous,1612
+2024,504,Metropolitan East,Home care,Unknown,169
+2024,504,Metropolitan East,Permanent residential care,Indigenous,15
+2024,504,Metropolitan East,Permanent residential care,Non-Indigenous,1034
+2024,504,Metropolitan East,Permanent residential care,Unknown,165
+2024,504,Metropolitan East,Respite residential care,Indigenous,8
+2024,504,Metropolitan East,Respite residential care,Non-Indigenous,673
+2024,504,Metropolitan East,Respite residential care,Unknown,58
+2024,504,Metropolitan East,Short-term restorative care,Indigenous,18
+2024,504,Metropolitan East,Short-term restorative care,Non-Indigenous,361
+2024,504,Metropolitan East,Short-term restorative care,Unknown,93
+2024,504,Metropolitan East,Transition care,Indigenous,5
+2024,504,Metropolitan East,Transition care,Non-Indigenous,285
+2024,504,Metropolitan East,Transition care,Unknown,61
+2024,505,Metropolitan North,Home care,Indigenous,39
+2024,505,Metropolitan North,Home care,Non-Indigenous,2298
+2024,505,Metropolitan North,Home care,Unknown,182
+2024,505,Metropolitan North,Permanent residential care,Indigenous,5
+2024,505,Metropolitan North,Permanent residential care,Non-Indigenous,1589
+2024,505,Metropolitan North,Permanent residential care,Unknown,301
+2024,505,Metropolitan North,Respite residential care,Indigenous,5
+2024,505,Metropolitan North,Respite residential care,Non-Indigenous,1104
+2024,505,Metropolitan North,Respite residential care,Unknown,94
+2024,505,Metropolitan North,Transition care,Indigenous,7
+2024,505,Metropolitan North,Transition care,Non-Indigenous,535
+2024,505,Metropolitan North,Transition care,Unknown,149
+2024,506,Metropolitan South East,Home care,Indigenous,19
+2024,506,Metropolitan South East,Home care,Non-Indigenous,1578
+2024,506,Metropolitan South East,Home care,Unknown,154
+2024,506,Metropolitan South East,Permanent residential care,Indigenous,26
+2024,506,Metropolitan South East,Permanent residential care,Non-Indigenous,1126
+2024,506,Metropolitan South East,Permanent residential care,Unknown,183
+2024,506,Metropolitan South East,Respite residential care,Indigenous,12
+2024,506,Metropolitan South East,Respite residential care,Non-Indigenous,787
+2024,506,Metropolitan South East,Respite residential care,Unknown,86
+2024,506,Metropolitan South East,Short-term restorative care,Indigenous,8
+2024,506,Metropolitan South East,Short-term restorative care,Non-Indigenous,438
+2024,506,Metropolitan South East,Short-term restorative care,Unknown,106
+2024,506,Metropolitan South East,Transition care,Indigenous,5
+2024,506,Metropolitan South East,Transition care,Non-Indigenous,156
+2024,506,Metropolitan South East,Transition care,Unknown,44
+2024,507,Metropolitan South West,Home care,Indigenous,15
+2024,507,Metropolitan South West,Home care,Non-Indigenous,1208
+2024,507,Metropolitan South West,Home care,Unknown,169
+2024,507,Metropolitan South West,Permanent residential care,Indigenous,14
+2024,507,Metropolitan South West,Permanent residential care,Non-Indigenous,1474
+2024,507,Metropolitan South West,Permanent residential care,Unknown,213
+2024,507,Metropolitan South West,Respite residential care,Indigenous,7
+2024,507,Metropolitan South West,Respite residential care,Non-Indigenous,1074
+2024,507,Metropolitan South West,Respite residential care,Unknown,129
+2024,507,Metropolitan South West,Transition care,Indigenous,4
+2024,507,Metropolitan South West,Transition care,Non-Indigenous,119
+2024,507,Metropolitan South West,Transition care,Unknown,27
+2024,508,Mid West,Home care,Indigenous,5
+2024,508,Mid West,Home care,Non-Indigenous,70
+2024,508,Mid West,Home care,Unknown,1
+2024,508,Mid West,Permanent residential care,Indigenous,4
+2024,508,Mid West,Permanent residential care,Non-Indigenous,99
+2024,508,Mid West,Permanent residential care,Unknown,14
+2024,508,Mid West,Respite residential care,Non-Indigenous,8
+2024,508,Mid West,Short-term restorative care,Non-Indigenous,38
+2024,508,Mid West,Short-term restorative care,Unknown,7
+2024,508,Mid West,Transition care,Indigenous,18
+2024,508,Mid West,Transition care,Non-Indigenous,47
+2024,508,Mid West,Transition care,Unknown,8
+2024,509,Pilbara,Home care,Indigenous,9
+2024,509,Pilbara,Home care,Non-Indigenous,9
+2024,509,Pilbara,Home care,Unknown,1
+2024,509,Pilbara,Permanent residential care,Indigenous,18
+2024,509,Pilbara,Permanent residential care,Non-Indigenous,5
+2024,509,Pilbara,Permanent residential care,Unknown,3
+2024,509,Pilbara,Respite residential care,Indigenous,15
+2024,509,Pilbara,Respite residential care,Non-Indigenous,8
+2024,509,Pilbara,Respite residential care,Unknown,5
+2024,510,South West,Home care,Indigenous,13
+2024,510,South West,Home care,Non-Indigenous,536
+2024,510,South West,Home care,Unknown,54
+2024,510,South West,Permanent residential care,Indigenous,5
+2024,510,South West,Permanent residential care,Non-Indigenous,451
+2024,510,South West,Permanent residential care,Unknown,75
+2024,510,South West,Respite residential care,Non-Indigenous,196
+2024,510,South West,Respite residential care,Unknown,24
+2024,510,South West,Short-term restorative care,Non-Indigenous,18
+2024,510,South West,Short-term restorative care,Unknown,3
+2024,510,South West,Transition care,Indigenous,15
+2024,510,South West,Transition care,Non-Indigenous,4
+2024,510,South West,Transition care,Unknown,1
+2024,511,Wheatbelt,Home care,Indigenous,16
+2024,511,Wheatbelt,Home care,Non-Indigenous,200
+2024,511,Wheatbelt,Home care,Unknown,29
+2024,511,Wheatbelt,Permanent residential care,Indigenous,5
+2024,511,Wheatbelt,Permanent residential care,Non-Indigenous,111
+2024,511,Wheatbelt,Permanent residential care,Unknown,7
+2024,511,Wheatbelt,Respite residential care,Indigenous,7
+2024,511,Wheatbelt,Respite residential care,Non-Indigenous,98
+2024,511,Wheatbelt,Respite residential care,Unknown,8
+2024,601,North Western,Home care,Indigenous,15
+2024,601,North Western,Home care,Non-Indigenous,466
+2024,601,North Western,Home care,Unknown,44
+2024,601,North Western,Permanent residential care,Indigenous,5
+2024,601,North Western,Permanent residential care,Non-Indigenous,391
+2024,601,North Western,Permanent residential care,Unknown,65
+2024,601,North Western,Respite residential care,Indigenous,21
+2024,601,North Western,Respite residential care,Non-Indigenous,488
+2024,601,North Western,Respite residential care,Unknown,68
+2024,601,North Western,Short-term restorative care,Indigenous,4
+2024,601,North Western,Short-term restorative care,Non-Indigenous,56
+2024,601,North Western,Short-term restorative care,Unknown,21
+2024,601,North Western,Transition care,Non-Indigenous,28
+2024,601,North Western,Transition care,Unknown,7
+2024,602,Northern,Home care,Indigenous,27
+2024,602,Northern,Home care,Non-Indigenous,637
+2024,602,Northern,Home care,Unknown,63
+2024,602,Northern,Permanent residential care,Indigenous,2
+2024,602,Northern,Permanent residential care,Non-Indigenous,497
+2024,602,Northern,Permanent residential care,Unknown,70
+2024,602,Northern,Respite residential care,Indigenous,6
+2024,602,Northern,Respite residential care,Non-Indigenous,677
+2024,602,Northern,Respite residential care,Unknown,52
+2024,602,Northern,Short-term restorative care,Indigenous,3
+2024,602,Northern,Short-term restorative care,Non-Indigenous,53
+2024,602,Northern,Short-term restorative care,Unknown,9
+2024,602,Northern,Transition care,Indigenous,1
+2024,602,Northern,Transition care,Non-Indigenous,90
+2024,602,Northern,Transition care,Unknown,20
+2024,603,Southern,Home care,Indigenous,36
+2024,603,Southern,Home care,Non-Indigenous,995
+2024,603,Southern,Home care,Unknown,100
+2024,603,Southern,Permanent residential care,Indigenous,17
+2024,603,Southern,Permanent residential care,Non-Indigenous,721
+2024,603,Southern,Permanent residential care,Unknown,109
+2024,603,Southern,Respite residential care,Indigenous,18
+2024,603,Southern,Respite residential care,Non-Indigenous,894
+2024,603,Southern,Respite residential care,Unknown,68
+2024,603,Southern,Short-term restorative care,Indigenous,5
+2024,603,Southern,Short-term restorative care,Non-Indigenous,91
+2024,603,Southern,Short-term restorative care,Unknown,36
+2024,603,Southern,Transition care,Indigenous,5
+2024,603,Southern,Transition care,Non-Indigenous,186
+2024,603,Southern,Transition care,Unknown,58
+2024,701,Alice Springs,Home care,Indigenous,22
+2024,701,Alice Springs,Home care,Non-Indigenous,35
+2024,701,Alice Springs,Home care,Unknown,1
+2024,701,Alice Springs,Permanent residential care,Indigenous,60
+2024,701,Alice Springs,Permanent residential care,Non-Indigenous,18
+2024,701,Alice Springs,Permanent residential care,Unknown,4
+2024,701,Alice Springs,Respite residential care,Indigenous,51
+2024,701,Alice Springs,Respite residential care,Non-Indigenous,15
+2024,701,Alice Springs,Respite residential care,Unknown,2
+2024,701,Alice Springs,Short-term restorative care,Non-Indigenous,2
+2024,703,Darwin,Home care,Indigenous,33
+2024,703,Darwin,Home care,Non-Indigenous,150
+2024,703,Darwin,Home care,Unknown,10
+2024,703,Darwin,Permanent residential care,Indigenous,29
+2024,703,Darwin,Permanent residential care,Non-Indigenous,77
+2024,703,Darwin,Permanent residential care,Unknown,12
+2024,703,Darwin,Respite residential care,Indigenous,14
+2024,703,Darwin,Respite residential care,Non-Indigenous,61
+2024,703,Darwin,Respite residential care,Unknown,9
+2024,703,Darwin,Short-term restorative care,Indigenous,1
+2024,703,Darwin,Short-term restorative care,Non-Indigenous,72
+2024,703,Darwin,Short-term restorative care,Unknown,12
+2024,703,Darwin,Transition care,Indigenous,5
+2024,703,Darwin,Transition care,Non-Indigenous,121
+2024,703,Darwin,Transition care,Unknown,13
+2024,704,East Arnhem,Home care,Indigenous,38
+2024,704,East Arnhem,Home care,Non-Indigenous,3
+2024,704,East Arnhem,Home care,Unknown,1
+2024,705,Katherine,Home care,Indigenous,19
+2024,705,Katherine,Home care,Non-Indigenous,13
+2024,705,Katherine,Home care,Unknown,1
+2024,705,Katherine,Permanent residential care,Indigenous,11
+2024,705,Katherine,Permanent residential care,Non-Indigenous,7
+2024,705,Katherine,Respite residential care,Indigenous,30
+2024,705,Katherine,Respite residential care,Non-Indigenous,8
+2024,705,Katherine,Respite residential care,Unknown,1
+2024,801,ACT,Home care,Indigenous,18
+2024,801,ACT,Home care,Non-Indigenous,798
+2024,801,ACT,Home care,Unknown,73
+2024,801,ACT,Permanent residential care,Indigenous,6
+2024,801,ACT,Permanent residential care,Non-Indigenous,825
+2024,801,ACT,Permanent residential care,Unknown,97
+2024,801,ACT,Respite residential care,Indigenous,8
+2024,801,ACT,Respite residential care,Non-Indigenous,792
+2024,801,ACT,Respite residential care,Unknown,76
+2024,801,ACT,Short-term restorative care,Indigenous,4
+2024,801,ACT,Short-term restorative care,Non-Indigenous,164
+2024,801,ACT,Short-term restorative care,Unknown,31
+2024,801,ACT,Transition care,Indigenous,3
+2024,801,ACT,Transition care,Non-Indigenous,202
+2024,801,ACT,Transition care,Unknown,20
