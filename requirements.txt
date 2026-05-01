@@ -6,6 +6,7 @@ plotly
 folium
 streamlit-folium
 openpyxl
+python-calamine
 matplotlib
 scipy
 rapidfuzz
