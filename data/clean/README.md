@@ -155,10 +155,31 @@ All files in this folder are outputs of the clean pipeline (`notebooks/clean_pip
 
 ---
 
+## 09 — `abs_population_by_sa3.csv`
+
+**Source notebook:** `notebooks/clean_pipeline/07_treat_abs_population.ipynb`  
+**Source raw file:** `data/raw/abs_population/32350DS0005_2001-24.xlsx` (Table 3 — Persons)  
+**Grain:** one row per SA3 × year  
+**Year range:** 2019–2024  
+**Rows:** 2,016 | **Unique SA3s:** 336
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `sa3_code` | str | 5-digit SA3 code, integer string (e.g. `"10102"`) |
+| `sa3_name` | str | SA3 name |
+| `state` | str | State abbreviation (NSW, VIC, QLD, SA, WA, TAS, NT, ACT) |
+| `year` | int | Calendar year (30 June reference date) |
+| `total_pop` | float | Estimated resident population, all ages |
+| `pop_65_plus` | float | Population aged 65+, sum of 5-year bands 65–69 through 85+ |
+
+**Used for:** `access_rate`, `beds_per_1000_elderly`, `care_gap_index` (computed in architect notebooks)
+
+---
+
 ## Geographic units
 
 | Unit | Count | Used in |
 |------|-------|---------|
-| SA3 | ~331–359 regions | Files 02, 03, 08 — main join key for dashboard |
+| SA3 | ~331–359 regions | Files 02, 03, 08, 09 — main join key for dashboard |
 | ACPR | 73 regions | Files 04, 05, 06, 07 — demographics only (CURF limitation) |
 | MMM | MM1–MM7 | File 01 — remoteness classification |
