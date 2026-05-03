@@ -1,17 +1,17 @@
-# Chapter 2 — The Correlation: Does high demand cause low quality?
+# Chapter 2 — The Correlation: Does ownership and location explain quality?
 
 ## Narrative purpose
-The second clue. After seeing the map, the viewer asks: "Why do some regions have such a large gap?" This chapter answers by showing the relationship between utilisation and quality — and where vulnerable communities (NESB, Indigenous, Remote) sit within that picture.
+The second clue. After seeing the map, the viewer asks: "Why do some regions have such a large gap?" This chapter answers by showing the relationship between access, quality, and remoteness — and reveals the ownership paradox: remote areas score *higher* because they have fewer for-profit facilities.
 
 ---
 
 ## Visual: Scatter plot
 
 - **X-axis:** `access_rate` (% of 65+ population using residential care)
-- **Y-axis:** `quality_score` (mean of 4 Star Rating sub-dimensions)
+- **Y-axis:** `avg_quality` (mean of 4 Star Rating sub-dimensions)
 - **Size:** `pop_65_plus`
-- **Colour:** MMM remoteness (MM1–MM7) or state
-- **Hover:** SA3 name, state, MMM, access_rate, quality_score, pop_65_plus
+- **Colour:** MMM remoteness (MM1–MM7) or org type
+- **Hover:** SA3 name, state, MMM, access_rate, avg_quality, pop_65_plus
 
 ---
 
@@ -19,9 +19,9 @@ The second clue. After seeing the map, the viewer asks: "Why do some regions hav
 
 | File | Columns needed |
 |------|---------------|
-| `data/clean/stars_timeline.csv` | `sa3_code`, `year`, `quality_score`, `mmm_code` |
-| `data/clean/access_sa3.csv` | `sa3_code`, `year`, `care_type`, `total_users` |
-| `data/raw/population/` | `sa3_code`, `sa3_name`, `state`, `pop_65_plus` |
+| `data/clean/star_ratings_by_facility.csv` | `sa3_code`, `year`, `quality_score`, `mmm_code` |
+| `data/clean/service_users_by_sa3.csv` | `sa3_code`, `year`, `total_residential` |
+| `data/clean/abs_population_by_sa3.csv` | `sa3_code`, `sa3_name`, `state`, `year`, `pop_65_plus` |
 
 Use the same `df` built in Chapter 1 — it already has `access_rate`, `avg_quality`, `pop_65_plus`, and `mmm_code`.
 
@@ -58,29 +58,15 @@ st.plotly_chart(fig, use_container_width=True)
 
 ---
 
-## Demographic overlay (optional toggle)
+## Key insights to surface
 
-Add a colour/highlight option to surface NESB and Indigenous communities within the scatter.
-
-```python
-# Join SA3 → ACPR → demographics
-df = df.merge(sa3_acpr[['sa3_code', 'acpr_code']], on='sa3_code', how='left')
-df = df.merge(
-    demographics[demographics['year'] == selected_year][
-        ['acpr_code', 'pct_nesb', 'pct_indigenous']
-    ],
-    on='acpr_code', how='left'
-)
-
-# Flag NESB-majority communities
-df['nesb_flag'] = df['pct_nesb'] > 0.30
-```
+- **Remote areas (MM5–MM7) sit in the top-left: low access, high quality** — the opposite of the intuitive assumption. MM5 Small Rural = 4.05, MM1 City = 3.75.
+- **The remote quality advantage is explained by ownership mix** — MM1 City is 42% for-profit, 57% NFP; MM6–7 Remote is 0% for-profit (~70% NFP, ~30% govt). For-profit facilities average 3.68 vs govt 4.21.
+- **Metro areas cluster bottom-right: high access, lower quality** — densely served but served by a higher share of for-profit providers
+- The ownership story (Chapter angle: For-Profit Problem) explains the geography story
 
 ---
 
-## Key insights to surface
+## Note on demographic overlay
 
-- Negative trend line: higher access_rate correlates with lower quality_score — the system is stretched
-- Remote regions cluster in the top-right danger zone: high access AND low quality
-- NESB-heavy regions tend to have lower-than-expected access rate — possible underutilisation
-- Sydney and Melbourne: low access rate but high quality — serving those who already have access well
+NESB and Indigenous demographic data (from CURF) is only available at **ACPR level (73 regions)**, not SA3. Do not attempt to join it to SA3 — the correspondence does not exist in our pipeline. Any demographic angle must be scoped to ACPR-level analysis only.

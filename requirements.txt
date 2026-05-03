@@ -9,4 +9,5 @@ openpyxl
 python-calamine
 matplotlib
 scipy
+statsmodels
 rapidfuzz
