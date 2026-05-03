@@ -1,104 +1,104 @@
 # Chapter 4 — The Mandate Effect
 
-**Câu hỏi:** Hệ thống có đang cải thiện không?  
-**Câu trả lời:** Có — về mặt đầu vào. Chưa — về mặt kết quả cho cư dân.
+**Question:** Is the system improving?  
+**Answer:** Yes — on inputs. Not yet — on outcomes for residents.
 
 ---
 
-## Bối cảnh: Tại sao có mandate?
+## Background: Why was a mandate needed?
 
-- Năm 2021, Royal Commission into Aged Care xác định **57.6% cư dân** đang sống trong các cơ sở có staffing ở mức không chấp nhận được
-- Trước mandate, nhà cung cấp tự quyết định staffing — không có sàn tối thiểu bắt buộc
-- Uỷ ban: *"Providers are free to judge for themselves what staffing numbers are 'adequate'. The status quo is unacceptable."*
-- Deloitte dự báo cần thêm 70% workforce (186k → 316k FTE) từ 2020–2050 chỉ để giữ nguyên tỷ lệ hiện tại
-
----
-
-## Mandate yêu cầu gì?
-
-| Thời điểm | Yêu cầu |
-|-----------|---------|
-| 1/7/2023 | Registered nurse có mặt **24/7** tại mọi cơ sở residential |
-| **1/10/2023** | Tối thiểu **200 phút** chăm sóc trực tiếp/cư dân/ngày, trong đó ít nhất **40 phút** phải là registered nurse |
-| 1/10/2024 | Nâng lên **215 phút** tổng / **44 phút** RN |
+- In 2021, the Royal Commission into Aged Care found **57.6% of residents** were living in facilities with unacceptable staffing levels
+- Before the mandate, providers set their own staffing levels — no mandatory minimum floor existed
+- Commission finding: *"Providers are free to judge for themselves what staffing numbers are 'adequate'. The status quo is unacceptable."*
+- Deloitte projected a **70% workforce increase** (186k → 316k FTE) needed from 2020–2050 just to maintain the current staffing ratio
 
 ---
 
-## Insight 1 — Mandate hoạt động: chất lượng quốc gia tăng +7.4%
+## What the mandate requires
 
-- Điểm chất lượng trung bình quốc gia: **3.40 → 3.65** (+0.25 pts) sau Oct 2023
-- Mức tăng là step-change rõ ràng — không phải trend chậm, có thể thấy trên mọi tiểu bang chỉ trong vài quarters
-- Tất cả 8 tiểu bang và vùng lãnh thổ đều cải thiện về điểm tuyệt đối
-- **Nguồn:** star_ratings_by_facility.csv — before/after Oct 2023
+| Date | Requirement |
+|------|-------------|
+| 1 Jul 2023 | Registered nurse on-site **24/7** at every residential facility |
+| **1 Oct 2023** | Minimum **200 minutes** direct care per resident per day, of which at least **40 minutes** must be a registered nurse |
+| 1 Oct 2024 | Raised to **215 minutes** total / **44 minutes** RN |
 
 ---
 
-## Insight 2 — Staffing là thứ duy nhất thực sự di chuyển
+## Insight 1 — The mandate worked: national quality rose +7.4%
 
-| Sub-rating | Trước | Sau | Thay đổi |
-|-----------|-------|-----|---------|
+- National average quality score: **3.40 → 3.65** (+0.25 pts) after Oct 2023
+- The increase is a clear step-change — not a slow trend; visible across every state within two quarters
+- All 8 states and territories improved in absolute terms
+- **Source:** star_ratings_by_facility.csv — before/after Oct 2023
+
+---
+
+## Insight 2 — Staffing was the only dimension that truly moved
+
+| Sub-rating | Before | After | Change |
+|-----------|--------|-------|--------|
 | Staffing | 2.49 | 3.00 | **+0.51 pts** |
 | Compliance | 4.28 | 4.57 | +0.29 pts |
 | Residents experience | 3.28 | 3.50 | +0.22 pts |
 | **Quality measures** | 3.55 | 3.54 | **−0.015 pts** |
 
-- Staffing tăng lớn nhất — đúng với thiết kế mandate
-- Quality measures (kết quả sức khoẻ cư dân) gần như không thay đổi
-- Nghiên cứu độc lập **SAHMRI / Flinders University (2025)** trên hơn 2,000 cơ sở xác nhận: *"Despite rising staffing levels, no meaningful association emerged between increased care minutes and improved resident quality measures."* — A/Prof Stephanie Harrison
-- Mandate cải thiện đầu vào. Kết quả đầu ra chưa theo kịp.
+- Staffing recorded the largest gain — consistent with the mandate's design
+- Quality measures (resident health outcomes) were essentially flat
+- Independent research by **SAHMRI / Flinders University (2025)** across 2,000+ facilities confirms: *"Despite rising staffing levels, no meaningful association emerged between increased care minutes and improved resident quality measures."* — A/Prof Stephanie Harrison
+- The mandate improved inputs. Outcomes have not yet followed.
 
 ---
 
-## Insight 3 — Compliance thực tế thấp hơn nhiều so với kỳ vọng
+## Insight 3 — Real-world compliance is far lower than expected
 
-- Trước mandate: ước tính chỉ **3.8%** cơ sở đủ điều kiện đáp ứng tiêu chuẩn mới *(The Conversation)*
-- 2023–24: chỉ **34%** cơ sở đáp ứng đồng thời cả hai targets (total + RN minutes) — *Productivity Commission 2025*
-- 24/7 RN đạt **93.5%** compliance — dễ đo, dễ cưỡng chế hơn care minutes
-- Tháng 1/2025: ACQSC cưỡng chế **11 nhà cung cấp / 27 cơ sở** — cap star rating ở 1 sao, cấm đạt 5 sao trong 3 năm
-- Star ratings thưởng cho nỗ lực cải thiện, không chỉ full compliance — giải thích tại sao staffing sub-rating tăng +0.51 pts dù chỉ 1/3 cơ sở fully compliant
+- Before the mandate, only an estimated **3.8%** of facilities were positioned to meet the new standards *(The Conversation)*
+- 2023–24: only **34%** of facilities met both targets simultaneously (total + RN minutes) — *Productivity Commission 2025*
+- 24/7 RN requirement reached **93.5%** compliance — easier to measure and enforce than care minutes
+- January 2025: ACQSC enforced against **11 providers / 27 facilities** — capped at 1 star, banned from reaching 5 stars for 3 years
+- Star ratings reward improvement effort, not only full compliance — which explains why the staffing sub-rating rose +0.51 pts despite only 1 in 3 facilities being fully compliant
 
 ---
 
-## Insight 4 — Các tiểu bang: NT bứt phá, VIC tụt hạng
+## Insight 4 — States: NT surges, VIC falls behind
 
-| Tiểu bang | Thay đổi | Hạng: đầu → cuối |
-|-----------|---------|-----------------|
+| State | Change | Rank: first → latest |
+|-------|--------|----------------------|
 | NT | **+0.748 pts** | 7 → **1** |
 | VIC | +0.312 pts | **1 → 5** |
-| ACT | +0.306 pts | cải thiện ít nhất |
+| ACT | +0.306 pts | smallest gain |
 
-- NT xuất phát thấp nhất, tăng mạnh nhất — mandate tác động lớn nhất ở nơi có khoảng cách lớn nhất
-- VIC không tệ đi tuyệt đối — nhưng các tiểu bang khác bắt kịp nhanh hơn
-- Không tiểu bang nào giảm điểm tuyệt đối
-- **Nguồn:** star_ratings_by_facility.csv — first snapshot (May 2023) vs latest (Feb 2026)
+- NT started from the lowest base and improved the most — the mandate had the greatest impact where the gap was largest
+- VIC did not worsen in absolute terms — other states simply caught up faster
+- No state declined in absolute terms
+- **Source:** star_ratings_by_facility.csv — first snapshot (May 2023) vs latest (Feb 2026)
 
 ---
 
-## Insight 5 — 17 SA3 vẫn đang đi xuống
+## Insight 5 — 17 SA3 regions are still declining
 
-- **302/323 SA3** có xu hướng chất lượng cải thiện
-- **17/323 SA3** vẫn đang giảm — mandate chưa đến được
+- **302 / 323 SA3 regions** show an improving quality trend
+- **17 / 323 SA3 regions** are still declining — the mandate has not reached them
 - Worst: **Esperance (WA)** — −0.07 pts/quarter
-- Gold Coast Hinterland và Port Douglas–Daintree (QLD) cũng trong nhóm giảm
-- **Nguồn:** linear regression slope trên quality_score theo quarters, min 4 snapshots
+- Gold Coast Hinterland and Port Douglas–Daintree (QLD) are also in the declining group
+- **Source:** linear regression slope on quality_score over quarters, minimum 4 snapshots
 
 ---
 
-## Insight 6 — Khoảng cách workforce theo địa lý (bối cảnh cho SA3 at-risk)
+## Insight 6 — Workforce gap by geography (context for at-risk SA3s)
 
-- Metro: **317 nhân viên ngành** / 1,000 người 65+
-- Rural: **256** / 1,000 người 65+
-- Remote: **245** / 1,000 người 65+
-- Để đạt mức metro: rural cần thêm ~**95,342 FTE**; remote cần thêm ~**12,958 FTE**
-- **Nguồn:** Morris et al., IJERPH April 2025 (peer-reviewed)
+- Metro: **317 aged care workers** per 1,000 people aged 65+
+- Rural: **256** per 1,000
+- Remote: **245** per 1,000
+- To reach metro parity: rural areas need ~**95,342 additional FTE**; remote areas need ~**12,958 additional FTE**
+- **Source:** Morris et al., IJERPH April 2025 (peer-reviewed)
 
 ---
 
 ## Framing
 
-| Cấp độ | Thông điệp |
-|--------|-----------|
-| Quốc gia | Mandate hoạt động — +7.4% là step-change có thể đo lường |
-| Sub-rating | Nhưng nó chỉ sửa được staffing, chưa sửa được outcomes cho cư dân |
-| SA3 | Ở 17 cộng đồng, mandate vẫn chưa đến được |
-| Tông | Thận trọng lạc quan — đang cải thiện, nhưng chưa đủ và chưa đồng đều |
+| Level | Message |
+|-------|---------|
+| National | The mandate worked — +7.4% is a measurable step-change |
+| Sub-rating | But it only fixed staffing inputs, not resident outcomes |
+| SA3 | In 17 communities, the mandate has not yet landed |
+| Tone | Cautious optimism — improving, but not enough and not evenly |

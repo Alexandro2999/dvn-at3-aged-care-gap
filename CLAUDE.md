@@ -52,9 +52,15 @@ dvn-at3-aged-care-gap/
 │   └── clean/                           ← pipeline outputs, never edit manually
 ├── notebooks/
 │   ├── clean_pipeline/                  ← run in order 01 → 07
-│   └── architect/                       ← EDA + metrics (01_eda, 02_metrics)
+│   ├── architect/                       ← 01_eda.ipynb only (02_metrics pending Phase 2)
+│   └── analyst/                         ← one notebook per story angle
+│       └── 04_chapter_mandate_effect.ipynb
 ├── dashboard/                           ← Streamlit app (app.py)
-├── assets/                              ← charts, moodboard, palette
+├── assets/                              ← insight files, one per chapter (English only)
+│   ├── chapter_01_the_map.md            ← dashboard narrative arc
+│   ├── chapter_02_the_correlation.md    ← dashboard narrative arc
+│   ├── chapter_03_the_reveal.md         ← dashboard narrative arc
+│   └── chapter_04_mandate_effect.md     ← story angle deep-dive (done)
 └── requirements.txt
 ```
 
@@ -69,6 +75,24 @@ dvn-at3-aged-care-gap/
 | `care_gap_index` | access_rate / quality_score | SA3 × year — headline |
 | `hcp_high_needs` | hcp_level3 + hcp_level4 | SA3 × year |
 | `beds_per_1000_elderly` | residential_places / pop_65_plus × 1000 | SA3 × year |
+
+---
+
+## Story Angle Pattern
+
+Each story angle requires two files — follow `chapter_04_mandate_effect` as the reference:
+
+| File | Purpose |
+|------|---------|
+| `notebooks/analyst/0X_chapter_<angle>.ipynb` | Runnable charts from `data/clean/` |
+| `assets/chapter_0X_<angle>.md` | Pure insights + numbers, no code, English only |
+
+| Angle | Notebook | Asset | Status |
+|-------|----------|-------|--------|
+| Mandate Effect | `04_chapter_mandate_effect.ipynb` | `chapter_04_mandate_effect.md` | ✅ done |
+| For-Profit Problem | `05_chapter_for_profit.ipynb` | `chapter_05_for_profit.md` | pending |
+| Waitlist Trap | `06_chapter_waitlist.ipynb` | `chapter_06_waitlist.md` | pending |
+| Supply Collapse | `07_chapter_supply.ipynb` | `chapter_07_supply.md` | pending |
 
 ---
 
