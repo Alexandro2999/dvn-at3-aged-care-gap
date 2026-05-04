@@ -52,10 +52,10 @@
 ## Insight 3 — Real-world compliance is far lower than expected
 
 - Before the mandate, only an estimated **3.8%** of facilities were positioned to meet the new standards *(The Conversation)*
-- 2023–24: only **34%** of facilities met both targets simultaneously (total + RN minutes) — *Productivity Commission 2025*
+- From project data (facility-specific ACQSC targets): **26.1%** fully compliant at Dec 2023, consistent with Productivity Commission's 34% for full FY 2023–24
 - 24/7 RN requirement reached **93.5%** compliance — easier to measure and enforce than care minutes
 - January 2025: ACQSC enforced against **11 providers / 27 facilities** — capped at 1 star, banned from reaching 5 stars for 3 years
-- Star ratings reward improvement effort, not only full compliance — which explains why the staffing sub-rating rose +0.51 pts despite only 1 in 3 facilities being fully compliant
+- Star ratings reward improvement effort, not only full compliance — which explains why the staffing sub-rating rose +0.51 pts despite only 1 in 3 facilities being fully compliant at mandate launch
 
 ---
 
@@ -91,6 +91,26 @@
 - Remote: **245** per 1,000
 - To reach metro parity: rural areas need ~**95,342 additional FTE**; remote areas need ~**12,958 additional FTE**
 - **Source:** Morris et al., IJERPH April 2025 (peer-reviewed)
+
+---
+
+## Insight 8 — Compliance is improving but uneven across ownership and geography
+
+- Fully compliant facilities: **26.1% (Dec 2023) → 65.2% (Feb 2026)** — improving steadily over 2 years
+- When the target was raised in Oct 2024 (200→215 min / 40→44 RN), compliance dipped before recovering — providers are actively adapting, not stagnating
+- **For-profit facilities are the least compliant** ownership type across all post-mandate snapshots
+- Compliance declines with remoteness — consistent with the workforce shortage gradient (metro 317 vs remote 245 workers/1,000 elderly, Morris et al. 2025)
+- **Source:** facility-specific targets from ACQSC "Detailed data" sheet — `rn_minutes_actual >= rn_minutes_target` AND `total_minutes_actual >= total_minutes_target`
+
+---
+
+## Insight 7 — The mandate failed hardest where workers are scarcest
+
+- **MM5 small rural towns are 2.80x overrepresented** among declining SA3s — 14.7% of MM5 SA3s are declining vs only 3.8% of metro SA3s
+- These regions operate with **256 aged care workers per 1,000 elderly** — 19% fewer than metro (317). The mandate cannot take hold where there are not enough workers to hire.
+- **8 of 17 declining SA3s (47%)** are in rural/remote workforce tiers (MM3+), which represent only 34% of all SA3s
+- **Queensland is a separate story:** 7 of 17 declining SA3s are in QLD (41%), 5 of them in metro areas — not a workforce gap problem, a state-specific concentration issue requiring its own investigation
+- **Source:** quality_trend_slope from star_ratings_by_facility.csv × Morris et al. IJERPH 2025
 
 ---
 

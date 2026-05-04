@@ -1,0 +1,78 @@
+service_name,service_suburb,state,sa3_code,sa3_name,match_status,dominance,n_sa3
+AMAN Aged Care,BANKSTOWN,NSW,11901.0,Bankstown,matched_dominant,0.99,2.0
+Aeralife Botany,BOTANY,NSW,11701.0,Botany,matched,1.0,1.0
+Aeralife Illawong,ILLAWONG,NSW,12802.0,Sutherland - Menai - Heathcote,matched,1.0,1.0
+Aeralife Pennant Hills,PENNANT HILLS,NSW,12601.0,Pennant Hills - Epping,matched,1.0,1.0
+Aeralife Queanbeyan,QUEANBEYAN,NSW,10102.0,Queanbeyan,matched,1.0,1.0
+Aeralife The Manor,FAIRFIELD,NSW,12702.0,Fairfield,matched_dominant_via_alias,0.97,2.0
+Ainsley Nursing Home,BURWOOD,NSW,12003.0,Strathfield - Burwood - Ashfield,matched_via_alias,1.0,1.0
+Allambi Elderly Peoples Home,DIMBOOLA,VIC,21501.0,Grampians,matched,1.0,1.0
+Amana Living Edward Collick Home,KALGOORLIE,WA,51103.0,Goldfields,matched,1.0,1.0
+Arcare Aranda,ARANDA,ACT,80101.0,Belconnen,matched,1.0,1.0
+Arcare Craigieburn,CRAIGIEBURN,VIC,21005.0,Tullamarine - Broadmeadows,matched,1.0,1.0
+Arcare Croydon,CROYDON,VIC,21103.0,Maroondah,matched_via_alias,1.0,1.0
+Arcare Epping,EPPING,VIC,20904.0,Whittlesea - Wallan,matched_via_alias,1.0,1.0
+Arcare Werribee,WERRIBEE,VIC,21305.0,Wyndham,matched,1.0,1.0
+BaptistCare Minnamurra,DRUMMOYNE,NSW,12001.0,Canada Bay,matched,1.0,1.0
+Benetas Bridgewater Lake Aged Care,ROXBURGH PARK,VIC,21005.0,Tullamarine - Broadmeadows,matched,1.0,1.0
+Chaffey House,MERBEIN,VIC,21502.0,Mildura,matched,1.0,1.0
+Darvall Lodge,NOBLE PARK,VIC,21204.0,Dandenong,matched,1.0,1.0
+Edenvale Manor Aged Care Facility,KEILOR EAST,VIC,21001.0,Keilor,matched,1.0,1.0
+Emerald Terrace Aged Care,TEMPLESTOWE,VIC,20702.0,Manningham - West,matched,1.0,1.0
+Epping Grand Care Community,EPPING,NSW,12601.0,Pennant Hills - Epping,matched_dominant_via_alias,0.96,3.0
+Estia Health Birkdale,BIRKDALE,QLD,30101.0,Capalaba,matched,1.0,1.0
+Estia Health Carindale,CARINDALE,QLD,30301.0,Carindale,matched_dominant,0.99,2.0
+Estia Health Cleveland,CLEVELAND,QLD,30102.0,Cleveland - Stradbroke,matched_via_alias,1.0,1.0
+Estia Health Coorparoo,COORPAROO,QLD,30302.0,Holland Park - Yeronga,matched_dominant,0.99,2.0
+Estia Health Hamilton,HAMILTON,QLD,30503.0,Brisbane Inner - North,matched_dominant_via_alias,0.89,2.0
+Estia Health Mount Gravatt East,MOUNT GRAVATT EAST,QLD,30303.0,Mt Gravatt,matched,1.0,1.0
+Estia Health Victoria Point,VICTORIA POINT,QLD,30102.0,Cleveland - Stradbroke,matched_via_alias,1.0,1.0
+Freemasons Nursing Home,LINDISFARNE,TAS,60102.0,Hobart - North East,matched,1.0,1.0
+Hills Mallee Southern Aged Care Facility,MANNUM,SA,40703.0,Murray and Mallee,matched,1.0,1.0
+Illawarra Multi-Cultural Village Hostel,WARRAWONG,NSW,10701.0,Dapto - Port Kembla,matched,1.0,1.0
+Jacaranda Grove,CESSNOCK,NSW,10601.0,Lower Hunter,matched,1.0,1.0
+Kew Botanica Care Community,KEW,VIC,20701.0,Boroondara,matched_via_alias,1.0,1.0
+Lee Hostel,BLAYNEY,NSW,10304.0,Orange,matched,1.0,1.0
+Leura Aged Care,CAMPERDOWN,VIC,21703.0,Colac - Corangamite,matched_via_alias,1.0,1.0
+Maroubra Shores,MAROUBRA,NSW,11802.0,Eastern Suburbs - South,matched,1.0,1.0
+Mary Ogilvy Home (A),NEW TOWN,TAS,60105.0,Hobart Inner,matched_via_alias,1.0,1.0
+Mary Ogilvy Home (B),NEW TOWN,TAS,60105.0,Hobart Inner,matched_via_alias,1.0,1.0
+Melrose Lodge,PENDLE HILL,NSW,12504.0,Parramatta,matched,1.0,1.0
+Mount Clear Aged Care,MOUNT CLEAR,VIC,20101.0,Ballarat,matched,1.0,1.0
+Mount Eliza Botanica Care Community,MT ELIZA,VIC,21402.0,Mornington Peninsula,matched_via_alias,1.0,1.0
+Mountain View Lodge,CESSNOCK,NSW,10601.0,Lower Hunter,matched,1.0,1.0
+Multicultural Community Services Geelong Inc,NORTH GEELONG,VIC,20302.0,Geelong,matched,1.0,1.0
+Omeo District Health-Lewington House,OMEO,VIC,20502.0,Gippsland - East,matched,1.0,1.0
+PROXY SERVICE - Regis Macleod,MACLEOD,VIC,20901.0,Banyule,matched_dominant_via_alias,0.8,2.0
+Peace Haven,NORWOOD,TAS,60201.0,Launceston,matched_via_alias,1.0,1.0
+Percy Baxter Lodges,NORTH GEELONG,VIC,20302.0,Geelong,matched,1.0,1.0
+Phillip Island Grove Care Community,COWES,VIC,20503.0,Gippsland - South West,matched,1.0,1.0
+Regis Carseldine,CARSELDINE,QLD,30201.0,Bald Hills - Everton Park,matched,1.0,1.0
+Regis Morayfield,MORAYFIELD,QLD,31302.0,Caboolture,matched_dominant,0.77,2.0
+Regis Pelican Waters,PELICAN WATERS,QLD,31602.0,Caloundra,matched,1.0,1.0
+Regis Songbird Oxley,OXLEY,QLD,31001.0,Forest Lake - Oxley,matched_dominant_via_alias,0.97,2.0
+Respect Autumn Lodge,MACKSVILLE,NSW,10802.0,Kempsey - Nambucca,matched,1.0,1.0
+Respect Cedar Place,KEMPSEY,NSW,10802.0,Kempsey - Nambucca,matched,1.0,1.0
+Respect Emerald Avalon,EMERALD,QLD,30801.0,Central Highlands (Qld),matched_via_alias,1.0,1.0
+Respect Gracemere Gardens,GRACEMERE,QLD,30803.0,Rockhampton,matched,1.0,1.0
+Respect Ingham Lodge,INGHAM,QLD,31801.0,Charters Towers - Ayr - Ingham,matched,1.0,1.0
+Respect Maleny Erowal,MALENY,QLD,31606.0,Sunshine Coast Hinterland,matched,1.0,1.0
+Respect Mareeba Gardens,MAREEBA,QLD,30605.0,Tablelands (East) - Kuranda,matched,1.0,1.0
+Respect Masters Lodge,URRAWEEN,QLD,31904.0,Hervey Bay,matched,1.0,1.0
+Respect Riverside Gardens,NAMBUCCA HEADS,NSW,10802.0,Kempsey - Nambucca,matched,1.0,1.0
+Respect Toogoolawah Alkira,TOOGOOLAWAH,QLD,31002.0,Ipswich Hinterland,matched,1.0,1.0
+Roshana Brentwood Aged Care,KINCUMBER,NSW,10201.0,Gosford,matched,1.0,1.0
+Second Avenue Hostel,MOUNT LAWLEY,WA,50302.0,Perth City,matched_dominant,0.99,3.0
+Servite Villa,JOONDANNA,WA,50502.0,Stirling,matched,1.0,1.0
+Sir William Hudson Memorial Centre,COOMA,NSW,10103.0,Snowy Mountains,matched_via_alias,1.0,1.0
+The 2nd Avenue Nursing Home,MOUNT LAWLEY,WA,50302.0,Perth City,matched_dominant,0.99,3.0
+The Birches,HAMILTON,VIC,21701.0,Glenelg - Southern Grampians,matched_via_alias,1.0,1.0
+Wesley Tebbutt,DUNDAS VALLEY,NSW,12502.0,Carlingford,matched,1.0,1.0
+Whiddon Maclean Mareeba,MACLEAN,NSW,10401.0,Clarence Valley,matched,1.0,1.0
+Wycombe Grove,HIGH WYCOMBE,WA,50605.0,Kalamunda,matched_dominant,0.98,2.0
+mecwacare John Hood Terrace,RICHMOND,VIC,20607.0,Yarra,matched_via_alias,1.0,1.0
+Aeralife Kingswood,KINGSWOOD,NSW,12403.0,Penrith,manual_web,1.0,1.0
+Whiddon Moree Hostel,MOREE,NSW,11003.0,Moree - Narrabri,manual_web,1.0,1.0
+Calvary Central Park,WINDSOR,VIC,20804.0,Stonnington - East,manual_web,1.0,1.0
+Murrenda Aged Care Home,WANTIRNA,VIC,21101.0,Knox,manual_web,1.0,1.0
+Cleveland,VICTORIA POINT,QLD,30102.0,Cleveland - Stradbroke,manual_web,1.0,1.0
