@@ -1,7 +1,8 @@
-# Chapter 2 — The Correlation: Does ownership and location explain quality?
+# Chapter 2 — The Correlation: Who runs the best facilities?
 
 ## Narrative purpose
-The second clue. After seeing the map, the viewer asks: "Why do some regions have such a large gap?" This chapter answers by showing the relationship between access, quality, and remoteness — and reveals the ownership paradox: remote areas score *higher* because they have fewer for-profit facilities.
+After seeing the map, the viewer asks: "Why is quality so different across regions?" This chapter gives the answer most people don't expect — it's not about location, it's about who owns the facility. Government and not-for-profit facilities consistently outperform private ones. The geography story is really an ownership story.
+
 ---
 
 ## Visual: Scatter plot
@@ -82,12 +83,9 @@ st.plotly_chart(fig, use_container_width=True)
 
 ## Key insights to surface
 
-- **Remote areas (MM5–MM7) sit in the top-left: low access, high quality** — the opposite of the intuitive assumption. MM5 Small Rural = 4.05, MM1 City = 3.75.
--**Which org types are most prevalent in remote areas?**
-- **The remote quality advantage is explained by ownership mix** — MM1 City is 42% for-profit, 57% NFP; MM6–7 Remote is 0% for-profit (~70% NFP, ~30% govt). For-profit facilities average 3.68 vs govt 4.21.
-- **Metro areas cluster bottom-right: high access, lower quality** — densely served but served by a higher share of for-profit providers
-- The ownership story (Chapter angle: For-Profit Problem) explains the geography story
-- The effect of purpose and org type , funding to quality
+- **Counterintuitive for families:** rural and remote areas score *higher* on quality (MM5 = 4.05 vs MM1 City = 3.75) — if your family member is in a regional facility, it's likely run by a charity or government and performing better than a city competitor.
+- **The ownership gap is stark:** government-run facilities average 4.21 stars vs for-profit 3.68 — a 0.53 gap. For families choosing a facility, who owns it is a strong quality signal.
+- **For investors considering the sector:** metro areas are 42% for-profit and showing lower quality — there is a real opportunity to compete on care standards, not just on price or location. Rural markets are almost entirely NFP/government — an untapped space.
 
 ---
 

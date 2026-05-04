@@ -1,7 +1,7 @@
-# Chapter 3 — The Reveal: These are the communities being left behind
+# Chapter 3 — The Reveal: The waitlist is real — and it's getting longer
 
 ## Narrative purpose
-The climax. After the map and the correlation, the viewer needs a concrete list: "Which are the 20 worst regions?" This chapter surfaces the SA3s with the highest waitlist pressure — places where high-needs elderly people are stuck at home because residential beds do not exist nearby.
+Numbers become people. This chapter names the 20 regions where elderly Australians with high care needs are stuck waiting — often over a year — because there simply aren't enough beds. For families, it's a warning about which areas to avoid or plan around. For businesses and workers entering the sector, it's the clearest possible signal of where demand is outstripping supply.
 
 ---
 
@@ -74,10 +74,10 @@ df['waitlist_pressure'] = df['hcp_high_needs'] / df['residential_places']
 
 ## Key insights to surface
 
-- **Noosa Hinterland: 313 HCP high-needs per 1 residential bed** — the most extreme case nationally (Feb 2026)
-- **HCP high-needs (L3+L4) grew 22% in 2 years** — 140k (2023) → 172k (2025), now 59% of all HCP approvals
-- **118 SA3s lost residential facilities** between 2019 and 2025; only 77 gained — net −41 regions
-- High HCP L3+L4 share in a region = people who need residential care but cannot access it, stuck on a waitlist
+- **Noosa Hinterland: 313 people needing high-level care for every 1 residential bed** — the most extreme case nationally (Feb 2026). If your family member needs a high-care bed here, the queue is effectively infinite.
+- **The high-needs waitlist grew 22% in just 2 years** — from 140,000 (2023) to 172,000 (2025). These are people approved for Level 3–4 packages who cannot get residential care. 59% of all home care approvals are now at this level.
+- **118 regions lost residential facilities** between 2019 and 2025 while demand surged — net −41 regions nationally. For businesses: these are not saturated markets, they are abandoned ones.
+- For workers: entering the sector in a high-pressure region means job security and urgency. The shortage is not a future problem — it's already here.
 
 ---
 

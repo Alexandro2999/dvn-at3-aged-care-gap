@@ -1,7 +1,7 @@
-# Chapter 1 — The Map: Where is the crisis?
+# Chapter 1 — The Map: Is aged care near me any good?
 
 ## Narrative purpose
-The first clue. The viewer sees a map of Australia and immediately spots which regions are being left behind. The question it raises: "Which communities are under the most pressure?"
+Open with a map that lets the viewer locate what matters to them — their suburb, their parents' city, their potential market. Before reading a single number, they can see their region and ask: "Is the care near me actually decent — and is there enough of it?" The map answers both questions at once.
 
 ---
 
@@ -80,6 +80,6 @@ st.plotly_chart(fig, use_container_width=True)
 
 ## Key insights to surface
 
-- **High care_gap_index = high access but lower quality** — formula is `access_rate / quality_score`, so metro areas with dense for-profit supply appear high
-- **Remote areas are NOT the worst by this metric** — remote SA3s have *higher* quality (MM5 = 4.05) but *lower* access; their care_gap_index is lower, but their access crisis is real and better captured by `waitlist_pressure` and `beds_per_1000_elderly`
-- The map reveals two different types of underserved regions: high-access/low-quality (metro) and low-access/high-quality (remote) — the story differs by region type
+- **For families:** the worst-served regions are often not remote — they're metro areas packed with facilities that score lower on quality because for-profit providers dominate. More choice doesn't mean better care.
+- **For people in rural areas:** fewer beds nearby, but the ones that exist tend to score higher. The real disadvantage is distance and availability — not the standard of care itself.
+- **For businesses and investors:** two distinct market gaps exist — metro areas with high demand but declining quality (room to compete on quality), and rural/remote areas where almost no private operators exist and unmet demand is growing.

@@ -1,7 +1,7 @@
 # Chapter 4 — The Mandate Effect
 
-**Question:** Is the system improving?  
-**Answer:** Yes — on inputs. Not yet — on outcomes for residents.
+**Question:** Has the government's staffing mandate actually improved care?  
+**Answer:** Facilities are hiring more staff. But residents aren't living better for it yet.
 
 ---
 
@@ -24,7 +24,7 @@
 
 ---
 
-## Insight 1 — The mandate worked: national quality rose +7.4%
+## Insight 1 — Your facility is probably better than it was 2 years ago
 
 - National average quality score: **3.40 → 3.65** (+0.25 pts) after Oct 2023
 - The increase is a clear step-change — not a slow trend; visible across every state within two quarters
@@ -33,7 +33,7 @@
 
 ---
 
-## Insight 2 — Staffing was the only dimension that truly moved
+## Insight 2 — More staff, same health outcomes — the numbers tell an uncomfortable truth
 
 | Sub-rating | Before | After | Change |
 |-----------|--------|-------|--------|
@@ -49,7 +49,7 @@
 
 ---
 
-## Insight 3 — Real-world compliance is far lower than expected
+## Insight 3 — Only 1 in 4 facilities actually met the new rules at launch
 
 - Before the mandate, only an estimated **3.8%** of facilities were positioned to meet the new standards *(The Conversation)*
 - From project data (facility-specific ACQSC targets): **26.1%** fully compliant at Dec 2023, consistent with Productivity Commission's 34% for full FY 2023–24
@@ -59,13 +59,13 @@
 
 ---
 
-## Insight 4 — States: NT surges, VIC falls behind
+## Insight 4 — NT went from last to first — VIC got left behind as other states caught up
 
 | State | Change | Rank: first → latest |
 |-------|--------|----------------------|
-| NT | **+0.748 pts** | 7 → **1** |
-| VIC | +0.312 pts | **1 → 5** |
-| ACT | +0.306 pts | smallest gain |
+| NT | **+0.796 pts** | 8 → **1** |
+| VIC | +0.311 pts | **1 → 5** |
+| ACT | +0.289 pts | smallest gain |
 
 - NT started from the lowest base and improved the most — the mandate had the greatest impact where the gap was largest
 - VIC did not worsen in absolute terms — other states simply caught up faster
@@ -74,17 +74,17 @@
 
 ---
 
-## Insight 5 — 17 SA3 regions are still declining
+## Insight 5 — 16 regions are still going backwards — is yours one of them?
 
-- **302 / 323 SA3 regions** show an improving quality trend
-- **17 / 323 SA3 regions** are still declining — the mandate has not reached them
+- **303 / 323 SA3 regions** show an improving quality trend
+- **16 / 323 SA3 regions** are still declining — the mandate has not reached them
 - Worst: **Esperance (WA)** — −0.07 pts/quarter
 - Gold Coast Hinterland and Port Douglas–Daintree (QLD) are also in the declining group
 - **Source:** linear regression slope on quality_score over quarters, minimum 4 snapshots
 
 ---
 
-## Insight 6 — Workforce gap by geography (context for at-risk SA3s)
+## Insight 6 — Rural areas need 95,000 more workers just to match city staffing levels
 
 - Metro: **317 aged care workers** per 1,000 people aged 65+
 - Rural: **256** per 1,000
@@ -94,31 +94,32 @@
 
 ---
 
-## Insight 8 — Compliance is improving but uneven across ownership and geography
+## Insight 7 — The mandate failed hardest in the places that needed it most
 
-- Fully compliant facilities: **26.1% (Dec 2023) → 65.2% (Feb 2026)** — improving steadily over 2 years
-- When the target was raised in Oct 2024 (200→215 min / 40→44 RN), compliance dipped before recovering — providers are actively adapting, not stagnating
-- **For-profit facilities are the least compliant** ownership type across all post-mandate snapshots
-- Compliance declines with remoteness — consistent with the workforce shortage gradient (metro 317 vs remote 245 workers/1,000 elderly, Morris et al. 2025)
-- **Source:** facility-specific targets from ACQSC "Detailed data" sheet — `rn_minutes_actual >= rn_minutes_target` AND `total_minutes_actual >= total_minutes_target`
+- **MM5 small rural towns are 2.38x overrepresented** among declining SA3s — 11.8% (4/34) of MM5 SA3s are declining vs only 3.8% of metro SA3s
+- These regions operate with **256 aged care workers per 1,000 elderly** — 19% fewer than metro (317). The mandate cannot take hold where there are not enough workers to hire.
+- **7 of 16 declining SA3s (44%)** are in rural/remote workforce tiers (MM3+), which represent only 34% of all SA3s
+- **Queensland is a separate story:** 7 of 16 declining SA3s are in QLD (44%), 5 of them in metro areas — not a workforce gap problem, a state-specific concentration issue requiring its own investigation
+- **Source:** quality_trend_slope from star_ratings_by_facility.csv × Morris et al. IJERPH 2025
 
 ---
 
-## Insight 7 — The mandate failed hardest where workers are scarcest
+## Insight 8 — Private facilities lag 54 percentage points behind government on compliance
 
-- **MM5 small rural towns are 2.80x overrepresented** among declining SA3s — 14.7% of MM5 SA3s are declining vs only 3.8% of metro SA3s
-- These regions operate with **256 aged care workers per 1,000 elderly** — 19% fewer than metro (317). The mandate cannot take hold where there are not enough workers to hire.
-- **8 of 17 declining SA3s (47%)** are in rural/remote workforce tiers (MM3+), which represent only 34% of all SA3s
-- **Queensland is a separate story:** 7 of 17 declining SA3s are in QLD (41%), 5 of them in metro areas — not a workforce gap problem, a state-specific concentration issue requiring its own investigation
-- **Source:** quality_trend_slope from star_ratings_by_facility.csv × Morris et al. IJERPH 2025
+- Fully compliant facilities: **26.1% (Dec 2023) → 65.2% (Feb 2026)** — improving steadily over 2 years
+- When the target was raised in Oct 2024 (200→215 min / 40→44 RN), compliance dipped before recovering — providers are actively adapting, not stagnating
+- **For-profit facilities are the least compliant** ownership type across all post-mandate snapshots: government 84.1% fully compliant vs for-profit 30.2% — a 54 percentage-point gap
+- **Counter-intuitively, compliance is higher in remote areas** (MM7: 82.9%, MM6: 68.1%, MM5: 57.1%) than metro (MM1: 43.3%) — driven by the higher share of government-run facilities in remote regions, which outperform on compliance regardless of geography
+- **Source:** facility-specific targets from ACQSC "Detailed data" sheet — `rn_minutes_actual >= rn_minutes_target` AND `total_minutes_actual >= total_minutes_target`
 
 ---
 
 ## Framing
 
-| Level | Message |
-|-------|---------|
-| National | The mandate worked — +7.4% is a measurable step-change |
-| Sub-rating | But it only fixed staffing inputs, not resident outcomes |
-| SA3 | In 17 communities, the mandate has not yet landed |
-| Tone | Cautious optimism — improving, but not enough and not evenly |
+| Audience | Message |
+|----------|---------|
+| For families | Average facility quality has genuinely risen since Oct 2023 — the system is better than it was |
+| Watch out | The improvement is mostly on paper (staff headcount), not in resident health outcomes — quality measures flat at −0.015 pts |
+| Your region | 16 communities are still declining — check if yours is one of them |
+| For businesses entering the sector | Compliance pressure is real: only 26% fully compliant at mandate launch, rising to 65% by Feb 2026 — operators who can't meet standards are being squeezed out |
+| Tone | Cautiously improving — but not fast enough, and not evenly |
