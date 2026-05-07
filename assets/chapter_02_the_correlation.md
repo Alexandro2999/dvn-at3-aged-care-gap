@@ -7,11 +7,33 @@ After seeing the map, the viewer asks: "Why is quality so different across regio
 
 ## Visual: Scatter plot
 
-- **X-axis:** `access_rate` (% of 65+ population using residential care)
+- **X-axis:** `access_rate` (% of 65+ population using residential care + Homecare)
 - **Y-axis:** `avg_quality` (mean of 4 Star Rating sub-dimensions)
 - **Size:** `pop_65_plus`
 - **Colour:** MMM remoteness (MM1–MM7) or org type
 - **Hover:** SA3 name, state, MMM, access_rate, avg_quality, pop_65_plus
+
+## Visual: Scatter plot With Year Slider
+
+- **X-axis:** `access_rate` (% of 65+ population using residential care + Homecare)
+- **Y-axis:** `avg_quality` (mean of 4 Star Rating sub-dimensions)
+- **Size:** `pop_65_plus`
+- **Colour:** MMM remoteness (MM1–MM7) or org type
+- **Hover:** SA3 name, state, MMM, access_rate, avg_quality, pop_65_plus
+- **Interaction:** Year slider to show changes over time (2019–2025)
+
+## Visual 2: Bar Chart Org Type Breakdown
+- **X-axis**: Count of  `service_name`
+- **Y-axis**: `org_type` (Charitable,Religious, Private Incorporated Body, Community Based, Local Government, Territory Government, State Government, Privat Listed Company)
+- **Bar Size**: Total `funding` amount
+- **Synchronisation**: Follow the same filter as Scatter Plot (When user clicks on a specific MMM or year, the bar chart updates to show the org type breakdown for that selection)
+
+## Visual 3: Bar Chart Purpose Breakdown
+- **X-axis**: Count of  `service_name`
+- **Y-axis**: `purpose` (Profit, Non-Profit, Government)
+- **Bar Size**: Total `funding` amount
+- **Synchronisation**: Follow the same filter as Scatter Plot (When user clicks on a specific MMM or year, the bar chart updates to show the purpose breakdown for that selection)
+
 
 ---
 
@@ -20,8 +42,9 @@ After seeing the map, the viewer asks: "Why is quality so different across regio
 | File | Columns needed |
 |------|---------------|
 | `data/clean/star_ratings_by_facility.csv` | `sa3_code`, `year`, `quality_score`, `mmm_code` |
-| `data/clean/service_users_by_sa3.csv` | `sa3_code`, `year`, `total_residential` |
+| `data/clean/service_users_by_sa3.csv` | `sa3_code`, `year`, `total_residential`, `total_homecare` |
 | `data/clean/abs_population_by_sa3.csv` | `sa3_code`, `sa3_name`, `state`, `year`, `pop_65_plus` |
+| `data/clean/service_funding_by_facility.csv` | `sa3_code`, `sa3_name`, `state`, `year`, `org_type`,`funding` |
 
 Use the same `df` built in Chapter 1 — it already has `access_rate`, `avg_quality`, `pop_65_plus`, and `mmm_code`.
 
