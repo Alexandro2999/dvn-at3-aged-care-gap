@@ -2344,7 +2344,7 @@ Arcare Brisbane South Home Care,30103.0,Wynnum - Manly,QLD,Home Care,profit,2024
 Arcare Burnside,21301.0,Brimbank,VIC,Residential,profit,2019,7274279.6
 Arcare Burnside,21301.0,Brimbank,VIC,Residential,profit,2020,7184044.82
 Arcare Burnside,21301.0,Brimbank,VIC,Residential,profit,2021,6919471.07
-Arcare Burnside,21304.0,Melton - Bacchus Marsh,VIC,Residential,profit,2022,7204757.07
+Arcare Burnside,21301.0,Brimbank,VIC,Residential,profit,2022,7204757.07
 Arcare Burnside,21304.0,Melton - Bacchus Marsh,VIC,Residential,profit,2023,7517952.220000001
 Arcare Burnside,21304.0,Melton - Bacchus Marsh,VIC,Residential,profit,2024,9096514.28
 Arcare Burnside,21304.0,Melton - Bacchus Marsh,VIC,Residential,profit,2025,9844136.78
@@ -2497,11 +2497,11 @@ Arcare Knox,21101.0,Knox,VIC,Residential,profit,2023,10630551.73
 Arcare Knox,21101.0,Knox,VIC,Residential,profit,2024,13665229.7
 Arcare Knox,21101.0,Knox,VIC,Residential,profit,2025,15330409.37
 Arcare Lisarow The Orchards,10201.0,Gosford,NSW,Residential,profit,2025,11954885.53
-Arcare Logan Reserve,31103.0,Browns Plains,QLD,Residential,profit,2021,177507.19
-Arcare Logan Reserve,31103.0,Browns Plains,QLD,Residential,profit,2022,5010455.55
 Arcare Logan Reserve,31103.0,Browns Plains,QLD,Residential,profit,2023,7528513.4
 Arcare Logan Reserve,31103.0,Browns Plains,QLD,Residential,profit,2024,9191119.43
 Arcare Logan Reserve,31103.0,Browns Plains,QLD,Residential,profit,2025,10242293.98
+Arcare Logan Reserve,31105.0,Loganlea - Carbrook,QLD,Residential,profit,2021,177507.19
+Arcare Logan Reserve,31105.0,Loganlea - Carbrook,QLD,Residential,profit,2022,5010455.55
 Arcare Lysterfield,21101.0,Knox,VIC,Residential,profit,2025,342188.8
 Arcare Maidstone,21303.0,Maribyrnong,VIC,Residential,profit,2019,6655398.77
 Arcare Maidstone,21303.0,Maribyrnong,VIC,Residential,profit,2020,6800012.08
@@ -3126,7 +3126,7 @@ Aurrum Wyoming,10201.0,Gosford,NSW,Residential,profit,2024,5620894.45
 Aurukun Community Aged Care Service,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,government,2019,604027.239999998
 Aurukun Community Aged Care Service,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,government,2020,814475.3799999999
 Aurukun Community Aged Care Service,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,government,2021,724394.86
-Aurukun Community Aged Care Service,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,government,2022,598104.8
+Aurukun Community Aged Care Service,31501.0,Far North,QLD,Home Care,government,2022,598104.8
 Aurukun Community Aged Care Service,31501.0,Far North,QLD,Home Care,government,2023,1065569.71
 Aurukun Community Aged Care Service,31501.0,Far North,QLD,Home Care,government,2024,876109.57
 Aurukun Community Aged Care Service,31501.0,Far North,QLD,Home Care,government,2025,889555.68
@@ -6968,10 +6968,10 @@ Bolton Clarke Sunset Ridge,30803.0,Rockhampton,QLD,Residential,not_for_profit,20
 Bolton Clarke Sunset Ridge,30803.0,Rockhampton,QLD,Residential,not_for_profit,2025,9759640.75
 Bolton Clarke Sutton Park,21304.0,Melton - Bacchus Marsh,VIC,Residential,not_for_profit,2024,11958733.49
 Bolton Clarke Sutton Park,21304.0,Melton - Bacchus Marsh,VIC,Residential,not_for_profit,2025,13198152.3
-Bolton Clarke Talbarra,31103.0,Browns Plains,QLD,Residential,not_for_profit,2019,4881254.9
-Bolton Clarke Talbarra,31103.0,Browns Plains,QLD,Residential,not_for_profit,2020,5015736.23
-Bolton Clarke Talbarra,31103.0,Browns Plains,QLD,Residential,not_for_profit,2021,5016561.38
-Bolton Clarke Talbarra,31103.0,Browns Plains,QLD,Residential,not_for_profit,2022,5315826.37
+Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2019,4881254.9
+Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2020,5015736.23
+Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2021,5016561.38
+Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2022,5315826.37
 Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2023,5628135.97
 Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2024,6931350.69
 Bolton Clarke Talbarra,31105.0,Loganlea - Carbrook,QLD,Residential,not_for_profit,2025,7572779.77
@@ -10178,10 +10178,10 @@ Centacare Bundaberg,31901.0,Bundaberg,QLD,Home Care,not_for_profit,2022,2573972.
 Centacare Bundaberg,31901.0,Bundaberg,QLD,Home Care,not_for_profit,2023,3625289.7
 Centacare Bundaberg,31901.0,Bundaberg,QLD,Home Care,not_for_profit,2024,4463439.65
 Centacare Bundaberg,31901.0,Bundaberg,QLD,Home Care,not_for_profit,2025,4735350.89
-Centacare Darra,30401.0,Centenary,QLD,Home Care,not_for_profit,2022,165379.72
 Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2019,679319.919999998
 Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2020,444532.36999999976
 Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2021,256596.61
+Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2022,165379.72
 Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2023,128492.26
 Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2024,156472.5
 Centacare Darra,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2025,125109.01
@@ -12982,10 +12982,10 @@ Eliza Purton Home,60401.0,Burnie - Ulverstone,TAS,Residential,not_for_profit,202
 Eliza Purton Home,60401.0,Burnie - Ulverstone,TAS,Residential,not_for_profit,2021,7543047.31
 Eliza Purton Home,60401.0,Burnie - Ulverstone,TAS,Residential,not_for_profit,2022,7940868.06
 Eliza Purton Home,60401.0,Burnie - Ulverstone,TAS,Residential,not_for_profit,2023,8015425.199999999
+Elizabeth Gardens Burwood,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2019,2002941.9
+Elizabeth Gardens Burwood,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2020,1894932.91
+Elizabeth Gardens Burwood,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2021,1704114.66
 Elizabeth Gardens Burwood,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2022,1108762.29
-Elizabeth Gardens Burwood,21205.0,Monash,VIC,Residential,not_for_profit,2019,2002941.9
-Elizabeth Gardens Burwood,21205.0,Monash,VIC,Residential,not_for_profit,2020,1894932.91
-Elizabeth Gardens Burwood,21205.0,Monash,VIC,Residential,not_for_profit,2021,1704114.66
 Elizabeth Gardens Burwood,21205.0,Monash,VIC,Residential,not_for_profit,2023,3181259.05
 Elizabeth Gardens Burwood,21205.0,Monash,VIC,Residential,not_for_profit,2024,6012471.89
 Elizabeth Gardens Burwood,21205.0,Monash,VIC,Residential,not_for_profit,2025,6531522.53
@@ -15776,7 +15776,7 @@ Hailey House Hostel,20101.0,Ballarat,VIC,Residential,government,2025,6806332.37
 Haisey Home Care Service,21301.0,Brimbank,VIC,Home Care,profit,2019,10608.29
 Haisey Home Care Service,21301.0,Brimbank,VIC,Home Care,profit,2020,956115.9700000001
 Haisey Home Care Service,21301.0,Brimbank,VIC,Home Care,profit,2021,2188023.44
-Haisey Home Care Service,21304.0,Melton - Bacchus Marsh,VIC,Home Care,profit,2022,4332999.13
+Haisey Home Care Service,21301.0,Brimbank,VIC,Home Care,profit,2022,4332999.13
 Haisey Home Care Service,21304.0,Melton - Bacchus Marsh,VIC,Home Care,profit,2023,8163752.87
 Haisey Home Care Service,21304.0,Melton - Bacchus Marsh,VIC,Home Care,profit,2024,17280080.83
 Haisey Home Care Service,21304.0,Melton - Bacchus Marsh,VIC,Home Care,profit,2025,21357516.29
@@ -16607,10 +16607,10 @@ Highton Gardens Care Community,20302.0,Geelong,VIC,Residential,profit,2023,56487
 Highton Gardens Care Community,20302.0,Geelong,VIC,Residential,profit,2024,7710716.56
 Highton Gardens Care Community,20302.0,Geelong,VIC,Residential,profit,2025,9522312.5
 Highwood Court,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2023,5191605.55
+Highwood Court,20703.0,Whitehorse - West,VIC,Residential,profit,2019,3788446.83
+Highwood Court,20703.0,Whitehorse - West,VIC,Residential,profit,2020,4319437.65
+Highwood Court,20703.0,Whitehorse - West,VIC,Residential,profit,2021,4410910.53
 Highwood Court,20703.0,Whitehorse - West,VIC,Residential,profit,2022,4933275.6
-Highwood Court,21205.0,Monash,VIC,Residential,profit,2019,3788446.83
-Highwood Court,21205.0,Monash,VIC,Residential,profit,2020,4319437.65
-Highwood Court,21205.0,Monash,VIC,Residential,profit,2021,4410910.53
 Hill View House - Ashmore,30909.0,Southport,QLD,Residential,profit,2019,1600188.93
 Hill View House - Ashmore,30909.0,Southport,QLD,Residential,profit,2020,1967079.51
 Hill View House - Ashmore,30909.0,Southport,QLD,Residential,profit,2021,2049952.28
@@ -20080,12 +20080,12 @@ Korongee,60103.0,Hobart - North West,TAS,Residential,not_for_profit,2023,7530681
 Korongee,60103.0,Hobart - North West,TAS,Residential,not_for_profit,2024,9661770.73
 Korongee,60103.0,Hobart - North West,TAS,Residential,not_for_profit,2025,10473884.09
 Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2019,349643.150000001
-Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2020,390691.9100000001
-Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2021,513996.11
-Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2022,479503.4
 Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2023,537533.63
 Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2024,783393.48
 Kowanyama Aged Care Centre,31501.0,Far North,QLD,Home Care,government,2025,73983.67
+Kowanyama Aged Care Centre,31502.0,Outback - North,QLD,Home Care,government,2020,390691.9100000001
+Kowanyama Aged Care Centre,31502.0,Outback - North,QLD,Home Care,government,2021,513996.11
+Kowanyama Aged Care Centre,31502.0,Outback - North,QLD,Home Care,government,2022,479503.4
 Kowree Nursing Home Unit,21501.0,Grampians,VIC,Residential,government,2019,922159.63
 Kowree Nursing Home Unit,21501.0,Grampians,VIC,Residential,government,2020,1039368.41
 Kowree Nursing Home Unit,21501.0,Grampians,VIC,Residential,government,2021,983031.78
@@ -20096,10 +20096,10 @@ Kowree Nursing Home Unit,21501.0,Grampians,VIC,Residential,government,2025,26937
 Kronstadt Gardens,21204.0,Dandenong,VIC,Residential,not_for_profit,2019,4301811.97
 Kuba Natha HCP - (new service),31802.0,Townsville,QLD,Home Care,not_for_profit,2019,21779.55
 Kuba Natha HCP - (new service),31802.0,Townsville,QLD,Home Care,not_for_profit,2020,19601.24
-Kuba Natha Hostel,31501.0,Far North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2019,1162938.5
-Kuba Natha Hostel,31501.0,Far North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2020,1340210.0
-Kuba Natha Hostel,31501.0,Far North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2021,663776.56
-Kuba Natha Hostel,31501.0,Far North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2022,0.0
+Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2019,1162938.5
+Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2020,1340210.0
+Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2021,663776.56
+Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2022,0.0
 Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2023,2351554.85
 Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2024,4396472.03
 Kuba Natha Hostel,31502.0,Outback - North,QLD,National Aboriginal and Torres Strait Islander Aged Care Program,not_for_profit,2025,4143941.2
@@ -22180,10 +22180,10 @@ Mehi Cluster Transitional Aged Care Service,11003.0,Moree - Narrabri,NSW,Transit
 Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2019,3190621.73
 Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2020,4804315.17
 Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2021,5723389.73
+Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2022,5916277.55
 Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2023,6521407.1899999995
 Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2024,7963092.32
 Mekong Cairnlea Vietnamese Aged Care,21301.0,Brimbank,VIC,Residential,not_for_profit,2025,8440350.09
-Mekong Cairnlea Vietnamese Aged Care,21304.0,Melton - Bacchus Marsh,VIC,Residential,not_for_profit,2022,5916277.55
 Mekong Vietnamese Aged Care,21001.0,Keilor,VIC,Residential,not_for_profit,2019,4996859.58
 Mekong Vietnamese Aged Care,21001.0,Keilor,VIC,Residential,not_for_profit,2020,5011289.53
 Mekong Vietnamese Aged Care,21001.0,Keilor,VIC,Residential,not_for_profit,2021,5500878.92
@@ -23413,7 +23413,7 @@ Mt Gravatt Aged Care Residence,30303.0,Mt Gravatt,QLD,Residential,profit,2019,11
 Mt Kooyong Convalescent Home,30603.0,Innisfail - Cassowary Coast,QLD,Residential,profit,2019,3200058.19
 Mt Kooyong Convalescent Home,30603.0,Innisfail - Cassowary Coast,QLD,Residential,profit,2020,3468751.49
 Mt Kooyong Convalescent Home,30603.0,Innisfail - Cassowary Coast,QLD,Residential,profit,2021,3714392.7
-Mt Kooyong Convalescent Home,30603.0,Innisfail - Cassowary Coast,QLD,Residential,profit,2022,3758653.56
+Mt Kooyong Convalescent Home,31501.0,Far North,QLD,Residential,profit,2022,3758653.56
 Mt Kooyong Convalescent Home,31501.0,Far North,QLD,Residential,profit,2023,3982330.17
 Mt Kooyong Convalescent Home,31501.0,Far North,QLD,Residential,profit,2024,5088407.39
 Mt Kooyong Convalescent Home,31501.0,Far North,QLD,Residential,profit,2025,5548985.44
@@ -23723,10 +23723,10 @@ Muslim Care,11902.0,Canterbury,NSW,Home Care,not_for_profit,2025,3652220.58
 Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2019,1194489.19
 Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2020,1235188.05
 Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2021,1317762.13
-Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2022,1758667.32
 Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2023,2692902.42
 Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2024,2959490.96
 Mutkin Residential Aged Care,30603.0,Innisfail - Cassowary Coast,QLD,Residential,not_for_profit,2025,3867618.36
+Mutkin Residential Aged Care,31501.0,Far North,QLD,Residential,not_for_profit,2022,1758667.32
 My At Home Care,50201.0,Mandurah,WA,Home Care,profit,2021,82694.39
 My At Home Care,50201.0,Mandurah,WA,Home Care,profit,2022,18003.17
 My Care Ability,11501.0,Baulkham Hills,NSW,Home Care,profit,2025,233395.63
@@ -23759,10 +23759,10 @@ My Guardian,11901.0,Bankstown,NSW,Home Care,profit,2025,26608128.66
 My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2019,144953.69
 My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2020,646965.2300000002
 My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2021,1113123.73
+My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2022,1822610.23
 My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2023,2199120.5
 My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2024,3041772.08
 My Home Care Choices,21301.0,Brimbank,VIC,Home Care,profit,2025,3427781.76
-My Home Care Choices,21304.0,Melton - Bacchus Marsh,VIC,Home Care,profit,2022,1822610.23
 My Place Foundation Inc,50302.0,Perth City,WA,Home Care,not_for_profit,2019,45776.56
 My Place Foundation Inc,50302.0,Perth City,WA,Home Care,not_for_profit,2020,84194.95999999999
 My Place Foundation Inc,50302.0,Perth City,WA,Home Care,not_for_profit,2021,102681.06
@@ -26748,7 +26748,7 @@ RDNS Home Care Packages NSW Western Sydney,11501.0,Baulkham Hills,NSW,Home Care,
 RDNS Home Care Packages NSW Western Sydney,11501.0,Baulkham Hills,NSW,Home Care,not_for_profit,2023,3591388.1
 RDNS Home Care Packages NSW Western Sydney,11501.0,Baulkham Hills,NSW,Home Care,not_for_profit,2024,5149765.92
 RDNS Home Care Packages NSW Western Sydney,11501.0,Baulkham Hills,NSW,Home Care,not_for_profit,2025,5062101.66
-RDNS Home Care Packages QLD Logan River Valley,31103.0,Browns Plains,QLD,Home Care,not_for_profit,2019,18836.18
+RDNS Home Care Packages QLD Logan River Valley,31105.0,Loganlea - Carbrook,QLD,Home Care,not_for_profit,2019,18836.18
 RDNS Home Care Packages Tas Southern,60105.0,Hobart Inner,TAS,Home Care,not_for_profit,2019,623668.129999998
 RDNS Home Care Packages Tas Southern,60105.0,Hobart Inner,TAS,Home Care,not_for_profit,2020,384483.9600000001
 RDNS Home Care Packages Tas Southern,60105.0,Hobart Inner,TAS,Home Care,not_for_profit,2021,280939.31
@@ -28633,10 +28633,10 @@ Royal Freemasons - Ballarat,20101.0,Ballarat,VIC,Residential,not_for_profit,2020
 Royal Freemasons - Ballarat,20101.0,Ballarat,VIC,Residential,not_for_profit,2021,3429217.81
 Royal Freemasons - Ballarat,20101.0,Ballarat,VIC,Residential,not_for_profit,2022,4048038.47
 Royal Freemasons - Ballarat,20101.0,Ballarat,VIC,Residential,not_for_profit,2023,4199447.1
+Royal Freemasons - Elizabeth Gardens Hostel,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2019,2297891.85
+Royal Freemasons - Elizabeth Gardens Hostel,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2020,2193411.39
+Royal Freemasons - Elizabeth Gardens Hostel,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2021,2383648.58
 Royal Freemasons - Elizabeth Gardens Hostel,20703.0,Whitehorse - West,VIC,Residential,not_for_profit,2022,2514238.65
-Royal Freemasons - Elizabeth Gardens Hostel,21205.0,Monash,VIC,Residential,not_for_profit,2019,2297891.85
-Royal Freemasons - Elizabeth Gardens Hostel,21205.0,Monash,VIC,Residential,not_for_profit,2020,2193411.39
-Royal Freemasons - Elizabeth Gardens Hostel,21205.0,Monash,VIC,Residential,not_for_profit,2021,2383648.58
 Royal Freemasons - Monash Gardens Hostel,21205.0,Monash,VIC,Residential,not_for_profit,2019,3160200.54
 Royal Freemasons - Monash Gardens Hostel,21205.0,Monash,VIC,Residential,not_for_profit,2020,3202205.63
 Royal Freemasons - Monash Gardens Hostel,21205.0,Monash,VIC,Residential,not_for_profit,2021,3131978.94
@@ -29921,13 +29921,13 @@ South Eastern Community Care EACH,60106.0,Sorell - Dodges Ferry,TAS,Home Care,no
 South Eastern Community Care EACH,60106.0,Sorell - Dodges Ferry,TAS,Home Care,not_for_profit,2021,1459918.94
 South Eastern Community Care EACH,60106.0,Sorell - Dodges Ferry,TAS,Home Care,not_for_profit,2022,1966504.02
 South Eastern Community Care EACH,60106.0,Sorell - Dodges Ferry,TAS,Home Care,not_for_profit,2023,2986834.94
+South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2019,23135.86
+South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2020,302825.46
+South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2021,737268.17
 South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2022,1571827.32
 South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2023,2199247.71
 South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2024,3068204.15
 South Eastern Community Connect Inc,11701.0,Botany,NSW,Home Care,not_for_profit,2025,3257557.02
-South Eastern Community Connect Inc,11703.0,Sydney Inner City,NSW,Home Care,not_for_profit,2019,23135.86
-South Eastern Community Connect Inc,11703.0,Sydney Inner City,NSW,Home Care,not_for_profit,2020,302825.46
-South Eastern Community Connect Inc,11703.0,Sydney Inner City,NSW,Home Care,not_for_profit,2021,737268.17
 South Eastern Community Services - EACH,21201.0,Cardinia,VIC,Home Care,not_for_profit,2019,123596.62
 South Eastern Community Services - EACH,21201.0,Cardinia,VIC,Home Care,not_for_profit,2020,11156.769999999999
 South Eastern Community Services - EACH,21201.0,Cardinia,VIC,Home Care,not_for_profit,2021,0.0
@@ -29977,9 +29977,9 @@ South West Healthcare Transition Care Program,21704.0,Warrnambool,VIC,Transition
 South West Healthcare Transition Care Program,21704.0,Warrnambool,VIC,Transition Care,government,2025,1554811.66
 South West Home Care,50102.0,Bunbury,WA,Home Care,profit,2024,9719.6
 South West Home Care,50102.0,Bunbury,WA,Home Care,profit,2025,376847.02
-South West Region,30401.0,Centenary,QLD,Home Care,not_for_profit,2022,1362653.26
 South West Region,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2020,1112078.2699999998
 South West Region,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2021,1092080.18
+South West Region,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2022,1362653.26
 South West Region,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2023,1594859.02
 South West Region,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2024,1807425.51
 South West Region,31001.0,Forest Lake - Oxley,QLD,Home Care,not_for_profit,2025,1750412.62
@@ -33328,12 +33328,12 @@ TriCare Cypress Gardens Aged Care Residence,30908.0,Robina,QLD,Residential,profi
 TriCare Cypress Gardens Aged Care Residence,30908.0,Robina,QLD,Residential,profit,2021,10859772.83
 TriCare Cypress Gardens Aged Care Residence,30908.0,Robina,QLD,Residential,profit,2022,11228100.04
 TriCare Cypress Gardens Aged Care Residence,30908.0,Robina,QLD,Residential,profit,2023,11375612.28
-TriCare Jindalee Aged Care Residence,30401.0,Centenary,QLD,Residential,profit,2022,7909439.77
 TriCare Jindalee Aged Care Residence,30401.0,Centenary,QLD,Residential,profit,2023,8321882.25
 TriCare Jindalee Aged Care Residence,30401.0,Centenary,QLD,Residential,profit,2024,9802824.82
 TriCare Jindalee Aged Care Residence,30401.0,Centenary,QLD,Residential,profit,2025,10546105.87
 TriCare Jindalee Aged Care Residence,31001.0,Forest Lake - Oxley,QLD,Residential,profit,2020,7224860.69
 TriCare Jindalee Aged Care Residence,31001.0,Forest Lake - Oxley,QLD,Residential,profit,2021,7741941.01
+TriCare Jindalee Aged Care Residence,31001.0,Forest Lake - Oxley,QLD,Residential,profit,2022,7909439.77
 TriCare Jindalee Nursing Home,31001.0,Forest Lake - Oxley,QLD,Residential,profit,2019,7037844.79
 TriCare Kawana Waters Aged Care Residence,31602.0,Caloundra,QLD,Residential,profit,2020,9830589.61
 TriCare Kawana Waters Aged Care Residence,31602.0,Caloundra,QLD,Residential,profit,2021,9797408.95
@@ -33418,10 +33418,10 @@ Trinity Manor,20701.0,Boroondara,VIC,Residential,profit,2022,3210443.25
 Trinity Manor,20701.0,Boroondara,VIC,Residential,profit,2023,4237752.6899999995
 Trinity Manor,20701.0,Boroondara,VIC,Residential,profit,2024,6328282.68
 Trinity Manor,20701.0,Boroondara,VIC,Residential,profit,2025,6791130.27
+Trinity Manor Burwood,20703.0,Whitehorse - West,VIC,Residential,profit,2019,2106078.25
+Trinity Manor Burwood,20703.0,Whitehorse - West,VIC,Residential,profit,2020,1927592.85
+Trinity Manor Burwood,20703.0,Whitehorse - West,VIC,Residential,profit,2021,2095830.64
 Trinity Manor Burwood,20703.0,Whitehorse - West,VIC,Residential,profit,2022,2230200.24
-Trinity Manor Burwood,21205.0,Monash,VIC,Residential,profit,2019,2106078.25
-Trinity Manor Burwood,21205.0,Monash,VIC,Residential,profit,2020,1927592.85
-Trinity Manor Burwood,21205.0,Monash,VIC,Residential,profit,2021,2095830.64
 Trinity Manor Greensborough,20901.0,Banyule,VIC,Residential,profit,2019,14944.74
 Trinity Manor Greensborough,20901.0,Banyule,VIC,Residential,profit,2020,1573147.54
 Trinity Manor Greensborough,20901.0,Banyule,VIC,Residential,profit,2021,3125126.92
@@ -35503,10 +35503,10 @@ Vitalis Health & Home Care,12101.0,Chatswood - Lane Cove,NSW,Home Care,profit,20
 Vitality Care Pty Limited,10104.0,South Coast,NSW,Home Care,profit,2019,525482.489999998
 Vitality Care Pty Limited,10104.0,South Coast,NSW,Home Care,profit,2020,687612.2099999996
 Vitality Care Pty Limited,80101.0,Belconnen,ACT,Home Care,profit,2021,505401.06
+Vitality Club Home Care Packages,11701.0,Botany,NSW,Home Care,profit,2019,906.4
+Vitality Club Home Care Packages,11701.0,Botany,NSW,Home Care,profit,2020,62900.7
+Vitality Club Home Care Packages,11701.0,Botany,NSW,Home Care,profit,2021,241199.47
 Vitality Club Home Care Packages,11701.0,Botany,NSW,Home Care,profit,2022,420734.47
-Vitality Club Home Care Packages,11703.0,Sydney Inner City,NSW,Home Care,profit,2019,906.4
-Vitality Club Home Care Packages,11703.0,Sydney Inner City,NSW,Home Care,profit,2020,62900.7
-Vitality Club Home Care Packages,11703.0,Sydney Inner City,NSW,Home Care,profit,2021,241199.47
 Vitality Club Home Care Packages,11703.0,Sydney Inner City,NSW,Home Care,profit,2023,1565276.41
 Vitality Club Home Care Packages,11703.0,Sydney Inner City,NSW,Home Care,profit,2024,3068008.35
 Vitality Club Home Care Packages,11703.0,Sydney Inner City,NSW,Home Care,profit,2025,3988217.72
@@ -37210,10 +37210,10 @@ Yaralla Place,31905.0,Maryborough,QLD,Residential,profit,2025,11014639.26
 Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2019,214211.21
 Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2020,286105.81
 Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2021,279988.45
-Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2022,158837.46
 Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2023,295302.91
 Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2024,252581.45
 Yarrabah Community Aged Care Packages,30603.0,Innisfail - Cassowary Coast,QLD,Home Care,not_for_profit,2025,339655.61
+Yarrabah Community Aged Care Packages,31501.0,Far North,QLD,Home Care,not_for_profit,2022,158837.46
 Yarrabee CACPs,11201.0,Richmond Valley - Coastal,NSW,Home Care,not_for_profit,2019,1178015.20999999
 Yarrabee CACPs,11201.0,Richmond Valley - Coastal,NSW,Home Care,not_for_profit,2020,1430146.4999999995
 Yarralian Aged Care Service,70205.0,Katherine,NT,Home Care,government,2019,77207.44

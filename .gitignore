@@ -1,3 +1,6 @@
+# ABS geography shapefiles (large binary, not tracked)
+data/raw/abs_geography/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

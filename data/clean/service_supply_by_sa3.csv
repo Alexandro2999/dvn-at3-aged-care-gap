@@ -50,9 +50,9 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 11601.0,Blacktown,19,9,8,931.0,5.0,12,1,6,2019
 11602.0,Blacktown - North,2,2,0,231.0,0.0,1,0,1,2019
 11603.0,Mount Druitt,25,8,16,834.0,0.0,24,0,1,2019
-11701.0,Botany,3,2,1,228.0,0.0,2,0,1,2019
+11701.0,Botany,5,2,3,228.0,0.0,3,0,2,2019
 11702.0,Marrickville - Sydenham - Petersham,6,5,1,461.0,0.0,3,0,3,2019
-11703.0,Sydney Inner City,66,8,56,662.0,0.0,51,1,14,2019
+11703.0,Sydney Inner City,64,8,54,662.0,0.0,50,1,13,2019
 11801.0,Eastern Suburbs - North,24,16,7,1081.0,0.0,13,1,10,2019
 11802.0,Eastern Suburbs - South,20,16,3,1287.0,0.0,13,1,6,2019
 11901.0,Bankstown,26,16,9,1800.0,0.0,15,1,10,2019
@@ -113,7 +113,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 20607.0,Yarra,14,5,8,269.0,0.0,10,0,4,2019
 20701.0,Boroondara,47,27,18,2078.0,0.0,22,2,23,2019
 20702.0,Manningham - West,27,16,11,1409.0,0.0,16,0,11,2019
-20703.0,Whitehorse - West,23,10,11,1010.0,0.0,9,2,12,2019
+20703.0,Whitehorse - West,27,14,11,1202.0,0.0,11,2,14,2019
 20801.0,Bayside,32,15,17,1318.0,0.0,7,0,25,2019
 20802.0,Glen Eira,41,22,18,1742.0,0.0,18,8,15,2019
 20803.0,Kingston,37,19,17,1267.0,0.0,11,5,21,2019
@@ -136,7 +136,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 21202.0,Casey - North,12,12,0,1233.0,0.0,2,1,9,2019
 21203.0,Casey - South,14,5,9,602.0,0.0,8,1,5,2019
 21204.0,Dandenong,53,22,31,1983.0,0.0,27,5,21,2019
-21205.0,Monash,44,22,22,1855.0,0.0,15,0,29,2019
+21205.0,Monash,40,18,22,1663.0,0.0,13,0,27,2019
 21301.0,Brimbank,31,19,12,1370.0,0.0,15,1,15,2019
 21302.0,Hobsons Bay,12,9,3,786.0,0.0,6,0,6,2019
 21303.0,Maribyrnong,42,8,33,670.0,0.0,35,1,6,2019
@@ -202,8 +202,8 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31004.0,Springfield - Redbank,2,0,2,0.0,0.0,1,0,1,2019
 31101.0,Beaudesert,9,3,6,203.0,0.0,9,0,0,2019
 31102.0,Beenleigh,7,4,3,379.0,0.0,5,0,2,2019
-31103.0,Browns Plains,6,5,1,519.0,0.0,4,0,2,2019
-31105.0,Loganlea - Carbrook,11,6,5,704.0,0.0,6,0,5,2019
+31103.0,Browns Plains,4,4,0,459.0,0.0,2,0,2,2019
+31105.0,Loganlea - Carbrook,13,7,6,764.0,0.0,8,0,5,2019
 31106.0,Springwood - Kingston,15,4,11,436.0,0.0,5,0,10,2019
 31201.0,Bowen Basin - North,13,5,8,190.0,18.0,10,3,0,2019
 31202.0,Mackay,24,8,15,751.0,0.0,20,2,2,2019
@@ -216,8 +216,8 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31401.0,The Hills District,2,2,0,170.0,0.0,0,0,2,2019
 31402.0,North Lakes,17,5,12,558.0,0.0,7,0,10,2019
 31403.0,Strathpine,5,2,3,214.0,0.0,5,0,0,2019
-31501.0,Far North,12,5,6,104.0,12.0,4,8,0,2019
-31502.0,Outback - North,16,6,7,135.0,13.0,9,7,0,2019
+31501.0,Far North,11,5,6,89.0,12.0,3,8,0,2019
+31502.0,Outback - North,17,6,7,150.0,13.0,10,7,0,2019
 31503.0,Outback - South,21,10,10,192.0,19.0,11,10,0,2019
 31601.0,Buderim,11,5,6,505.0,0.0,6,0,5,2019
 31602.0,Caloundra,37,13,24,1247.0,0.0,25,0,12,2019
@@ -378,9 +378,9 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 11601.0,Blacktown,19,9,8,923.0,5.0,12,1,6,2020
 11602.0,Blacktown - North,2,2,0,231.0,0.0,1,0,1,2020
 11603.0,Mount Druitt,25,8,16,872.0,0.0,24,0,1,2020
-11701.0,Botany,3,2,1,170.0,0.0,2,0,1,2020
+11701.0,Botany,5,2,3,170.0,0.0,3,0,2,2020
 11702.0,Marrickville - Sydenham - Petersham,6,5,1,461.0,0.0,3,0,3,2020
-11703.0,Sydney Inner City,66,9,55,704.0,0.0,52,1,13,2020
+11703.0,Sydney Inner City,64,9,53,704.0,0.0,51,1,12,2020
 11801.0,Eastern Suburbs - North,22,16,5,1084.0,0.0,13,1,8,2020
 11802.0,Eastern Suburbs - South,20,16,3,1283.0,0.0,13,1,6,2020
 11901.0,Bankstown,27,17,9,1874.0,0.0,16,1,10,2020
@@ -441,7 +441,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 20607.0,Yarra,11,4,6,300.0,0.0,7,0,4,2020
 20701.0,Boroondara,47,27,18,2108.0,0.0,22,2,23,2020
 20702.0,Manningham - West,27,16,11,1407.0,0.0,16,0,11,2020
-20703.0,Whitehorse - West,23,10,11,1054.0,0.0,9,2,12,2020
+20703.0,Whitehorse - West,27,14,11,1246.0,0.0,11,2,14,2020
 20801.0,Bayside,32,15,17,1318.0,0.0,7,0,25,2020
 20802.0,Glen Eira,39,22,16,1782.0,0.0,19,7,13,2020
 20803.0,Kingston,37,19,17,1267.0,0.0,10,5,22,2020
@@ -464,7 +464,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 21202.0,Casey - North,12,12,0,1247.0,0.0,2,1,9,2020
 21203.0,Casey - South,14,5,9,602.0,0.0,8,1,5,2020
 21204.0,Dandenong,52,21,31,1921.0,0.0,26,5,21,2020
-21205.0,Monash,45,23,22,2020.0,0.0,15,0,30,2020
+21205.0,Monash,41,19,22,1828.0,0.0,13,0,28,2020
 21301.0,Brimbank,39,19,20,1368.0,0.0,23,1,15,2020
 21302.0,Hobsons Bay,12,9,3,786.0,0.0,6,0,6,2020
 21303.0,Maribyrnong,41,8,32,670.0,0.0,35,1,5,2020
@@ -530,8 +530,8 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31004.0,Springfield - Redbank,3,0,3,0.0,0.0,1,0,2,2020
 31101.0,Beaudesert,9,3,6,227.0,0.0,9,0,0,2020
 31102.0,Beenleigh,7,4,3,379.0,0.0,5,0,2,2020
-31103.0,Browns Plains,6,5,1,519.0,0.0,4,0,2,2020
-31105.0,Loganlea - Carbrook,11,6,5,704.0,0.0,6,0,5,2020
+31103.0,Browns Plains,4,4,0,459.0,0.0,2,0,2,2020
+31105.0,Loganlea - Carbrook,13,7,6,764.0,0.0,8,0,5,2020
 31106.0,Springwood - Kingston,16,5,11,566.0,0.0,5,0,11,2020
 31201.0,Bowen Basin - North,13,5,8,195.0,18.0,10,3,0,2020
 31202.0,Mackay,24,8,15,751.0,0.0,20,2,2,2020
@@ -544,8 +544,8 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31401.0,The Hills District,2,2,0,170.0,0.0,0,0,2,2020
 31402.0,North Lakes,17,5,12,558.0,0.0,7,0,10,2020
 31403.0,Strathpine,5,2,3,214.0,0.0,5,0,0,2020
-31501.0,Far North,12,5,6,104.0,12.0,4,8,0,2020
-31502.0,Outback - North,16,6,7,135.0,13.0,9,7,0,2020
+31501.0,Far North,10,5,5,89.0,12.0,3,7,0,2020
+31502.0,Outback - North,18,6,8,150.0,13.0,10,8,0,2020
 31503.0,Outback - South,21,10,10,192.0,19.0,11,10,0,2020
 31601.0,Buderim,10,5,5,505.0,0.0,5,0,5,2020
 31602.0,Caloundra,31,13,18,1247.0,0.0,19,0,12,2020
@@ -706,9 +706,9 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 11601.0,Blacktown,19,9,8,959.0,5.0,12,1,6,2021
 11602.0,Blacktown - North,2,2,0,231.0,0.0,1,0,1,2021
 11603.0,Mount Druitt,25,8,16,872.0,0.0,24,0,1,2021
-11701.0,Botany,3,2,1,170.0,0.0,2,0,1,2021
+11701.0,Botany,5,2,3,170.0,0.0,3,0,2,2021
 11702.0,Marrickville - Sydenham - Petersham,6,5,1,461.0,0.0,3,0,3,2021
-11703.0,Sydney Inner City,68,9,56,704.0,0.0,52,2,14,2021
+11703.0,Sydney Inner City,66,9,54,704.0,0.0,51,2,13,2021
 11801.0,Eastern Suburbs - North,19,14,5,1014.0,0.0,10,0,9,2021
 11802.0,Eastern Suburbs - South,19,16,3,1280.0,0.0,13,0,6,2021
 11901.0,Bankstown,26,16,10,1838.0,0.0,15,0,11,2021
@@ -769,7 +769,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 20607.0,Yarra,10,4,5,300.0,0.0,6,0,4,2021
 20701.0,Boroondara,47,27,18,2148.0,0.0,22,2,23,2021
 20702.0,Manningham - West,27,16,11,1407.0,0.0,16,0,11,2021
-20703.0,Whitehorse - West,22,9,11,968.0,0.0,9,2,11,2021
+20703.0,Whitehorse - West,26,13,11,1160.0,0.0,11,2,13,2021
 20801.0,Bayside,32,15,17,1318.0,0.0,7,0,25,2021
 20802.0,Glen Eira,40,22,17,1872.0,0.0,21,6,13,2021
 20803.0,Kingston,37,18,18,1172.0,0.0,10,5,22,2021
@@ -792,7 +792,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 21202.0,Casey - North,12,12,0,1247.0,0.0,2,1,9,2021
 21203.0,Casey - South,14,5,9,602.0,0.0,8,1,5,2021
 21204.0,Dandenong,51,21,30,1918.0,0.0,26,5,20,2021
-21205.0,Monash,46,23,23,2072.0,0.0,15,0,31,2021
+21205.0,Monash,42,19,23,1880.0,0.0,13,0,29,2021
 21301.0,Brimbank,42,18,24,1323.0,0.0,27,1,14,2021
 21302.0,Hobsons Bay,12,9,3,889.0,0.0,6,0,6,2021
 21303.0,Maribyrnong,40,7,32,598.0,0.0,34,1,5,2021
@@ -858,9 +858,9 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31004.0,Springfield - Redbank,3,0,3,0.0,0.0,1,0,2,2021
 31101.0,Beaudesert,8,2,6,227.0,0.0,8,0,0,2021
 31102.0,Beenleigh,7,4,3,379.0,0.0,5,0,2,2021
-31103.0,Browns Plains,6,6,0,609.0,0.0,3,0,3,2021
+31103.0,Browns Plains,4,4,0,459.0,0.0,2,0,2,2021
 31104.0,Jimboomba,1,1,0,144.0,0.0,0,0,1,2021
-31105.0,Loganlea - Carbrook,12,6,6,704.0,0.0,7,0,5,2021
+31105.0,Loganlea - Carbrook,14,8,6,854.0,0.0,8,0,6,2021
 31106.0,Springwood - Kingston,16,5,11,566.0,0.0,5,0,11,2021
 31201.0,Bowen Basin - North,13,5,8,205.0,18.0,10,3,0,2021
 31202.0,Mackay,24,9,14,871.0,0.0,19,2,3,2021
@@ -873,8 +873,8 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31401.0,The Hills District,2,2,0,170.0,0.0,0,0,2,2021
 31402.0,North Lakes,15,5,10,558.0,0.0,7,0,8,2021
 31403.0,Strathpine,6,2,4,214.0,0.0,2,0,4,2021
-31501.0,Far North,15,5,9,104.0,30.0,5,10,0,2021
-31502.0,Outback - North,16,6,7,135.0,49.0,9,7,0,2021
+31501.0,Far North,13,5,8,89.0,12.0,4,9,0,2021
+31502.0,Outback - North,18,6,8,150.0,67.0,10,8,0,2021
 31503.0,Outback - South,21,10,10,192.0,19.0,10,11,0,2021
 31601.0,Buderim,10,5,5,505.0,0.0,6,0,4,2021
 31602.0,Caloundra,35,13,22,1247.0,0.0,16,0,19,2021
@@ -1122,10 +1122,10 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 21203.0,Casey - South,13,9,4,940.0,0.0,5,0,8,2022
 21204.0,Dandenong,45,20,25,1877.0,0.0,22,5,18,2022
 21205.0,Monash,44,18,26,1880.0,0.0,14,0,30,2022
-21301.0,Brimbank,32,15,17,1185.0,0.0,21,1,10,2022
+21301.0,Brimbank,36,17,19,1333.0,0.0,22,1,13,2022
 21302.0,Hobsons Bay,9,9,0,859.0,0.0,3,0,6,2022
 21303.0,Maribyrnong,36,7,28,598.0,0.0,30,1,5,2022
-21304.0,Melton - Bacchus Marsh,11,8,3,697.0,0.0,3,1,7,2022
+21304.0,Melton - Bacchus Marsh,7,6,1,549.0,0.0,2,1,4,2022
 21305.0,Wyndham,17,10,6,1160.0,0.0,7,1,9,2022
 21401.0,Frankston,26,14,11,1288.0,0.0,16,1,9,2022
 21402.0,Mornington Peninsula,35,24,10,2449.0,0.0,11,2,22,2022
@@ -1151,7 +1151,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 30304.0,Nathan,5,1,4,136.0,0.0,3,0,2,2022
 30305.0,Rocklea - Acacia Ridge,10,7,3,682.0,0.0,7,0,3,2022
 30306.0,Sunnybank,4,3,1,307.0,0.0,3,0,1,2022
-30401.0,Centenary,9,7,2,474.0,0.0,8,0,1,2022
+30401.0,Centenary,6,6,0,381.0,0.0,6,0,0,2022
 30402.0,Kenmore - Brookfield - Moggill,6,5,1,572.0,0.0,6,0,0,2022
 30403.0,Sherwood - Indooroopilly,3,1,2,120.0,0.0,1,0,2,2022
 30404.0,The Gap - Enoggera,9,6,3,639.0,0.0,5,0,4,2022
@@ -1161,7 +1161,7 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 30504.0,Brisbane Inner - West,10,2,8,136.0,0.0,7,0,3,2022
 30601.0,Cairns - North,2,2,0,238.0,0.0,0,0,2,2022
 30602.0,Cairns - South,30,10,18,1245.0,0.0,17,2,11,2022
-30603.0,Innisfail - Cassowary Coast,13,6,7,400.0,5.0,10,2,1,2022
+30603.0,Innisfail - Cassowary Coast,9,4,5,346.0,5.0,8,1,0,2022
 30604.0,Port Douglas - Daintree,3,3,0,145.0,12.0,2,1,0,2022
 30605.0,Tablelands (East) - Kuranda,10,4,6,294.0,0.0,10,0,0,2022
 30701.0,Darling Downs (West) - Maranoa,23,15,7,425.0,35.0,11,11,1,2022
@@ -1181,15 +1181,15 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 30908.0,Robina,13,8,5,982.0,0.0,4,0,9,2022
 30909.0,Southport,26,18,8,1764.0,0.0,16,0,10,2022
 30910.0,Surfers Paradise,7,1,5,72.0,0.0,4,1,2,2022
-31001.0,Forest Lake - Oxley,10,6,4,648.0,0.0,5,0,5,2022
+31001.0,Forest Lake - Oxley,13,7,6,741.0,0.0,7,0,6,2022
 31002.0,Ipswich Hinterland,13,7,6,420.0,0.0,13,0,0,2022
 31003.0,Ipswich Inner,27,9,17,973.0,0.0,24,1,2,2022
 31004.0,Springfield - Redbank,2,0,2,0.0,0.0,0,0,2,2022
 31101.0,Beaudesert,8,2,6,227.0,0.0,8,0,0,2022
 31102.0,Beenleigh,6,3,3,248.0,0.0,5,0,1,2022
-31103.0,Browns Plains,6,6,0,610.0,0.0,3,0,3,2022
+31103.0,Browns Plains,4,4,0,459.0,0.0,2,0,2,2022
 31104.0,Jimboomba,1,1,0,144.0,0.0,0,0,1,2022
-31105.0,Loganlea - Carbrook,12,6,6,704.0,0.0,7,0,5,2022
+31105.0,Loganlea - Carbrook,14,8,6,855.0,0.0,8,0,6,2022
 31106.0,Springwood - Kingston,16,5,11,573.0,0.0,5,0,11,2022
 31201.0,Bowen Basin - North,13,5,8,205.0,18.0,10,3,0,2022
 31202.0,Mackay,24,9,13,846.0,0.0,19,2,3,2022
@@ -1202,8 +1202,8 @@ sa3_code,sa3_name,n_facilities,n_residential,n_homecare,residential_places,homec
 31401.0,The Hills District,4,2,2,170.0,0.0,1,0,3,2022
 31402.0,North Lakes,13,5,8,558.0,0.0,6,0,7,2022
 31403.0,Strathpine,6,2,4,214.0,0.0,2,0,4,2022
-31501.0,Far North,15,5,9,104.0,30.0,5,10,0,2022
-31502.0,Outback - North,16,6,7,135.0,49.0,9,7,0,2022
+31501.0,Far North,17,7,10,143.0,12.0,6,10,1,2022
+31502.0,Outback - North,18,6,8,150.0,67.0,10,8,0,2022
 31503.0,Outback - South,20,10,9,192.0,19.0,9,11,0,2022
 31601.0,Buderim,11,5,5,505.0,0.0,6,0,5,2022
 31602.0,Caloundra,32,13,19,1247.0,0.0,15,0,17,2022
