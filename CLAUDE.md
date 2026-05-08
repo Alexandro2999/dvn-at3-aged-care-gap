@@ -78,6 +78,16 @@ dvn-at3-aged-care-gap/
 
 ---
 
+## Core Chapters
+
+| Chapter | Asset | Notebook | Status |
+|---------|-------|----------|--------|
+| Ch 1 — The Map | `chapter_01_the_map.md` | `01_chapter_the_map.ipynb` | ✅ done |
+| Ch 2 — The Correlation | `chapter_02_the_correlation.md` | `02_chapter_the_correlation.ipynb` | ✅ done |
+| Ch 3 — The Reveal | `chapter_03_the_reveal.md` | `03_chapter_the_reveal.ipynb` | ✅ done |
+
+---
+
 ## Story Angle Pattern
 
 Each story angle requires two files — follow `chapter_04_mandate_effect` as the reference:
@@ -89,7 +99,7 @@ Each story angle requires two files — follow `chapter_04_mandate_effect` as th
 
 | Angle | Notebook | Asset | Status |
 |-------|----------|-------|--------|
-| Mandate Effect | `04_chapter_mandate_effect.ipynb` | `chapter_04_mandate_effect.md` | ✅ done |
+| Mandate Effect | `04_chapter_mandate_effect.ipynb` | `chapter_04_mandate_effect.md` | ✅ done (provenance tags added) |
 | For-Profit Problem | `05_chapter_for_profit.ipynb` | `chapter_05_for_profit.md` | pending |
 | Waitlist Trap | `06_chapter_waitlist.ipynb` | `chapter_06_waitlist.md` | pending |
 | Supply Collapse | `07_chapter_supply.ipynb` | `chapter_07_supply.md` | pending |
