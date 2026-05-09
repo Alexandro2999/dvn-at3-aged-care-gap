@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AT3 Pitch Deck — Visual Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:     #1B3F6E;
+  --teal:     #00A79D;
+  --gold:     #F5C842;
+  --red:      #D94F3D;
+  --bluelite: #E3F1FA;
+  --white:    #FFFFFF;
+  --grey:     #6B7280;
+  --darkgrey: #374151;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1a1a2e;
+  font-family: 'Inter', sans-serif;
+  color: var(--white);
+  min-height: 100vh;
+}
+
+/* ─── PAGE HEADER ─── */
+.site-header {
+  background: #0f0f23;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--gold);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-header h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  color: var(--white);
+  letter-spacing: 0.5px;
+}
+.site-header span { color: var(--gold); }
+.slide-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.slide-nav a {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.slide-nav a:hover { background: var(--gold); color: var(--navy); }
+
+/* ─── SLIDE WRAPPER ─── */
+.deck {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.slide-block {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.slide-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.slide-num {
+  background: var(--gold);
+  color: var(--navy);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide-title-label {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.slide-timing {
+  margin-left: auto;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ─── SLIDE CANVAS (16:9) ─── */
+.slide {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+/* ─── SPEAKER NOTE ─── */
+.speaker-note {
+  margin-top: 12px;
+  background: rgba(255,255,255,0.05);
+  border-left: 3px solid var(--teal);
+  padding: 10px 16px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.5;
+}
+.speaker-note strong { color: var(--teal); }
+
+/* ─── CHART PLACEHOLDER ─── */
+.chart-ph {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px dashed rgba(255,255,255,0.25);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 8px;
+}
+.chart-ph .icon { font-size: 1.6rem; }
+
+/* ─────────────────────────────────────────
+   SLIDE 1 — TITLE
+───────────────────────────────────────── */
+.s1 {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d2744 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+}
+.s1-top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--gold), var(--teal));
+}
+.s1-content {
+  padding: 6% 8%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.s1-eyebrow {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2%;
+}
+.s1-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.2em;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 3%;
+}
+.s1-heading span { color: var(--gold); }
+.s1-sub {
+  font-size: 1em;
+  color: rgba(255,255,255,0.65);
+  max-width: 60%;
+  line-height: 1.5;
+}
+.s1-bottom {
+  padding: 2.5% 8%;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.s1-team { font-size: 0.7em; color: rgba(255,255,255,0.4); }
+.s1-badge {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.65em;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+.s1-accent {
+  position: absolute;
+  right: 6%;
+  top: 20%;
+  width: 28%;
+  height: 60%;
+  background: linear-gradient(135deg, rgba(0,167,157,0.15), rgba(245,200,66,0.08));
+  border-radius: 8px;
+  border: 1px solid rgba(0,167,157,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8%;
+  padding: 5%;
+}
+.s1-stat {
+  text-align: center;
+}
+.s1-stat .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--gold);
+}
+.s1-stat .lbl {
+  font-size: 0.55em;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.3;
+}
+.s1-divider { width: 60%; height: 1px; background: rgba(255,255,255,0.1); }
+
+/* ─────────────────────────────────────────
+   SLIDE 2 — STAKEHOLDER HAT
+───────────────────────────────────────── */
+.s2 {
+  background: #0d2744;
+  display: flex;
+}
+.s2-left {
+  width: 42%;
+  background: var(--navy);
+  padding: 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 4px solid var(--gold);
+}
+.s2-tag {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.65em;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 6%;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
+}
+.s2-role {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8em;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 4%;
+}
+.s2-role span { color: var(--gold); }
+.s2-desc {
+  font-size: 0.72em;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+}
+.s2-right {
+  flex: 1;
+  padding: 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4%;
+}
+.s2-right-title {
+  font-size: 0.7em;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 2%;
+}
+.concern-card {
+  background: rgba(255,255,255,0.06);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 6px 6px 0;
+  padding: 3% 4%;
+}
+.concern-card .q {
+  font-size: 0.72em;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.concern-card .a {
+  font-size: 0.62em;
+  color: rgba(255,255,255,0.45);
+  margin-top: 1.5%;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 3 — HOOK
+───────────────────────────────────────── */
+.s3 {
+  background: #0a1628;
+  display: flex;
+  align-items: stretch;
+}
+.s3-content {
+  flex: 1;
+  padding: 7% 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.s3-eyebrow {
+  font-size: 0.65em;
+  font-weight: 600;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4%;
+}
+.s3-headline {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2em;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 5%;
+}
+.s3-headline .accent { color: var(--gold); }
+.s3-stats {
+  display: flex;
+  gap: 5%;
+}
+.s3-stat {
+  flex: 1;
+}
+.s3-stat .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--teal);
+}
+.s3-stat .lbl {
+  font-size: 0.6em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2%;
+  line-height: 1.3;
+}
+.s3-right {
+  width: 40%;
+  position: relative;
+  overflow: hidden;
+}
+.s3-map-ph {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,167,157,0.12), rgba(27,63,110,0.3));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.s3-map-ph .big-icon { font-size: 3rem; opacity: 0.6; }
+.s3-map-ph .ph-label {
+  font-size: 0.65em;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+}
+.s3-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--red), var(--gold));
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 4 — THE MAP
+───────────────────────────────────────── */
+.s4 {
+  background: var(--navy);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+}
+.s4-header {
+  grid-column: 1 / -1;
+  padding: 3.5% 5% 2%;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.s4-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--white);
+}
+.s4-title span { color: var(--gold); }
+.s4-subtitle {
+  font-size: 0.62em;
+  color: rgba(255,255,255,0.45);
+}
+.s4-map {
+  padding: 3% 2% 3% 4%;
+  display: flex;
+  flex-direction: column;
+}
+.s4-insights {
+  padding: 3% 4% 3% 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 3%;
+  justify-content: center;
+}
+.insight-pill {
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 3% 4%;
+  border-left: 3px solid var(--gold);
+}
+.insight-pill .stat {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--gold);
+}
+.insight-pill .desc {
+  font-size: 0.6em;
+  color: rgba(255,255,255,0.6);
+  margin-top: 1%;
+  line-height: 1.4;
+}
+.insight-pill .desc strong { color: var(--white); }
+
+/* ─────────────────────────────────────────
+   SLIDE 5 — THE CORRELATION
+───────────────────────────────────────── */
+.s5 {
+  background: #0d2744;
+}
+.s5-header {
+  padding: 3.5% 5% 2%;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: baseline;
+  gap: 3%;
+}
+.s5-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--white);
+}
+.s5-title span { color: var(--teal); }
+.s5-chips {
+  display: flex;
+  gap: 6px;
+}
+.chip {
+  font-size: 0.55em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
+.chip-gold { background: rgba(245,200,66,0.2); color: var(--gold); }
+.chip-teal { background: rgba(0,167,157,0.2); color: var(--teal); }
+.chip-red  { background: rgba(217,79,61,0.2);  color: var(--red); }
+.s5-body {
+  padding: 2% 5%;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 3%;
+  height: calc(100% - 70px);
+}
+.s5-chart { display: flex; flex-direction: column; gap: 4%; }
+.s5-side { display: flex; flex-direction: column; gap: 4%; justify-content: center; }
+.stat-block {
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 5% 6%;
+  text-align: center;
+}
+.stat-block .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+}
+.stat-block .lbl {
+  font-size: 0.58em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2%;
+  line-height: 1.3;
+}
+.stat-gold .num { color: var(--gold); }
+.stat-teal .num { color: var(--teal); }
+.stat-red  .num { color: var(--red); }
+
+/* ─────────────────────────────────────────
+   SLIDE 6 — EFFICIENCY PARADOX
+───────────────────────────────────────── */
+.s6 {
+  background: #0d1f35;
+}
+.s6-top-stripe {
+  height: 5px;
+  background: linear-gradient(90deg, var(--gold) 33%, var(--teal) 33% 66%, var(--red) 66%);
+}
+.s6-header {
+  padding: 3% 5% 2%;
+}
+.s6-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--white);
+}
+.s6-title span { color: var(--gold); }
+.s6-sub {
+  font-size: 0.62em;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.5%;
+}
+.s6-body {
+  padding: 0 5% 3%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3%;
+  height: calc(100% - 100px);
+}
+.org-card {
+  border-radius: 8px;
+  padding: 5% 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.org-card.govt  { background: rgba(114,183,114,0.12); border-top: 3px solid #72B76E; }
+.org-card.nfp   { background: rgba(76,120,168,0.12);  border-top: 3px solid #4C78A8; }
+.org-card.profit{ background: rgba(245,133,24,0.12);  border-top: 3px solid #F58518; }
+.org-type {
+  font-size: 0.62em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+}
+.org-card.govt  .org-type { color: #72B76E; }
+.org-card.nfp   .org-type { color: #4C78A8; }
+.org-card.profit .org-type { color: #F58518; }
+.org-score {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.5em;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.org-desc {
+  font-size: 0.58em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 3%;
+  line-height: 1.4;
+}
+.org-badge {
+  display: inline-block;
+  font-size: 0.55em;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-top: 4%;
+}
+.org-card.govt  .org-badge { background: rgba(114,183,114,0.2); color: #72B76E; }
+.org-card.nfp   .org-badge { background: rgba(76,120,168,0.2);  color: #4C78A8; }
+.org-card.profit .org-badge { background: rgba(245,133,24,0.2);  color: #F58518; }
+
+/* ─────────────────────────────────────────
+   SLIDE 7 — HUMAN COST
+───────────────────────────────────────── */
+.s7 {
+  background: #1a0d0b;
+  display: flex;
+}
+.s7-left {
+  width: 48%;
+  background: linear-gradient(160deg, #2d1410 0%, #1a0d0b 100%);
+  padding: 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 3px solid var(--red);
+}
+.s7-eyebrow {
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4%;
+}
+.s7-headline {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 5%;
+}
+.s7-quote {
+  background: rgba(217,79,61,0.12);
+  border-left: 3px solid var(--red);
+  padding: 4% 5%;
+  border-radius: 0 6px 6px 0;
+}
+.s7-quote .text {
+  font-size: 0.7em;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+  line-height: 1.5;
+}
+.s7-quote .src {
+  font-size: 0.55em;
+  color: rgba(255,255,255,0.35);
+  margin-top: 3%;
+}
+.s7-right {
+  flex: 1;
+  padding: 6%;
+  display: flex;
+  flex-direction: column;
+  gap: 4%;
+  justify-content: center;
+}
+.cost-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 4%;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 4% 5%;
+}
+.cost-icon { font-size: 1.5em; }
+.cost-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4em;
+  font-weight: 900;
+  color: var(--gold);
+}
+.cost-lbl {
+  font-size: 0.58em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 1%;
+  line-height: 1.3;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 8 — SUPPLY FAILURE
+───────────────────────────────────────── */
+.s8 {
+  background: var(--navy);
+}
+.s8-header {
+  padding: 3.5% 5% 2%;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.s8-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--white);
+}
+.s8-title span { color: var(--red); }
+.s8-body {
+  padding: 2% 5%;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4%;
+  height: calc(100% - 75px);
+}
+.s8-chart { display: flex; flex-direction: column; gap: 3%; }
+.s8-side {
+  display: flex;
+  flex-direction: column;
+  gap: 3%;
+  justify-content: center;
+}
+.supply-fact {
+  background: rgba(217,79,61,0.1);
+  border-radius: 8px;
+  padding: 4% 5%;
+  border-left: 3px solid var(--red);
+}
+.supply-fact .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8em;
+  font-weight: 900;
+  color: var(--red);
+}
+.supply-fact .lbl {
+  font-size: 0.58em;
+  color: rgba(255,255,255,0.55);
+  margin-top: 1.5%;
+  line-height: 1.3;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 9 — DASHBOARD DEMO
+───────────────────────────────────────── */
+.s9 {
+  background: #080f1a;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.s9-header {
+  padding: 3% 5% 2%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0,167,157,0.3);
+}
+.s9-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2em;
+  font-weight: 800;
+  color: var(--white);
+}
+.s9-title span { color: var(--teal); }
+.s9-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6em;
+  color: var(--teal);
+  font-weight: 600;
+}
+.live-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+.s9-body {
+  padding: 2% 5%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2%;
+}
+.dashboard-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,167,157,0.2);
+  border-radius: 8px;
+  padding: 4%;
+  display: flex;
+  flex-direction: column;
+  gap: 6%;
+}
+.panel-title {
+  font-size: 0.6em;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 10 — VERDICT + CTA
+───────────────────────────────────────── */
+.s10 {
+  background: linear-gradient(135deg, var(--navy) 0%, #0a1f3d 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.s10-top-stripe {
+  height: 5px;
+  background: linear-gradient(90deg, var(--gold), var(--teal), var(--gold));
+}
+.s10-body {
+  flex: 1;
+  padding: 5% 8%;
+  display: flex;
+  gap: 6%;
+  align-items: center;
+}
+.s10-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+.s10-eyebrow {
+  font-size: 0.65em;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.s10-verdict {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+}
+.s10-verdict span { color: var(--gold); }
+.s10-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 3%;
+}
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 3%;
+  font-size: 0.68em;
+  color: rgba(255,255,255,0.75);
+}
+.action-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.65em;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+.s10-right {
+  width: 36%;
+  display: flex;
+  flex-direction: column;
+  gap: 4%;
+}
+.final-stat {
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 5% 6%;
+  text-align: center;
+  border-top: 2px solid var(--gold);
+}
+.final-stat .num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5em;
+  font-weight: 900;
+  color: var(--gold);
+}
+.final-stat .lbl {
+  font-size: 0.58em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2%;
+  line-height: 1.4;
+}
+.s10-bottom {
+  padding: 2% 8%;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+.s10-url {
+  font-size: 0.62em;
+  color: var(--teal);
+  font-weight: 500;
+}
+.s10-team {
+  margin-left: auto;
+  font-size: 0.6em;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ─── SECTION DIVIDER ─── */
+.section-divider {
+  text-align: center;
+  color: rgba(255,255,255,0.15);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 0;
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER NAV -->
+<div class="site-header">
+  <h1>DVN AT3 — <span>Pitch Deck Visual Preview</span></h1>
+  <div class="slide-nav">
+    <a href="#s1">1</a>
+    <a href="#s2">2</a>
+    <a href="#s3">3</a>
+    <a href="#s4">4</a>
+    <a href="#s5">5</a>
+    <a href="#s6">6</a>
+    <a href="#s7">7</a>
+    <a href="#s8">8</a>
+    <a href="#s9">9</a>
+    <a href="#s10">10</a>
+  </div>
+</div>
+
+<!-- DECK -->
+<div class="deck">
+
+  <!-- ────────────── SLIDE 1 ────────────── -->
+  <div class="slide-block" id="s1">
+    <div class="slide-label">
+      <div class="slide-num">1</div>
+      <div class="slide-title-label">Title Slide</div>
+      <div class="slide-timing">⏱ 0:00 – 0:20</div>
+    </div>
+    <div class="slide s1">
+      <div class="s1-top-bar"></div>
+      <div class="s1-content">
+        <div class="s1-eyebrow">DVN AT3 · Data Narrative Studio</div>
+        <div class="s1-heading">Australia's<br>Aged Care<br><span>Gap</span></div>
+        <div class="s1-sub">Where quality fails, supply is shrinking —<br>and families are left stuck at home.</div>
+      </div>
+      <div class="s1-bottom">
+        <div class="s1-team">Group 7 &nbsp;·&nbsp; May 2026 &nbsp;·&nbsp; ACQSC / ABS / GEN Data</div>
+        <div class="s1-badge">5-MINUTE PITCH</div>
+      </div>
+      <div class="s1-accent">
+        <div class="s1-stat">
+          <div class="num">323</div>
+          <div class="lbl">SA3 regions<br>analysed</div>
+        </div>
+        <div class="s1-divider"></div>
+        <div class="s1-stat">
+          <div class="num">12</div>
+          <div class="lbl">quarterly snapshots<br>2023 → 2026</div>
+        </div>
+        <div class="s1-divider"></div>
+        <div class="s1-stat">
+          <div class="num">7</div>
+          <div class="lbl">clean datasets<br>merged</div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "Good [morning/afternoon]. In the next 5 minutes, I'm going to show you exactly where Australia's aged care system is breaking — and what that means for your organisation." (Put on CEO hat as you speak.)</div>
+  </div>
+
+  <!-- ────────────── SLIDE 2 ────────────── -->
+  <div class="slide-block" id="s2">
+    <div class="slide-label">
+      <div class="slide-num">2</div>
+      <div class="slide-title-label">Stakeholder Hat</div>
+      <div class="slide-timing">⏱ 0:20 – 0:45</div>
+    </div>
+    <div class="slide s2">
+      <div class="s2-left">
+        <div class="s2-tag">TODAY YOU ARE</div>
+        <div class="s2-role">CEO of a<br>mid-size<br><span>Residential</span><br>Provider</div>
+        <div class="s2-desc">500 beds across 4 facilities in NSW & VIC. Your occupancy is 89%. Your board is asking: where do we expand next — and what do competitors look like?</div>
+      </div>
+      <div class="s2-right">
+        <div class="s2-right-title">The questions keeping you awake</div>
+        <div class="concern-card">
+          <div class="q">📍 "Which regions are underserved and have no for-profit competitor?"</div>
+          <div class="a">→ Supply Collapse data answers this</div>
+        </div>
+        <div class="concern-card">
+          <div class="q">👥 "How are our star ratings compared to government operators?"</div>
+          <div class="a">→ For-Profit analysis answers this</div>
+        </div>
+        <div class="concern-card">
+          <div class="q">⏳ "Is the home care backlog pushing people toward residential care?"</div>
+          <div class="a">→ Waitlist Trap answers this</div>
+        </div>
+        <div class="concern-card">
+          <div class="q">📋 "Are we going to meet the new care-minute mandates?"</div>
+          <div class="a">→ Mandate Effect answers this</div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "Imagine you're the CEO of a mid-size residential aged care provider. You've got 500 beds, 4 facilities — and a board meeting next month about strategy. Here's the data you need."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 3 ────────────── -->
+  <div class="slide-block" id="s3">
+    <div class="slide-label">
+      <div class="slide-num">3</div>
+      <div class="slide-title-label">The Hook — The Crime Scene</div>
+      <div class="slide-timing">⏱ 0:45 – 1:15</div>
+    </div>
+    <div class="slide s3">
+      <div class="s3-content">
+        <div class="s3-eyebrow">⚠ The Problem</div>
+        <div class="s3-headline">118 regions lost<br>facilities. <span class="accent">313 elderly</span><br>share 1 bed.</div>
+        <div class="s3-stats">
+          <div class="s3-stat">
+            <div class="num">−5.3</div>
+            <div class="lbl">beds per 1,000 elderly<br>lost since 2019</div>
+          </div>
+          <div class="s3-stat">
+            <div class="num">+22%</div>
+            <div class="lbl">high-needs home care<br>users since 2023</div>
+          </div>
+          <div class="s3-stat">
+            <div class="num">88k+</div>
+            <div class="lbl">approved but still<br>waiting for home care</div>
+          </div>
+        </div>
+      </div>
+      <div class="s3-right">
+        <div class="s3-map-ph">
+          <div class="big-icon">🗺️</div>
+          <div class="ph-label">→ SCREENSHOT<br>from Ch1 notebook<br><em>supply change choropleth</em></div>
+        </div>
+        <div class="s3-bar"></div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "This is the crime scene. Over the past 6 years, 118 Australian regions have lost residential aged care facilities — while demand keeps growing. In some areas, 313 elderly people are sharing a single residential bed."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 4 ────────────── -->
+  <div class="slide-block" id="s4">
+    <div class="slide-label">
+      <div class="slide-num">4</div>
+      <div class="slide-title-label">The Map — Where the Gap Is</div>
+      <div class="slide-timing">⏱ 1:15 – 1:50</div>
+    </div>
+    <div class="slide s4">
+      <div class="s4-header">
+        <div class="s4-title">The Map: <span>Where care fails Australians</span></div>
+        <div class="s4-subtitle">Care Gap Index by SA3 · 323 regions · 2023–2024</div>
+      </div>
+      <div class="s4-map">
+        <div class="chart-ph" style="flex:1; border-color: rgba(245,200,66,0.4);">
+          <div class="icon">🗺️</div>
+          <div>Care Gap Index choropleth<br><em>Ch1 notebook → Cell: choropleth by SA3</em></div>
+        </div>
+      </div>
+      <div class="s4-insights">
+        <div class="insight-pill">
+          <div class="stat">53.7 → 48.4</div>
+          <div class="desc">beds per 1,000 elderly — <strong>every state declined</strong> since 2019</div>
+        </div>
+        <div class="insight-pill">
+          <div class="stat">+670k</div>
+          <div class="desc">Australians aged 65+ added 2019–2024. Population: <strong>4.03M → 4.70M</strong></div>
+        </div>
+        <div class="insight-pill">
+          <div class="stat">Noosa Hinterland</div>
+          <div class="desc"><strong>313 high-needs HCP users</strong> per 1 residential bed — worst in Australia</div>
+        </div>
+        <div class="insight-pill">
+          <div class="stat">118 SA3s</div>
+          <div class="desc">lost residential facilities — vs only <strong>77 that gained</strong> (net −41)</div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "The blue areas on this map are the most undersupplied. What's striking is that the shortfall isn't just rural — metro fringe areas like Noosa Hinterland are among the worst. Every state has lost beds per elderly person since 2019."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 5 ────────────── -->
+  <div class="slide-block" id="s5">
+    <div class="slide-label">
+      <div class="slide-num">5</div>
+      <div class="slide-title-label">The Correlation — Who's Failing Quality</div>
+      <div class="slide-timing">⏱ 1:50 – 2:30</div>
+    </div>
+    <div class="slide s5">
+      <div class="s5-header">
+        <div class="s5-title">The Correlation: <span>Access meets quality</span></div>
+        <div class="s5-chips">
+          <span class="chip chip-gold">For-Profit</span>
+          <span class="chip chip-teal">NFP</span>
+          <span class="chip chip-red">Government</span>
+        </div>
+      </div>
+      <div class="s5-body">
+        <div class="s5-chart">
+          <div class="chart-ph" style="flex:1.2; border-color:rgba(0,167,157,0.4);">
+            <div class="icon">📊</div>
+            <div>Box plot: quality score by org type<br><em>Ch2 notebook → org type violin/box plot</em></div>
+          </div>
+          <div class="chart-ph" style="flex:0.8; border-color:rgba(245,200,66,0.3);">
+            <div class="icon">🗺️</div>
+            <div>Choropleth: private_share by SA3<br><em>Ch2 notebook → private share map</em></div>
+          </div>
+        </div>
+        <div class="s5-side">
+          <div class="stat-block stat-red">
+            <div class="num">3.68</div>
+            <div class="lbl">avg quality — For-Profit</div>
+          </div>
+          <div class="stat-block stat-teal">
+            <div class="num">3.80</div>
+            <div class="lbl">avg quality — NFP</div>
+          </div>
+          <div class="stat-block stat-gold">
+            <div class="num">4.21</div>
+            <div class="lbl">avg quality — Government</div>
+          </div>
+          <div class="stat-block" style="background:rgba(217,79,61,0.12); border-top:2px solid var(--red);">
+            <div class="num" style="font-family:'Montserrat',sans-serif;font-size:1.6em;font-weight:900;color:var(--red);">8×</div>
+            <div class="lbl">less likely to get 4–5★<br>vs government<br><em style="color:rgba(255,255,255,0.3)">Chu et al., JAMDA 2024</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "For-profit facilities score 0.53 stars lower than government on average. And peer-reviewed research confirms: they're 8 times less likely to achieve 4 or 5 stars. As a CEO, you should know exactly where you sit on this scale."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 6 ────────────── -->
+  <div class="slide-block" id="s6">
+    <div class="slide-label">
+      <div class="slide-num">6</div>
+      <div class="slide-title-label">The Efficiency Paradox — Mandate Effect</div>
+      <div class="slide-timing">⏱ 2:30 – 3:05</div>
+    </div>
+    <div class="slide s6">
+      <div class="s6-top-stripe"></div>
+      <div class="s6-header">
+        <div class="s6-title">The Mandate Effect: <span>Quality rose — but not equally</span></div>
+        <div class="s6-sub">Oct 2023 — Care minute mandate introduced (40 min RN + 200 min total per resident per day)</div>
+      </div>
+      <div class="s6-body">
+        <div class="org-card govt">
+          <div>
+            <div class="org-type">Government</div>
+            <div class="org-score">4.21</div>
+            <div class="org-desc">Highest quality. Benefit most from mandate — already staffed closer to targets.</div>
+          </div>
+          <div class="chart-ph" style="height:35%; border-color:rgba(114,183,114,0.3);">
+            <div>Compliance trend<br><em>Ch4 → by org type</em></div>
+          </div>
+          <div class="org-badge">Fully compliant: 65%+</div>
+        </div>
+        <div class="org-card nfp">
+          <div>
+            <div class="org-type">Not-for-Profit</div>
+            <div class="org-score">3.80</div>
+            <div class="org-desc">Mid-range quality. Mixed compliance — urban NFPs better than regional ones.</div>
+          </div>
+          <div class="chart-ph" style="height:35%; border-color:rgba(76,120,168,0.3);">
+            <div>Quality trend line<br><em>Ch4 → state chart</em></div>
+          </div>
+          <div class="org-badge">Staffing +0.51 pts</div>
+        </div>
+        <div class="org-card profit">
+          <div>
+            <div class="org-type">For-Profit</div>
+            <div class="org-score">3.68</div>
+            <div class="org-desc">Lowest quality. Least compliant. Most exposed to regulatory risk.</div>
+          </div>
+          <div class="chart-ph" style="height:35%; border-color:rgba(245,133,24,0.3);">
+            <div>Compliance dip Oct 2024<br><em>target raised 200→215</em></div>
+          </div>
+          <div class="org-badge">⚠ Most non-compliant</div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "The Oct 2023 mandate lifted national quality by +0.25 stars in two quarters. But it hit providers unevenly. For-profit facilities remain the least compliant — and when the target was raised in October 2024, compliance dipped sector-wide before recovering."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 7 ────────────── -->
+  <div class="slide-block" id="s7">
+    <div class="slide-label">
+      <div class="slide-num">7</div>
+      <div class="slide-title-label">The Human Cost — Waitlist Trap</div>
+      <div class="slide-timing">⏱ 3:05 – 3:40</div>
+    </div>
+    <div class="slide s7">
+      <div class="s7-left">
+        <div class="s7-eyebrow">⚠ The Human Cost</div>
+        <div class="s7-headline">172,000 people<br>are stuck at home,<br>approved but waiting.</div>
+        <div class="s7-quote">
+          <div class="text">"My mother was approved for a Level 4 package 14 months ago. She's still at home with no support."</div>
+          <div class="src">— National Seniors Australia submission, 2025</div>
+        </div>
+      </div>
+      <div class="s7-right">
+        <div class="cost-item">
+          <div class="cost-icon">🏥</div>
+          <div>
+            <div class="cost-num">438,779</div>
+            <div class="cost-lbl">hospital bed-days consumed in 2022–23 by patients waiting for aged care placement<br><em style="color:rgba(255,255,255,0.3)">Aged Care Online, 2025</em></div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🏠</div>
+          <div>
+            <div class="cost-num">88,000+</div>
+            <div class="cost-lbl">approved for home care but not yet receiving it — Nov 2025 peak<br><em style="color:rgba(255,255,255,0.3)">Aged Care Guide, Nov 2025</em></div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">📈</div>
+          <div>
+            <div class="cost-num">+22%</div>
+            <div class="cost-lbl">high-needs HCP users 2023–2025 (140k → 172k). Now 59% of all HCP users<br><em style="color:rgba(255,255,255,0.3)">data — service_users_by_sa3.csv</em></div>
+          </div>
+        </div>
+        <div class="chart-ph" style="flex:1; border-color:rgba(217,79,61,0.3);">
+          <div class="icon">📊</div>
+          <div>Scatter: waitlist pressure vs residential access<br><em>Ch3 notebook → bubble chart</em></div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "This is the human cost. 172,000 high-needs Australians are approved but stuck at home. While they wait, they're occupying hospital beds — 438,000 bed-days last year. The waitlist isn't a backlog. It's a crisis."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 8 ────────────── -->
+  <div class="slide-block" id="s8">
+    <div class="slide-label">
+      <div class="slide-num">8</div>
+      <div class="slide-title-label">Supply Failure — The Opportunity</div>
+      <div class="slide-timing">⏱ 3:40 – 4:10</div>
+    </div>
+    <div class="slide s8">
+      <div class="s8-header">
+        <div class="s8-title">Supply <span>Failure</span> = Strategic Opportunity</div>
+      </div>
+      <div class="s8-body">
+        <div class="s8-chart">
+          <div class="chart-ph" style="flex:1.2; border-color:rgba(217,79,61,0.4);">
+            <div class="icon">📉</div>
+            <div>beds_per_1000_elderly by state, 2019→2024<br><em>Ch1 notebook → line chart all states</em></div>
+          </div>
+          <div class="chart-ph" style="flex:0.8; border-color:rgba(245,200,66,0.3);">
+            <div class="icon">🗺️</div>
+            <div>SA3s losing vs gaining facilities<br><em>Ch1 notebook → supply change map</em></div>
+          </div>
+        </div>
+        <div class="s8-side">
+          <div class="supply-fact">
+            <div class="num">103</div>
+            <div class="lbl">facilities closed since 2021 vs only 85 opened — <strong>net −18 nationally</strong><br><em style="color:rgba(255,255,255,0.3)">Aged Care Online, Dec 2025</em></div>
+          </div>
+          <div class="supply-fact">
+            <div class="num">8,500+</div>
+            <div class="lbl">beds per year short of demand — only ~800 added in 2025<br><em style="color:rgba(255,255,255,0.3)">Aged Care Online, Dec 2025</em></div>
+          </div>
+          <div class="supply-fact">
+            <div class="num">MM5</div>
+            <div class="lbl">small rural regions 2.8× overrepresented among declining SA3s — <strong>workforce 256 vs metro 317</strong> per 1,000<br><em style="color:rgba(255,255,255,0.3)">data — star_ratings + abs_pop</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "The system is not keeping pace. 8,500 beds short per year. For a CEO looking to expand: every state has underserved regions. The question isn't whether to grow — it's where, and how to staff it."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 9 ────────────── -->
+  <div class="slide-block" id="s9">
+    <div class="slide-label">
+      <div class="slide-num">9</div>
+      <div class="slide-title-label">Dashboard Demo — Live Tool</div>
+      <div class="slide-timing">⏱ 4:10 – 4:40</div>
+    </div>
+    <div class="slide s9">
+      <div class="s9-header">
+        <div class="s9-title">Our <span>Dashboard</span> — Decision-ready intelligence</div>
+        <div class="s9-live">
+          <div class="live-dot"></div>
+          LIVE · Streamlit Cloud
+        </div>
+      </div>
+      <div class="s9-body">
+        <div class="dashboard-panel">
+          <div class="panel-title">Tab 1 · The Map</div>
+          <div class="chart-ph" style="flex:1; border-color:rgba(0,167,157,0.2);">
+            <div>Care Gap Index choropleth<br>+ SA3 click → detail card</div>
+          </div>
+          <div style="font-size:0.55em;color:rgba(255,255,255,0.4);line-height:1.4;">🔎 Filter by state, MMM band, org type → map updates live</div>
+        </div>
+        <div class="dashboard-panel">
+          <div class="panel-title">Tab 2 · The Correlation</div>
+          <div class="chart-ph" style="flex:1; border-color:rgba(245,200,66,0.2);">
+            <div>Scatter: access rate vs quality<br>colour = org type</div>
+          </div>
+          <div style="font-size:0.55em;color:rgba(255,255,255,0.4);line-height:1.4;">📊 OLS trendline · box plots · private share map</div>
+        </div>
+        <div class="dashboard-panel">
+          <div class="panel-title">Tab 3 · What-If</div>
+          <div class="chart-ph" style="flex:1; border-color:rgba(217,79,61,0.2);">
+            <div>Slider: min beds / 1,000<br>→ highlights underserved SA3s</div>
+          </div>
+          <div style="font-size:0.55em;color:rgba(255,255,255,0.4);line-height:1.4;">⚙️ Advanced feature: parameterized scenario planning</div>
+        </div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "This is our working dashboard. You can filter by state, remoteness, or ownership type. The What-If tab lets you set a minimum standard — like 50 beds per 1,000 elderly — and immediately see which regions fall below it. This is decision-ready intelligence."</div>
+  </div>
+
+  <!-- ────────────── SLIDE 10 ────────────── -->
+  <div class="slide-block" id="s10">
+    <div class="slide-label">
+      <div class="slide-num">10</div>
+      <div class="slide-title-label">Verdict + Call to Action</div>
+      <div class="slide-timing">⏱ 4:40 – 5:00</div>
+    </div>
+    <div class="slide s10">
+      <div class="s10-top-stripe"></div>
+      <div class="s10-body">
+        <div class="s10-left">
+          <div class="s10-eyebrow">The Verdict</div>
+          <div class="s10-verdict">Australia's aged care gap<br>is <span>structural, measurable</span>,<br>and addressable.</div>
+          <div class="s10-actions">
+            <div class="action-item">
+              <div class="action-num">1</div>
+              Expand into the 41 net-negative SA3 regions before competitors do
+            </div>
+            <div class="action-item">
+              <div class="action-num">2</div>
+              Close the 0.53-star quality gap vs government — it's a reputational risk
+            </div>
+            <div class="action-item">
+              <div class="action-num">3</div>
+              Use the waitlist pressure index to forecast residential demand in your catchment
+            </div>
+          </div>
+        </div>
+        <div class="s10-right">
+          <div class="final-stat">
+            <div class="num">+7.4%</div>
+            <div class="lbl">quality improvement after<br>the Oct 2023 mandate —<br>proof that policy works</div>
+          </div>
+          <div class="final-stat" style="border-top-color:var(--teal);">
+            <div class="num" style="color:var(--teal);">323</div>
+            <div class="lbl">SA3 regions. Your next<br>facility could be in the<br>right one.</div>
+          </div>
+          <div class="final-stat" style="border-top-color:var(--red);">
+            <div class="num" style="color:var(--red);">Now</div>
+            <div class="lbl">The window to act is open.<br>The data shows you where.</div>
+          </div>
+        </div>
+      </div>
+      <div class="s10-bottom">
+        <div class="s10-url">🔗 dashboard link here (Streamlit Cloud)</div>
+        <div class="s10-team">Group 7 · DVN AT3 · May 2026</div>
+      </div>
+    </div>
+    <div class="speaker-note"><strong>Say:</strong> "Our analysis spans 323 regions, 12 quarters, and 7 datasets. The gap is real. The opportunity is clear. The data tells you where. Thank you." <em>(Pause. Invite questions.)</em></div>
+  </div>
+
+  <div class="section-divider">· · · END OF DECK · · ·</div>
+
+</div>
+
+</body>
+</html>
