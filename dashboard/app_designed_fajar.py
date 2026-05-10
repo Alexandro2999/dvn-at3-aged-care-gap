@@ -625,7 +625,6 @@ with st.sidebar:
             f'<a href="?page=home" target="_self" style="display:inline-block;margin-bottom:12px">'
             f'<img src="data:image/png;base64,{ico_b64}" width="52"'
             f' style="display:block;cursor:pointer;'
-            f'filter:brightness(0) saturate(100%) invert(53%) sepia(68%) saturate(380%)'
             f' hue-rotate(136deg) brightness(90%);">'
             f'</a>',
             unsafe_allow_html=True,
@@ -875,27 +874,14 @@ elif page == "map":
 
     # Top / Bottom 10 bar charts
     if not df.empty:
+        bot10 = df.nsmallest(10, 'access_rate')[['sa3_name', 'state', 'access_rate']].copy()
+        bot10['label'] = bot10['sa3_name'] + ' (' + bot10['state'] + ')'
+        top10 = df.nlargest(10, 'access_rate')[['sa3_name', 'state', 'access_rate']].copy()
+        top10['label'] = top10['sa3_name'] + ' (' + top10['state'] + ')'
+        shared_xmax = top10['access_rate'].max() * 1.2
+
         c1, c2 = st.columns(2)
         with c1:
-            bot10 = df.nsmallest(10, 'access_rate')[['sa3_name', 'state', 'access_rate']].copy()
-            bot10['label'] = bot10['sa3_name'] + ' (' + bot10['state'] + ')'
-            fig_bot = px.bar(
-                bot10.sort_values('access_rate'),
-                x='access_rate', y='label',
-                orientation='h',
-                color_discrete_sequence=['#D94F3D'],
-                text='access_rate',
-                title=f'10 Most Underserved Suburbs<br><sup>lowest access rate, {year_sel}</sup>',
-                labels={'access_rate': 'Access Rate (% of 65+ in residential care)', 'label': ''},
-            )
-            fig_bot.update_traces(texttemplate='%{text:.1f}%', textposition='outside', cliponaxis=False)
-            fig_bot.update_layout(xaxis_range=[0, bot10['access_rate'].max() * 1.35])
-            theme(fig_bot, height=380)
-            st.plotly_chart(fig_bot, use_container_width=True)
-
-        with c2:
-            top10 = df.nlargest(10, 'access_rate')[['sa3_name', 'state', 'access_rate']].copy()
-            top10['label'] = top10['sa3_name'] + ' (' + top10['state'] + ')'
             fig_top = px.bar(
                 top10.sort_values('access_rate'),
                 x='access_rate', y='label',
@@ -906,9 +892,24 @@ elif page == "map":
                 labels={'access_rate': 'Access Rate (% of 65+ in residential care)', 'label': ''},
             )
             fig_top.update_traces(texttemplate='%{text:.1f}%', textposition='outside', cliponaxis=False)
-            fig_top.update_layout(xaxis_range=[0, top10['access_rate'].max() * 1.15])
+            fig_top.update_layout(xaxis_range=[0, shared_xmax])
             theme(fig_top, height=380)
             st.plotly_chart(fig_top, use_container_width=True)
+
+        with c2:
+            fig_bot = px.bar(
+                bot10.sort_values('access_rate', ascending=False),
+                x='access_rate', y='label',
+                orientation='h',
+                color_discrete_sequence=['#D94F3D'],
+                text='access_rate',
+                title=f'10 Most Underserved Suburbs<br><sup>lowest access rate, {year_sel}</sup>',
+                labels={'access_rate': 'Access Rate (% of 65+ in residential care)', 'label': ''},
+            )
+            fig_bot.update_traces(texttemplate='%{text:.1f}%', textposition='outside', cliponaxis=False)
+            fig_bot.update_layout(xaxis_range=[0, shared_xmax])
+            theme(fig_bot, height=380)
+            st.plotly_chart(fig_bot, use_container_width=True)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CHAPTER 2 — THE CORRELATION
@@ -983,6 +984,7 @@ elif page == "correlation":
                 labels={'access_rate': 'Access rate (%)', 'quality_score': 'Quality score', 'remoteness': 'Remoteness'},
             )
         theme(fig_scatter2, height=480)
+        fig_scatter2.update_layout(margin=dict(r=140))
         st.plotly_chart(fig_scatter2, use_container_width=True)
 
     latest = ratings_f[ratings_f['snapshot_date'] == ratings_f['snapshot_date'].max()]
