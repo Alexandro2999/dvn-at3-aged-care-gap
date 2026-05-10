@@ -663,12 +663,12 @@ with st.sidebar:
             label_visibility="collapsed",
         )
 
-    with st.expander("SA3 Region"):
+    with st.expander("Suburbs (SA3)"):
         _state_pre = state_sel if state_sel else sorted(master['state'].dropna().unique())
         sa3_opts = sorted(master[master['state'].isin(_state_pre)]['sa3_name'].dropna().unique())
         sa3_sel = st.multiselect(
             "SA3", sa3_opts, default=[],
-            placeholder="All SA3s",
+            placeholder="All Suburbs",
             label_visibility="collapsed",
             key=f"sa3_filter_{'_'.join(sorted(_state_pre))}",
         )
@@ -707,8 +707,8 @@ med_cgi     = round(float(df['care_gap_index'].median()), 2) if not df.empty els
 KPI_HTML = f"""
 <div class="kpi-grid">
   <div class="kpi-card">
-    <div class="kpi-label">SA3 Regions
-      <span class="kpi-help" data-tooltip="SA3 regions matching the current filter selection">?</span>
+    <div class="kpi-label">Suburbs
+      <span class="kpi-help" data-tooltip="Suburbs matching the current filter selection">?</span>
     </div>
     <div class="kpi-value">{n_sa3}</div>
   </div>
@@ -795,8 +795,8 @@ elif page == "map":
             )
 
     st.markdown(
-        '<p class="sec-p">Each SA3 is coloured by <b>care_gap_index</b> — the ratio of access rate to quality score. '
-        'Darker = more underserved. Two patterns emerge: high-access/low-quality metro areas '
+        '<p class="sec-p">Each Suburb is coloured by <b>care gap index</b>(the ratio of access rate to quality score).<br>'
+        'Two patterns emerge: high-access/low-quality metro areas'
         'and low-access/high-quality remote areas.</p>',
         unsafe_allow_html=True,
     )
@@ -825,7 +825,7 @@ elif page == "map":
             center={'lat': -27, 'lon': 134},
             zoom=3.2,
             opacity=0.75,
-            title=f'Care Gap Index by SA3 ({year_sel}) — darker = more underserved',
+            title=f'Care Gap Index by SA3 ({year_sel})',
             labels={'care_gap_index': 'Care Gap Index'},
         )
         fig_map.update_coloraxes(colorbar_title_text='Care Gap Index')
@@ -873,7 +873,7 @@ elif page == "map":
     else:
         st.info("No data matches the current filter selection.")
 
-    # Top / Bottom 10 bar charts (replaces tables)
+    # Top / Bottom 10 bar charts
     if not df.empty:
         c1, c2 = st.columns(2)
         with c1:
@@ -883,12 +883,13 @@ elif page == "map":
                 bot10.sort_values('access_rate'),
                 x='access_rate', y='label',
                 orientation='h',
-                color_discrete_sequence=[C['teal']],
+                color_discrete_sequence=['#D94F3D'],
                 text='access_rate',
-                title=f'10 Most Underserved SA3s<br><sup>lowest access rate, {year_sel}</sup>',
+                title=f'10 Most Underserved Suburbs<br><sup>lowest access rate, {year_sel}</sup>',
                 labels={'access_rate': 'Access Rate (% of 65+ in residential care)', 'label': ''},
             )
-            fig_bot.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+            fig_bot.update_traces(texttemplate='%{text:.1f}%', textposition='outside', cliponaxis=False)
+            fig_bot.update_layout(xaxis_range=[0, bot10['access_rate'].max() * 1.35])
             theme(fig_bot, height=380)
             st.plotly_chart(fig_bot, use_container_width=True)
 
@@ -899,12 +900,13 @@ elif page == "map":
                 top10.sort_values('access_rate'),
                 x='access_rate', y='label',
                 orientation='h',
-                color_discrete_sequence=[C['teal']],
+                color_discrete_sequence=['#1B6CA5'],
                 text='access_rate',
-                title=f'10 Best Served SA3s<br><sup>highest access rate, {year_sel}</sup>',
+                title=f'10 Best Served Suburbs<br><sup>highest access rate, {year_sel}</sup>',
                 labels={'access_rate': 'Access Rate (% of 65+ in residential care)', 'label': ''},
             )
-            fig_top.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+            fig_top.update_traces(texttemplate='%{text:.1f}%', textposition='outside', cliponaxis=False)
+            fig_top.update_layout(xaxis_range=[0, top10['access_rate'].max() * 1.15])
             theme(fig_top, height=380)
             st.plotly_chart(fig_top, use_container_width=True)
 
@@ -914,7 +916,7 @@ elif page == "map":
 elif page == "correlation":
     st.markdown('<div class="sec-h1">Who runs the best facilities?</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="sec-p">Quality differences are not explained by geography — they are explained by <b>ownership</b>. '
+        '<p class="sec-p">Quality differences are not explained by geography, they are explained by <b>ownership</b>. '
         'Government facilities average 4.21 vs for-profit 3.68 (gap = 0.53 pts). '
         'Remote areas score higher <i>because</i> they have fewer for-profit providers.</p>',
         unsafe_allow_html=True,
@@ -993,7 +995,7 @@ elif page == "correlation":
     org_label_map = {'profit': 'For profit', 'not_for_profit': 'Not for Profit', 'government': 'Government'}
     org_q['label'] = org_q['org_type'].map(org_label_map)
     org_q['annotation'] = org_q.apply(
-        lambda r: f"{r['mean']:.2f}  (median {r['median']:.2f}, n={int(r['count']):,})", axis=1
+        lambda r: f"{r['mean']:.2f}  (median:{r['median']:.2f}, Suburb Num:{int(r['count']):,})", axis=1
     )
 
     org_sorted = org_q.sort_values('mean').reset_index(drop=True)
@@ -1011,8 +1013,8 @@ elif page == "correlation":
         color='org_type',
         color_discrete_map={k: _org_color(k) for k in org_sorted['org_type']},
         text='annotation',
-        title='Average Quality Score by Ownership Type<br><sup>February 2026 snapshot — click a bar to highlight</sup>',
-        labels={'mean': 'Avg Quality Score (1–5)', 'label': ''},
+        title='Average Quality Score by Ownership Type<br><sup>February 2026 snapshot - click a bar to highlight</sup>',
+        labels={'mean': 'Avg Quality Score (1 - 5)', 'label': ''},
     )
     fig_org.add_vline(x=nat_avg, line_dash='dot', line_color='#999999')
     fig_org.add_annotation(
@@ -1022,8 +1024,8 @@ elif page == "correlation":
         font=dict(color='#999999', size=12, family='Arial Black'),
         xanchor='left',
     )
-    fig_org.update_traces(textposition='outside', textfont_size=11)
-    fig_org.update_layout(showlegend=False, xaxis_range=[0, 5], clickmode='event+select')
+    fig_org.update_traces(textposition='outside', textfont_size=11, cliponaxis=False)
+    fig_org.update_layout(showlegend=False, xaxis_range=[0, 7.5], clickmode='event+select')
     theme(fig_org, height=260)
     org_event = st.plotly_chart(fig_org, use_container_width=True, on_select='rerun', key='org_chart')
     if org_event and org_event.selection and org_event.selection.points:
@@ -1046,7 +1048,7 @@ elif page == "correlation":
             color='mmm_code',
             color_discrete_map=MMM_COLOURS,
             title='Quality Score by Remoteness (MMM)<br><sup>February 2026 snapshot</sup>',
-            labels={'quality_score': 'Quality Score (1–5)', 'mmm_code': 'Remoteness'},
+            labels={'quality_score': 'Quality Score (1 - 5)', 'mmm_code': 'Remoteness'},
             category_orders={'mmm_code': ['MM1', 'MM2', 'MM3', 'MM4', 'MM5', 'MM6', 'MM7']},
         )
         nat_med = latest['quality_score'].median()
@@ -1068,13 +1070,33 @@ elif page == "correlation":
             .reset_index()
         )
         fund_trend['funding_b'] = fund_trend['funding'] / 1e9
+        year_totals = fund_trend.groupby('year')['funding_b'].sum().rename('year_total')
+        fund_trend = fund_trend.join(year_totals, on='year')
+        fund_trend['pct'] = fund_trend['funding_b'] / fund_trend['year_total'] * 100
+        # Contrast text colour per org type bar colour
+        ORG_TEXT_COLOURS = {
+            'profit':         'white',
+            'not_for_profit': 'white',
+            'government':     'white',
+        }
+        MIN_PCT = 5  # hide label if segment is smaller than this %
+        fund_trend['label'] = fund_trend.apply(
+            lambda r: f"{r['pct']:.0f}%" if r['pct'] >= MIN_PCT else '', axis=1
+        )
         fig_fund = px.bar(
             fund_trend, x='year', y='funding_b', color='org_type',
             color_discrete_map=ORG_COLOURS,
             barmode='stack',
+            text='label',
             title='Govt Funding by Ownership Type<br><sup>$B, 2019–2025</sup>',
             labels={'funding_b': 'Funding ($B)', 'org_type': 'Org type'},
         )
+        # Apply contrast colour per trace
+        for trace in fig_fund.data:
+            org = trace.name
+            trace.textfont = dict(color=ORG_TEXT_COLOURS.get(org, 'white'), size=11)
+            trace.textposition = 'inside'
+            trace.insidetextanchor = 'middle'
         totals = fund_trend.groupby('year')['funding_b'].sum().reset_index()
         for _, row in totals.iterrows():
             fig_fund.add_annotation(
@@ -1103,7 +1125,7 @@ elif page == "reveal":
         if not worst_rows.empty:
             worst = worst_rows.iloc[0]
             st.markdown(
-                f'<p class="sec-p">In <b>{year_sel}</b>, <b>{n_deficit} SA3 regions</b> have more '
+                f'<p class="sec-p">In <b>{year_sel}</b>, <b>{n_deficit} Suburbs</b> have more '
                 f'high-needs home care users than available residential beds. The worst is '
                 f'<b>{worst["sa3_name"]} ({worst["state"]})</b> with a pressure ratio of '
                 f'<b>{worst["waitlist_pressure"]:.2f}</b> — '
@@ -1139,7 +1161,7 @@ elif page == "reveal":
                 'residential_places': ':,d',
                 'waitlist_pressure': ':.3f',
             },
-            title=f'Top 20 SA3 Regions by Waitlist Pressure ({year_sel})<br>'
+            title=f'Top 20 Suburbs by Waitlist Pressure ({year_sel})<br>'
                   '<sup>Red = top quartile (highest pressure)</sup>',
             labels={'waitlist_pressure': 'Waitlist Pressure Index', 'row_label': ''},
         )
@@ -1182,8 +1204,8 @@ elif page == "reveal":
                 'L4 — Very High (should be residential)': C['red'],
             },
             barmode='stack',
-            title=f'HCP Level Composition by SA3: Who Is Actually Waiting? ({year_sel})<br>'
-                  '<sup>Top 25 SA3s by total home care users</sup>',
+            title=f'HCP Level Composition by Suburbs: Who Is Actually Waiting? ({year_sel})<br>'
+                  '<sup>Top 25 suburbs by total home care users</sup>',
             labels={'users': 'Home care users', 'sa3_name': '', 'level_label': 'Care level'},
         )
         fig_hcp.update_layout(
@@ -1197,8 +1219,8 @@ elif page == "reveal":
         st.markdown(
             f'<div class="whatif-box">'
             f'<div class="whatif-title">What-IF Scenario</div>'
-            f'<p class="whatif-sub">If all SA3s reached this beds_per_1k target, '
-            f'how many exit the red zone?</p>'
+            f'<p class="whatif-sub">If all suburbs reached this number of beds per 1000 resident target, '
+            f'how many suburbs exit the red zone?</p>'
             f'</div>',
             unsafe_allow_html=True,
         )
@@ -1215,10 +1237,10 @@ elif page == "reveal":
 
         m1, m2, m3 = st.columns(3)
         m1.metric(
-            "Current SA3s below target", f"{n_below}",
-            help=f"SA3s below {whatif_target:.0f} beds per 1,000 elderly",
+            "Current suburbs below target", f"{n_below}",
+            help=f"Suburbs below {whatif_target:.0f} beds per 1,000 elderly",
         )
-        m2.metric("Current SA3s above target", f"{n_above}")
+        m2.metric("Current suburbs above target", f"{n_above}")
         m3.metric("National avg beds/1k", f"{nat_avg_beds:.1f}")
 
         med_beds = df['beds_per_1k'].median()
