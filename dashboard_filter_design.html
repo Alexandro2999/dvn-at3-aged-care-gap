@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Filter Design</title>
+<style>
+  body { font-family: sans-serif; font-size: 14px; max-width: 1100px; margin: 40px auto; color: #1a1a1a; }
+  h1 { font-size: 20px; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; }
+  h2 { font-size: 15px; margin-top: 36px; margin-bottom: 4px; }
+  .tab-block { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 28px; }
+  .tab-title { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; margin-left: 8px; }
+  .tag-affected { background: #fde8e8; color: #c0392b; }
+  .tag-partial  { background: #fef3cd; color: #856404; }
+  .tag-ok       { background: #d4edda; color: #155724; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th { background: #f4f4f4; text-align: left; padding: 8px 10px; border: 1px solid #ddd; }
+  td { padding: 8px 10px; border: 1px solid #ddd; vertical-align: top; }
+  .chip { display: inline-block; background: #eef; border-radius: 4px; padding: 1px 6px; font-size: 11px; color: #333; margin: 1px; }
+  .chip-year { background: #fde8e8; }
+  .chip-sidebar { background: #e8f0fe; }
+  .chip-none { background: #f0f0f0; color: #999; }
+  .note { background: #fffbea; border-left: 3px solid #f0ad4e; padding: 8px 12px; margin-top: 10px; font-size: 12px; }
+  .rubric-box { border: 1px solid #b0c4de; border-radius: 8px; padding: 16px; margin-top: 32px; background: #f7f9fc; }
+  .rubric-box h2 { margin-top: 0; color: #1a3a6b; }
+  .dot-ok { color: #27ae60; }
+  .dot-warn { color: #e67e22; }
+</style>
+</head>
+<body>
+
+<h1>Dashboard Filter Design — Chart-Level Breakdown</h1>
+<p style="color:#555;font-size:13px;">Shows what's in each tab, how filters affect each chart, and why — aligned to AT3 rubric advanced features.</p>
+
+<!-- TAB 1 -->
+<div class="tab-block">
+  <div class="tab-title">Tab 1 — The Map <span class="tag tag-affected">Year-limited</span></div>
+  <div style="color:#555;font-size:13px;margin-bottom:10px;">Story: "Which SA3 has the worst care gap — and where is yours?"</div>
+  <table>
+    <tr>
+      <th style="width:24%">Chart</th>
+      <th style="width:18%">Data source</th>
+      <th style="width:14%">Years available</th>
+      <th style="width:22%">Filter applied</th>
+      <th>Impact if wrong filter</th>
+    </tr>
+    <tr>
+      <td>Choropleth — care_gap_index by SA3</td>
+      <td>master_sa3</td>
+      <td>2023 / 2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-sidebar">MMM</span><span class="chip chip-year">Year selectbox</span></td>
+      <td>If global year slider used: user can pick years with no data → blank map.</td>
+    </tr>
+    <tr>
+      <td>KPI row (facilities, beds, users, HCP, quality)</td>
+      <td>master_sa3</td>
+      <td>2023 / 2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-year">Year selectbox</span></td>
+      <td>If unfiltered by state: shows national totals regardless of map selection — context lost for family audience.</td>
+    </tr>
+    <tr>
+      <td>Top 10 worst SA3 (horizontal bar)</td>
+      <td>master_sa3</td>
+      <td>2023 / 2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-sidebar">MMM</span><span class="chip chip-year">Year selectbox</span></td>
+      <td>If year filter forces 2023 only: misses 2024 rankings which reflect mandate effect. Improvement story lost.</td>
+    </tr>
+    <tr>
+      <td>Beds per 1,000 elderly by state (bar)</td>
+      <td>service_supply + abs_population</td>
+      <td>2019–2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If forced to 2023–2024 only: loses 6-year decline context. "12% drop in 5 years" claim becomes unprovable.</td>
+    </tr>
+    <tr>
+      <td>Facility count vs beds 2019→2025</td>
+      <td>service_supply</td>
+      <td>2019–2025</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If cut to 2023–2024: supply consolidation story (−104 facilities, +12,270 beds) disappears entirely.</td>
+    </tr>
+  </table>
+  <div class="note">✅ Recommended: Year selectbox (2023 / 2024) inside this tab only. Supply and beds charts ignore year filter — use full native range.</div>
+</div>
+
+<!-- TAB 2 -->
+<div class="tab-block">
+  <div class="tab-title">Tab 2 — The Correlation <span class="tag tag-ok">Not affected</span></div>
+  <div style="color:#555;font-size:13px;margin-bottom:10px;">Story: "Who runs the best facilities? Ownership type, not location, is the culprit."</div>
+  <table>
+    <tr>
+      <th style="width:24%">Chart</th>
+      <th style="width:18%">Data source</th>
+      <th style="width:14%">Years available</th>
+      <th style="width:22%">Filter applied</th>
+      <th>Impact if wrong filter</th>
+    </tr>
+    <tr>
+      <td>Quality score by org type (box plot)</td>
+      <td>star_ratings</td>
+      <td>Q2/2023–Q1/2026</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-sidebar">MMM</span><span class="chip chip-sidebar">Org type</span></td>
+      <td>If year filter added: user cuts to 1 year → can't prove gap is structural, not a one-year anomaly.</td>
+    </tr>
+    <tr>
+      <td>Sub-rating breakdown: staffing vs clinical (grouped bar)</td>
+      <td>star_ratings</td>
+      <td>Q2/2023–Q1/2026</td>
+      <td><span class="chip chip-sidebar">Org type</span><span class="chip chip-none">No year filter</span></td>
+      <td>Must keep org type filter active to show the contrast. No year filter needed.</td>
+    </tr>
+    <tr>
+      <td>Quality by MMM × org type (grouped bar)</td>
+      <td>star_ratings</td>
+      <td>Q2/2023–Q1/2026</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-sidebar">MMM</span><span class="chip chip-sidebar">Org type</span></td>
+      <td>If MMM filter removed: viewer can't see gap holds inside every remoteness band — loses "not a geography problem" proof.</td>
+    </tr>
+    <tr>
+      <td>Quality trend over 12 quarters + mandate line (line)</td>
+      <td>star_ratings</td>
+      <td>Q2/2023–Q1/2026</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-sidebar">Org type</span><span class="chip chip-none">No year filter</span></td>
+      <td>If cut to 2023–2024: mandate before/after story disappears. Only 4–5 data points — trend meaningless.</td>
+    </tr>
+    <tr>
+      <td>Funding per facility vs quality (horizontal bar)</td>
+      <td>service_funding + ratings</td>
+      <td>2023–2024</td>
+      <td><span class="chip chip-sidebar">Org type</span><span class="chip chip-none">No year filter</span></td>
+      <td>No major impact — funding data already limited to 2023–2024. Show both years averaged.</td>
+    </tr>
+  </table>
+  <div class="note">✅ Recommended: Sidebar only (State, MMM, Org type). No year filter anywhere in this tab.</div>
+</div>
+
+<!-- TAB 3 -->
+<div class="tab-block">
+  <div class="tab-title">Tab 3 — The Reveal <span class="tag tag-partial">Partially affected</span></div>
+  <div style="color:#555;font-size:13px;margin-bottom:10px;">Story: "People with high care needs are stuck at home. 58 SA3s have more people than beds."</div>
+  <table>
+    <tr>
+      <th style="width:24%">Chart</th>
+      <th style="width:18%">Data source</th>
+      <th style="width:14%">Years available</th>
+      <th style="width:22%">Filter applied</th>
+      <th>Impact if wrong filter</th>
+    </tr>
+    <tr>
+      <td>HCP levels stacked area — L1 to L4 trend</td>
+      <td>service_users (direct)</td>
+      <td>2023 / 2024 / 2025</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If year filter applied: cuts to 2023–2024 only → "+22% growth in 2 years" loses 2025 data point — insight weakened to 1-year change.</td>
+    </tr>
+    <tr>
+      <td>Top 20 SA3 by waitlist pressure (horizontal bar)</td>
+      <td>service_users + service_supply</td>
+      <td>2023 / 2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-sidebar">MMM</span><span class="chip chip-year">Year selectbox</span></td>
+      <td>Needs year selectbox so viewer can check their region in latest snapshot (2024). Fine with 2 years.</td>
+    </tr>
+    <tr>
+      <td>Crisis zones: new vs resolved 2023→2024 (diverging bar)</td>
+      <td>service_users + service_supply</td>
+      <td>Fixed: 2023 and 2024</td>
+      <td><span class="chip chip-none">No filter — fixed comparison</span></td>
+      <td>Fixed 2-year comparison by design. No filter needed or applicable.</td>
+    </tr>
+    <tr>
+      <td>Supply divergence: crisis vs non-crisis indexed to 2019 (dual line)</td>
+      <td>service_supply</td>
+      <td>2019–2025</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If cut to 2023–2024: loses 2019 baseline — can't show "crisis zones lost 551 beds while rest gained 12,027". Story gone.</td>
+    </tr>
+    <tr>
+      <td>Detail table: top 20 (pressure + quality + beds)</td>
+      <td>master_sa3 + service_supply</td>
+      <td>2023 / 2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-year">Year selectbox</span></td>
+      <td>Needs year filter so viewer can look up their region. Fine with 2 years — table is point-in-time.</td>
+    </tr>
+  </table>
+  <div class="note">✅ Recommended: Year selectbox (2023 / 2024) inside tab — applies to top 20 bar and detail table only. HCP trend chart and supply divergence chart must explicitly ignore the year filter.</div>
+</div>
+
+<!-- TAB 4 -->
+<div class="tab-block">
+  <div class="tab-title">Tab 4 — The Trend <span class="tag tag-ok">Not affected</span></div>
+  <div style="color:#555;font-size:13px;margin-bottom:10px;">Story: "The mandate lifted quality. But beds per capita are still falling."</div>
+  <table>
+    <tr>
+      <th style="width:24%">Chart</th>
+      <th style="width:18%">Data source</th>
+      <th style="width:14%">Years available</th>
+      <th style="width:22%">Filter applied</th>
+      <th>Impact if wrong filter</th>
+    </tr>
+    <tr>
+      <td>Quality trend by state over 12 quarters + mandate line (line)</td>
+      <td>star_ratings</td>
+      <td>Q2/2023–Q1/2026</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If cut to 2023–2024: only 4–5 data points. Post-mandate stabilisation period lost.</td>
+    </tr>
+    <tr>
+      <td>Before/after mandate by org type (slope chart)</td>
+      <td>star_ratings</td>
+      <td>Fixed: pre/post Oct 2023</td>
+      <td><span class="chip chip-sidebar">Org type</span><span class="chip chip-none">No year filter</span></td>
+      <td>Fixed before/after split by mandate date. Year filter not applicable — would break the comparison logic.</td>
+    </tr>
+    <tr>
+      <td>Beds per 1,000 elderly by state 2019→2024 (line)</td>
+      <td>service_supply + abs_population</td>
+      <td>2019–2024</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If cut to 2023–2024: 2-point "trend" only — can't prove systematic decline. "Every state lost beds per capita" claim unprovable.</td>
+    </tr>
+    <tr>
+      <td>Net facility gain/loss by state 2019→2025 (bar)</td>
+      <td>service_supply</td>
+      <td>2019–2025</td>
+      <td><span class="chip chip-sidebar">State</span><span class="chip chip-none">No year filter</span></td>
+      <td>If cut to 2023–2024: loses 6-year change context. NSW −54 facilities story requires the full window.</td>
+    </tr>
+  </table>
+  <div class="note">✅ Recommended: Sidebar only (State, MMM, Org type). No year filter anywhere in this tab.</div>
+</div>
+
+<!-- RUBRIC -->
+<div class="rubric-box">
+  <h2>Rubric: Advanced Features — Where to Implement</h2>
+  <table>
+    <tr>
+      <th style="width:28%">Feature (must do 3 of 4)</th>
+      <th style="width:30%">Where</th>
+      <th>How it delivers the insight</th>
+    </tr>
+    <tr>
+      <td><span class="dot-ok">●</span> Context-Aware Filtering</td>
+      <td>Tab 1 — choropleth + KPI row</td>
+      <td>When user selects a State, KPI callout text updates with state-specific numbers (e.g. "In WA, care gap is 0.99 — below national average of 1.13")</td>
+    </tr>
+    <tr>
+      <td><span class="dot-ok">●</span> Visual Tooltips / Modals</td>
+      <td>Tab 1 — choropleth hover</td>
+      <td>Hover SA3 → mini card showing care_gap_index, quality score, beds, pop_65_plus, state. Families can look up their suburb instantly.</td>
+    </tr>
+    <tr>
+      <td><span class="dot-warn">●</span> Narrative Scrollytelling</td>
+      <td>All tabs — callout sequence</td>
+      <td>Each tab ends with st.info / st.warning / st.error callouts that guide viewer from observation → implication → call to action.</td>
+    </tr>
+    <tr>
+      <td><span class="dot-warn">●</span> What-If Parameterization</td>
+      <td>Tab 3 — pressure threshold slider</td>
+      <td>Slider "Show SA3s where pressure exceeds X" → recount crisis zones in real time. Viewer sees how many communities enter crisis as threshold moves.</td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>
