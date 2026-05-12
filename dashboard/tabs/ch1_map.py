@@ -1,205 +1,401 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 from tabs.utils import C, MMM_COLOURS, theme
+from tabs import fullmap as pg_fullmap
 
-_METRIC_OPTIONS = {
-    'Care Gap Index':      ('care_gap_index',    [[0, '#E3F1FA'], [0.4, '#4A7FC1'], [1, '#1B3F6E']], 'Care Gap Index'),
-    'Quality Score':       ('quality_score',     [[0, '#FFF5E6'], [0.5, '#F5A623'], [1, '#8B4500']], 'Quality Score ★'),
-    'Access Rate (%)':     ('access_rate',       [[0, '#F0FFF0'], [0.5, '#4CAF50'], [1, '#1B5E20']], 'Access Rate %'),
-    'Waitlist Pressure':   ('waitlist_pressure', [[0, '#FFF0F0'], [0.5, '#E57373'], [1, '#7F0000']], 'Waitlist Pressure'),
-}
-
-MMM_ORDER = ['MM1', 'MM2', 'MM3', 'MM4', 'MM5', 'MM6', 'MM7']
+MMM_ORDER  = ['MM1', 'MM2', 'MM3', 'MM4', 'MM5', 'MM6', 'MM7']
 MMM_LABELS = {
     'MM1': 'Major City', 'MM2': 'Inner Regional', 'MM3': 'Outer Regional',
-    'MM4': 'Remote', 'MM5': 'Very Remote', 'MM6': 'Remote (alt)', 'MM7': 'Very Remote (alt)',
+    'MM4': 'Remote', 'MM5': 'Small Rural', 'MM6': 'Remote Community', 'MM7': 'Very Remote',
+}
+
+OECD_DATA = {
+    'Country':                    ['Netherlands', 'Sweden', 'Denmark', 'Australia', 'Canada', 'United Kingdom', 'Japan', 'OECD Average'],
+    'Beds per 1,000 aged 65+':    [77.1, 63.9, 37.3, 47.6, 49.2, 41.3, 34.5, 42.1],
+    'Combined LTC coverage (%)':  [12, 16, 14, 9, 5, 5.5, 3, 12.7],
+    'highlight':                  ['Other', 'Other', 'Other', 'Australia', 'Other', 'Other', 'Other', 'OECD Avg'],
+}
+
+# (col_name, worst_is_high, fmt, suffix, color)
+_RANK_METRICS = {
+    'Care Gap Index': ('care_gap_index', True,  ':.2f', '',   C['red']),
+    'Quality Score':  ('quality_score',  False, ':.2f', '★',  C['teal']),
+    'Residential Access Rate': ('access_rate', False, ':.1f', '%', '#4A7FC1'),
 }
 
 
-def render(df, gdf, year_sel: int) -> None:
+def render(df, gdf, supply, population, ratings, service_users=None) -> None:
     st.markdown('<div class="sec-h1">Is aged care near me any good?</div>', unsafe_allow_html=True)
-
-    # --- Neighbourhood search (ADVANCED FEATURE 2 — fuzzy match with tooltip card) ---
-    search = st.text_input("Check my neighbourhood", placeholder="Type your area name (SA3)")
-    if search and not df.empty:
-        try:
-            from rapidfuzz import process as fz
-            names = df['sa3_name'].dropna().unique().tolist()
-            result = fz.extractOne(search, names)
-            if result and result[1] >= 60:
-                row = df[df['sa3_name'] == result[0]].iloc[0]
-                st.markdown(
-                    f'<div class="nb-card">'
-                    f'<b>{result[0]}</b> ({row.get("state", "")})'
-                    f'&nbsp;&nbsp;·&nbsp;&nbsp;Care Gap Index: <b>{row["care_gap_index"]:.2f}</b>'
-                    f'&nbsp;&nbsp;·&nbsp;&nbsp;Quality Score: <b>{row["quality_score"]:.2f}★</b>'
-                    f'&nbsp;&nbsp;·&nbsp;&nbsp;Access Rate: <b>{row["access_rate"]:.1f}%</b>'
-                    f'&nbsp;&nbsp;·&nbsp;&nbsp;Remoteness: <b>{row.get("mmm_code", "")}</b>'
-                    f'</div>',
-                    unsafe_allow_html=True,
-                )
-        except Exception:
-            pass
-
-    # --- KPI metric cards ---
-    if not df.empty:
-        avg_cgi = df['care_gap_index'].mean()
-        avg_qs  = df['quality_score'].mean()
-        avg_ar  = df['access_rate'].mean()
-        n_sa3   = len(df)
-
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Avg Care Gap Index", f"{avg_cgi:.2f}", help="Mean care gap index across selected SA3s. Higher = more underserved.")
-        k2.metric("SA3s Analysed", f"{n_sa3:,}", help="Number of SA3 regions in current filter selection.")
-        k3.metric("Avg Quality Score", f"{avg_qs:.2f} ★", help="Mean facility quality score (out of 5) across selected SA3s.")
-        k4.metric("Avg Access Rate", f"{avg_ar:.1f}%", help="Mean share of 65+ population in residential care across selected SA3s.")
-
     st.markdown(
-        '<p class="sec-p">Each SA3 is coloured by the selected metric. '
-        'Use the dropdown to switch between <b>Care Gap Index</b>, Quality, Access, or Waitlist Pressure. '
-        'The care gap paradox: the deepest crisis is in major cities, not remote areas.</p>',
+        '<p class="sec-p">Start with the national picture, zoom into the structural decline, '
+        'then find your own area.</p>',
         unsafe_allow_html=True,
     )
 
-    # --- Choropleth with metric selector ---
-    metric_label = st.selectbox(
-        "Map metric",
-        options=list(_METRIC_OPTIONS.keys()),
-        index=0,
-        help="Choose which metric to display on the choropleth map.",
-    )
-    col_name, cscale, cbar_label = _METRIC_OPTIONS[metric_label]
+    tab_map, tab_a, tab_b, tab_c = st.tabs([
+        "🗺 Interactive Map",
+        "📊 The Overview",
+        "📉 The Decline",
+        "🔍 Find My Area",
+    ])
 
-    if gdf is not None and not df.empty:
-        cols_needed = ['sa3_code', 'sa3_name', 'state', 'mmm_code',
-                       'care_gap_index', 'quality_score', 'access_rate', 'waitlist_pressure', 'pop_65_plus']
-        merged = gdf.merge(df[cols_needed], on='sa3_code', how='left')
+    with tab_map:
+        pg_fullmap.render(df, gdf, supply, population, service_users)
 
-        val_max = float(df[col_name].quantile(0.95)) if df[col_name].notna().any() else 5
-        fig_map = px.choropleth(
-            merged,
-            geojson=merged.__geo_interface__,
-            locations=merged.index,
-            color=col_name,
-            color_continuous_scale=cscale,
-            range_color=[0, val_max if val_max > 0 else 5],
-            hover_data={
-                'sa3_name': True, 'state': True, 'mmm_code': True,
-                'care_gap_index': ':.2f', 'quality_score': ':.2f',
-                'access_rate': ':.1f', 'pop_65_plus': ':,.0f',
-            },
-            title=f'{metric_label} by SA3 ({year_sel})',
-            labels={col_name: cbar_label},
+    # ════════════════════════════════════════════════════════════════════════════
+    # TAB A — Overview: care gap · quality · access × state / MMM + Top N rankings
+    # ════════════════════════════════════════════════════════════════════════════
+    with tab_a:
+        year_sel = st.radio(
+            "Year", [2023, 2024], index=1, horizontal=True, key="a_year",
         )
-        fig_map.update_geos(fitbounds='locations', visible=False)
-        fig_map.update_coloraxes(colorbar_title_text=cbar_label)
-        theme(fig_map, height=520)
-        st.plotly_chart(fig_map, use_container_width=True)
-        st.warning(
-            f"The 10 worst-performing SA3s by Care Gap Index are all in major cities (MM1). "
-            f"Unley (SA) has a care gap index of **2.78** — more than 2× the national average of ~1.13."
-        )
-    elif not df.empty:
-        st.warning("Shapefile not found — showing fallback scatter chart.")
-        fig_fb = px.scatter(
-            df.dropna(subset=['access_rate', 'quality_score']),
-            x='access_rate', y='quality_score',
-            color='care_gap_index', size='pop_65_plus',
-            hover_name='sa3_name',
-            hover_data={'state': True, 'mmm_code': True, 'care_gap_index': ':.2f'},
-            color_continuous_scale=[[0, C['bg']], [1, C['navy']]],
-            title=f'Access rate vs quality score ({year_sel})',
-            labels={'access_rate': 'Access rate (%)', 'quality_score': 'Quality score'},
-        )
-        theme(fig_fb, height=480)
-        st.plotly_chart(fig_fb, use_container_width=True)
-    else:
-        st.info("No data matches the current filter selection.")
+        df_yr = df[df['year'] == year_sel].copy()
 
-    if not df.empty:
-        # --- Worst CGI-10 (left) | Best access-10 (right) ---
-        c1, c2 = st.columns(2)
-        with c1:
-            worst10 = df.nlargest(10, 'care_gap_index')[['sa3_name', 'state', 'care_gap_index']].copy()
-            worst10['label'] = worst10['sa3_name'] + ' (' + worst10['state'] + ')'
-            fig_worst = px.bar(
-                worst10.sort_values('care_gap_index'),
-                x='care_gap_index', y='label', orientation='h',
-                color_discrete_sequence=[C['red']], text='care_gap_index',
-                title=f'10 Worst Care Gap SA3s<br><sup>highest care gap index, {year_sel}</sup>',
-                labels={'care_gap_index': 'Care Gap Index', 'label': ''},
-            )
-            fig_worst.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-            theme(fig_worst, height=380)
-            st.plotly_chart(fig_worst, use_container_width=True)
-        with c2:
-            top10 = df.nlargest(10, 'access_rate')[['sa3_name', 'state', 'access_rate']].copy()
-            top10['label'] = top10['sa3_name'] + ' (' + top10['state'] + ')'
-            fig_top = px.bar(
-                top10.sort_values('access_rate'),
-                x='access_rate', y='label', orientation='h',
-                color_discrete_sequence=[C['teal']], text='access_rate',
-                title=f'10 Best Served SA3s<br><sup>highest access rate, {year_sel}</sup>',
-                labels={'access_rate': 'Access Rate (% of 65+ in residential care)', 'label': ''},
-            )
-            fig_top.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
-            theme(fig_top, height=380)
-            st.plotly_chart(fig_top, use_container_width=True)
+        if df_yr.empty:
+            st.info("No data for current filter.")
+        else:
+            # ── KPI cards ──────────────────────────────────────────────────────
+            k1, k2, k3 = st.columns(3)
+            k1.metric("Avg Care Gap Index", f"{df_yr['care_gap_index'].mean():.2f}",
+                      help="Higher = more underserved")
+            k2.metric("Avg Quality Score", f"{df_yr['quality_score'].mean():.2f} ★",
+                      help="Out of 5.0")
+            k3.metric("Avg Residential Access", f"{df_yr['access_rate'].mean():.1f}%",
+                      help="% of 65+ in residential care")
 
-        # --- MMM quality bar chart (counterintuitive finding) ---
-        st.markdown("### Quality by Remoteness — the remote paradox")
-        mmm_present = [m for m in MMM_ORDER if m in df['mmm_code'].values]
-        if mmm_present:
-            mmm_df = (
-                df.groupby('mmm_code', observed=True)['quality_score']
-                .mean()
-                .reset_index()
+            st.warning(
+                "Every SA3 in the top 10 worst-performing list is **MM1 — major city**. "
+                "Unley (SA) has a care gap of **2.78** — more than 2× the national average. "
+                "The crisis is in the suburbs, not the outback."
             )
-            mmm_df['mmm_code'] = pd.Categorical(mmm_df['mmm_code'], categories=MMM_ORDER, ordered=True)
-            mmm_df = mmm_df.sort_values('mmm_code')
-            mmm_df['label'] = mmm_df['mmm_code'].map(MMM_LABELS).fillna(mmm_df['mmm_code'])
-            mmm_df['colour'] = mmm_df['mmm_code'].map(MMM_COLOURS)
-            fig_mmm = px.bar(
-                mmm_df, x='label', y='quality_score',
-                color='mmm_code',
-                color_discrete_map=MMM_COLOURS,
-                text='quality_score',
-                title=f'Average Quality Score by Remoteness Band ({year_sel})',
-                labels={'quality_score': 'Avg Quality Score ★', 'label': 'Remoteness Band', 'mmm_code': 'Band'},
+
+            # ── View toggle ────────────────────────────────────────────────────
+            view_a = st.radio(
+                "View by", ["By State", "By Remoteness (MMM)"],
+                horizontal=True, key="a_view",
             )
-            fig_mmm.update_traces(texttemplate='%{text:.2f}★', textposition='outside')
-            fig_mmm.update_layout(showlegend=False)
-            theme(fig_mmm, height=380)
-            st.plotly_chart(fig_mmm, use_container_width=True)
+
+            if view_a == "By State":
+                grp = 'state'
+                grp_label = 'State'
+                plot_df = df_yr.copy()
+            else:
+                grp = 'mmm_code'
+                grp_label = 'Remoteness'
+                plot_df = df_yr.copy()
+                plot_df['mmm_code'] = pd.Categorical(
+                    plot_df['mmm_code'], categories=MMM_ORDER, ordered=True
+                )
+
+            # ── 3 metric bar charts — shared y-axis order (worst care gap at top) ─
+            ref_order = (
+                plot_df.groupby(grp, observed=True)['care_gap_index']
+                .mean().sort_values(ascending=True)  # ascending = worst floats to top in horizontal bars
+                .index.tolist()
+            )
+            bar_specs = [
+                ('care_gap_index', f'Care Gap Index — {year_sel}',      C['red'],   '%{text:.2f}'),
+                ('quality_score',  f'Quality Score — {year_sel}',       C['teal'],  '%{text:.2f}★'),
+                ('access_rate',    f'Residential Access — {year_sel}',  '#4A7FC1',  '%{text:.1f}%'),
+            ]
+            c1, c2, c3 = st.columns(3)
+            for widget_col, (metric, title, color, text_fmt) in zip([c1, c2, c3], bar_specs):
+                agg = plot_df.groupby(grp, observed=True)[metric].mean().reset_index()
+                if grp == 'mmm_code':
+                    agg['x_label'] = agg[grp].map(MMM_LABELS).fillna(agg[grp].astype(str))
+                    label_order = [MMM_LABELS.get(k, k) for k in ref_order]
+                    agg['x_label'] = pd.Categorical(agg['x_label'], categories=label_order, ordered=True)
+                    agg = agg.sort_values('x_label')
+                    y_col = 'x_label'
+                else:
+                    agg[grp] = pd.Categorical(agg[grp], categories=ref_order, ordered=True)
+                    agg = agg.sort_values(grp)
+                    y_col = grp
+                fig = px.bar(
+                    agg, x=metric, y=y_col, orientation='h',
+                    color_discrete_sequence=[color], text=metric,
+                    title=title, labels={metric: '', y_col: ''},
+                )
+                fig.update_traces(
+                    texttemplate=text_fmt, textposition='outside',
+                    textfont=dict(size=11),
+                )
+                theme(fig, height=420)
+                widget_col.plotly_chart(fig, use_container_width=True, key=f"a_bar_{metric}")
+
+            st.info(
+                "**Remote paradox:** MM7 (Very Remote) averages **3.90★** vs MM1 (Major City) at **3.55★**. "
+                "The remote disadvantage is **access**, not quality. "
+                "ACT has the highest access rate (**5.01%**) — driven by demand, not better supply."
+            )
+
+            # Single-state context callout
+            selected_states = df_yr['state'].dropna().unique()
+            if len(selected_states) == 1:
+                s = selected_states[0]
+                s_cgi = df_yr['care_gap_index'].mean()
+                nat_cgi = df[df['year'] == year_sel]['care_gap_index'].mean()
+                direction = "above" if s_cgi > nat_cgi else "below"
+                diff = abs(s_cgi - nat_cgi)
+                st.info(
+                    f"**{s}:** care gap index is **{s_cgi:.2f}** — "
+                    f"{diff:.2f} pts {direction} the national average of {nat_cgi:.2f}."
+                )
+
+            # ── SA3 Rankings ───────────────────────────────────────────────────
+            st.markdown("---")
+            st.markdown("### 🏆 SA3 Rankings")
+
+            rk1, rk2, rk3 = st.columns(3)
+            with rk1:
+                n_top = st.slider("Top N", 5, 30, 10, 5, key="rank_n")
+            with rk2:
+                rank_metric = st.selectbox(
+                    "Metric", list(_RANK_METRICS.keys()), key="rank_metric",
+                )
+            with rk3:
+                rank_dir = st.radio("Direction", ["Worst", "Best"], horizontal=True, key="rank_dir")
+
+            col_name, worst_is_high, fmt_str, suffix, _ = _RANK_METRICS[rank_metric]
+            use_largest = (rank_dir == "Worst") == worst_is_high
+            bar_color = C['red'] if rank_dir == "Worst" else C['teal']
+
+            if use_largest:
+                ranked = df_yr.nlargest(n_top, col_name)[['sa3_name', 'state', col_name]].copy()
+                ranked = ranked.sort_values(col_name)
+            else:
+                ranked = df_yr.nsmallest(n_top, col_name)[['sa3_name', 'state', col_name]].copy()
+                ranked = ranked.sort_values(col_name, ascending=False)
+            ranked['label'] = ranked['sa3_name'] + ' (' + ranked['state'] + ')'
+
+            fig_rank = px.bar(
+                ranked, x=col_name, y='label', orientation='h',
+                color_discrete_sequence=[bar_color], text=col_name,
+                title=f'Top {n_top} {rank_dir} — {rank_metric} ({year_sel})',
+                labels={col_name: rank_metric, 'label': ''},
+            )
+            fig_rank.update_traces(
+                texttemplate=f'%{{text{fmt_str}}}{suffix}', textposition='outside',
+                textfont=dict(size=11),
+            )
+            theme(fig_rank, height=max(400, n_top * 48))
+            st.plotly_chart(fig_rank, use_container_width=True, key="a_rank")
+
+
+    # ════════════════════════════════════════════════════════════════════════════
+    # TAB B — The Decline: beds/1k + n_facilities (State or MMM)
+    # ════════════════════════════════════════════════════════════════════════════
+    with tab_b:
         st.info(
-            "**Counterintuitive:** Remote and very remote areas score *higher* on quality — "
-            "MM7 averages **3.90★** vs MM1 (major cities) at **3.55★**. "
-            "The remote disadvantage is **access** (fewer beds, longer distances), not quality of care."
+            "Beds per 1,000 elderly **fell in every state** while the total number of facilities "
+            "consolidated year on year. Supply is shrinking as the elderly population grows."
         )
 
-        # --- State CGI bar chart ---
-        st.markdown("### Care Gap by State — who's under most pressure?")
-        state_df = (
-            df.groupby('state', observed=True)['care_gap_index']
-            .mean()
-            .reset_index()
-            .sort_values('care_gap_index', ascending=True)
+        # ── Build state-level supply (2019–2025) ──────────────────────────────
+        state_supply = supply.merge(
+            population[['sa3_code', 'year', 'pop_65_plus', 'state']],
+            on=['sa3_code', 'year'], how='inner',
         )
-        fig_state = px.bar(
-            state_df, x='care_gap_index', y='state', orientation='h',
-            color='care_gap_index',
-            color_continuous_scale=[[0, C['bg']], [0.5, '#4A7FC1'], [1, C['navy']]],
-            text='care_gap_index',
-            title=f'Average Care Gap Index by State/Territory ({year_sel})',
-            labels={'care_gap_index': 'Avg Care Gap Index', 'state': ''},
+        state_supply = (
+            state_supply.groupby(['state', 'year'], as_index=False)
+            .agg(
+                residential_places=('residential_places', 'sum'),
+                pop_65_plus=('pop_65_plus', 'sum'),
+                n_facilities=('n_facilities', 'sum'),
+            )
         )
-        fig_state.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-        fig_state.update_layout(coloraxis_showscale=False)
-        theme(fig_state, height=400)
-        st.plotly_chart(fig_state, use_container_width=True)
-        st.success(
-            "ACT has the highest residential access rate (**5.01%** of 65+) — driven by concentrated demand, "
-            "not better supply. In 2023→2024, **250 SA3s (79%)** saw their care gap improve. "
-            "The 21% that worsened are concentrated in major city (MM1) regions."
+        state_supply = state_supply[state_supply['pop_65_plus'] > 0].copy()
+        state_supply['beds_per_1k'] = (
+            state_supply['residential_places'] / state_supply['pop_65_plus'] * 1000
         )
+
+        # ── Build MMM-level supply ─────────────────────────────────────────────
+        # mmm_code is treated as static per SA3 — join without year constraint
+        # so all supply years (2019–2025) are included, not just df years (2023–2024)
+        sa3_mmm = (
+            df[['sa3_code', 'mmm_code']].dropna()
+            .drop_duplicates('sa3_code', keep='last')
+        )
+        mmm_supply_src = supply.merge(
+            population[['sa3_code', 'year', 'pop_65_plus']],
+            on=['sa3_code', 'year'], how='inner',
+        ).merge(sa3_mmm, on='sa3_code', how='inner')
+        mmm_supply_src = mmm_supply_src[mmm_supply_src['pop_65_plus'] > 0].copy()
+        mmm_supply_src['beds_per_1k'] = (
+            mmm_supply_src['residential_places'] / mmm_supply_src['pop_65_plus'] * 1000
+        )
+        mmm_beds = mmm_supply_src.groupby(['mmm_code', 'year'], as_index=False)['beds_per_1k'].mean()
+        mmm_fac  = mmm_supply_src.groupby(['mmm_code', 'year'], as_index=False)['n_facilities'].sum()
+
+        # ── View toggle ───────────────────────────────────────────────────────
+        view_b = st.radio("View by", ["By State", "By MMM"], horizontal=True, key="decline_view")
+
+        ch1, ch2 = st.columns(2)
+
+        def _index_to_base(df_long, grp_col, val_col, base_year=2019):
+            """Return a copy with val_col re-expressed as % change from base_year (base = 0%)."""
+            base = (
+                df_long[df_long['year'] == base_year][[grp_col, val_col]]
+                .rename(columns={val_col: '_base'})
+            )
+            out = df_long.merge(base, on=grp_col, how='left')
+            out[val_col] = (out[val_col] - out['_base']) / out['_base'] * 100
+            return out.drop(columns='_base')
+
+        if view_b == "By State":
+            beds_idx = _index_to_base(state_supply, 'state', 'beds_per_1k')
+            fac_idx  = _index_to_base(state_supply, 'state', 'n_facilities')
+
+            with ch1:
+                fig_beds = px.line(
+                    beds_idx.sort_values('year'),
+                    x='year', y='beds_per_1k', color='state', markers=True,
+                    title='Beds per 1,000 elderly — % change from 2019 by State',
+                    labels={'beds_per_1k': '% change vs 2019', 'year': '', 'state': ''},
+                )
+                fig_beds.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                theme(fig_beds, height=380)
+                st.plotly_chart(fig_beds, use_container_width=True, key="b_beds_state")
+            with ch2:
+                fig_fac = px.line(
+                    fac_idx.sort_values('year'),
+                    x='year', y='n_facilities', color='state', markers=True,
+                    title='Number of Facilities — % change from 2019 by State',
+                    labels={'n_facilities': '% change vs 2019', 'year': '', 'state': ''},
+                )
+                fig_fac.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                theme(fig_fac, height=380)
+                st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_state")
+        else:
+            mmm_beds_idx = _index_to_base(mmm_beds, 'mmm_code', 'beds_per_1k')
+            mmm_fac_idx  = _index_to_base(mmm_fac,  'mmm_code', 'n_facilities')
+            # Add full labels and preserve sort order
+            label_order = [MMM_LABELS[m] for m in MMM_ORDER if m in mmm_beds_idx['mmm_code'].values]
+            label_colours = {MMM_LABELS[k]: v for k, v in MMM_COLOURS.items()}
+            for _df in [mmm_beds_idx, mmm_fac_idx]:
+                _df['mmm_label'] = pd.Categorical(
+                    _df['mmm_code'].map(MMM_LABELS),
+                    categories=label_order, ordered=True,
+                )
+
+            with ch1:
+                fig_beds = px.line(
+                    mmm_beds_idx.sort_values(['mmm_label', 'year']),
+                    x='year', y='beds_per_1k', color='mmm_label',
+                    color_discrete_map=label_colours, markers=True,
+                    title='Beds per 1,000 elderly — % change from 2019 by Remoteness',
+                    labels={'beds_per_1k': '% change vs 2019', 'year': '', 'mmm_label': ''},
+                )
+                fig_beds.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                theme(fig_beds, height=380)
+                st.plotly_chart(fig_beds, use_container_width=True, key="b_beds_mmm")
+            with ch2:
+                fig_fac = px.line(
+                    mmm_fac_idx.sort_values(['mmm_label', 'year']),
+                    x='year', y='n_facilities', color='mmm_label',
+                    color_discrete_map=label_colours, markers=True,
+                    title='Number of Facilities — % change from 2019 by Remoteness',
+                    labels={'n_facilities': '% change vs 2019', 'year': '', 'mmm_label': ''},
+                )
+                fig_fac.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                theme(fig_fac, height=380)
+                st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_mmm")
+
+        st.warning(
+            "**Supply consolidation:** 2019→2025 saw **−104 facilities** but **+12,270 beds** nationally. "
+            "Every state lost beds per 1,000 elderly — NT and SA fell the most (−7.4 each). "
+            "Beds per 1,000 elderly dropped from ~76 (2020) to ~67 (2024), a **12% decline in 5 years**."
+        )
+
+
+    # ════════════════════════════════════════════════════════════════════════════
+    # TAB C — Find My Area: search + choropleth with year slider + full metrics
+    # ════════════════════════════════════════════════════════════════════════════
+    with tab_c:
+        st.info(
+            "The full interactive map — switch metrics, change year, and see region movement — "
+            "is available on the **Interactive Map** page. Use the nav bar above or click "
+            "[Discover the Map](?page=fullmap)."
+        )
+
+        # ── Search your area ──────────────────────────────────────────────────
+        st.markdown("---")
+        _sa3_opts = [""] + sorted(df_yr['sa3_name'].dropna().unique().tolist()) if not df_yr.empty else [""]
+        search = st.selectbox("Find your area", options=_sa3_opts, index=0, key="c_search",
+                              format_func=lambda x: "— type to search SA3 name —" if x == "" else x)
+        if search and not df_yr.empty:
+            row = df_yr[df_yr['sa3_name'] == search].iloc[0]
+            st.markdown(
+                f'<div class="nb-card">'
+                f'<b>{search}</b> ({row.get("state", "")})'
+                f'&nbsp;&nbsp;·&nbsp;&nbsp;Care Gap: <b>{row["care_gap_index"]:.2f}</b>'
+                f'&nbsp;&nbsp;·&nbsp;&nbsp;Quality: <b>{row["quality_score"]:.2f}★</b>'
+                f'&nbsp;&nbsp;·&nbsp;&nbsp;Access Rate: <b>{row["access_rate"]:.1f}%</b>'
+                f'&nbsp;&nbsp;·&nbsp;&nbsp;Remoteness: <b>{MMM_LABELS.get(row.get("mmm_code", ""), row.get("mmm_code", ""))}</b>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+            # ── Top 5 facilities in this SA3 ──────────────────────────────────
+            _sa3_code = row['sa3_code'] if 'sa3_code' in row.index else None
+            if _sa3_code is not None:
+                _fac = ratings[ratings['sa3_code'] == _sa3_code].copy()
+                if not _fac.empty:
+                    _top5 = (
+                        _fac.sort_values('snapshot_date')
+                        .groupby('Service Name', as_index=False)
+                        .last()
+                        .nlargest(5, 'quality_score')
+                        [['Service Name', 'Provider Name', 'org_type', 'quality_score', 'overall_rating']]
+                        .rename(columns={
+                            'Service Name': 'Facility',
+                            'Provider Name': 'Provider',
+                            'org_type': 'Type',
+                            'quality_score': 'Quality',
+                            'overall_rating': 'Stars',
+                        })
+                    )
+                    _top5['Quality'] = _top5['Quality'].round(2)
+                    _org_colour = {
+                        'profit': '#D94F3D',
+                        'not_for_profit': '#1B3F6E',
+                        'government': '#00A79D',
+                    }
+                    _org_label = {
+                        'profit': 'For Profit',
+                        'not_for_profit': 'Not for Profit',
+                        'government': 'Government',
+                    }
+                    _rows_html = ''
+                    for _i, _r in enumerate(_top5.itertuples(index=False)):
+                        _bg = '#FFFFFF' if _i % 2 == 0 else '#F3F9FE'
+                        _oc = _org_colour.get(_r.Type, '#6B7C93')
+                        _ol = _org_label.get(_r.Type, _r.Type)
+                        _rows_html += (
+                            f'<tr style="background:{_bg}">'
+                            f'<td style="padding:12px 16px;color:#1B3F6E;font-weight:500;font-size:16px">{_r.Facility}</td>'
+                            f'<td style="padding:12px 16px;color:#6B7C93;font-size:15px">{_r.Provider}</td>'
+                            f'<td style="padding:12px 16px;font-size:15px"><span style="color:{_oc};font-weight:600">{_ol}</span></td>'
+                            f'<td style="padding:12px 16px;text-align:right;color:#1B3F6E;font-weight:700;font-size:16px">{_r.Quality:.2f}</td>'
+                            f'<td style="padding:12px 16px;text-align:right;color:#1B3F6E;font-size:16px">{_r.Stars:.1f} ★</td>'
+                            f'</tr>'
+                        )
+                    st.markdown(
+                        f'<p style="margin:16px 0 8px;color:#1B3F6E;font-weight:700;font-size:17px">'
+                        f'Top 5 facilities in this area <span style="font-weight:400;color:#6B7C93;font-size:14px">(latest ratings)</span></p>'
+                        f'<table style="width:100%;border-collapse:collapse;font-size:16px;'
+                        f'border:1px solid #C8DCF0;border-radius:10px;overflow:hidden">'
+                        f'<thead><tr style="background:#1B3F6E">'
+                        f'<th style="padding:12px 16px;text-align:left;color:white;font-weight:700;font-size:16px">Facility</th>'
+                        f'<th style="padding:12px 16px;text-align:left;color:white;font-weight:700;font-size:16px">Provider</th>'
+                        f'<th style="padding:12px 16px;text-align:left;color:white;font-weight:700;font-size:16px">Type</th>'
+                        f'<th style="padding:12px 16px;text-align:right;color:white;font-weight:700;font-size:16px">Quality</th>'
+                        f'<th style="padding:12px 16px;text-align:right;color:white;font-weight:700;font-size:16px">Stars</th>'
+                        f'</tr></thead>'
+                        f'<tbody>{_rows_html}</tbody>'
+                        f'</table>',
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.caption("No facility-level data for this SA3.")

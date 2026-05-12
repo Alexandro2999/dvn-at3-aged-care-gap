@@ -95,3 +95,81 @@ def render(ratings) -> None:
     )
     theme(fig_comp, height=280)
     st.plotly_chart(fig_comp, use_container_width=True)
+
+    # ── What-IF compliance threshold slider ─────────────────────────────────
+    st.markdown("---")
+    st.markdown(
+        '<div class="sub-h">What-IF: how strict should the RN-minutes target be?</div>',
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "The current mandate is **44 RN minutes/resident/day**. Drag the slider to model "
+        "what happens to compliance if the target moved tighter or looser."
+    )
+
+    latest_snap = ratings['snapshot_date'].max()
+    latest_df = ratings[ratings['snapshot_date'] == latest_snap].dropna(
+        subset=['rn_minutes_actual']
+    )
+
+    if latest_df.empty:
+        st.info("No facility-level RN minute data for the latest snapshot.")
+    else:
+        wi_target = st.slider(
+            "Hypothetical RN-minutes target (per resident per day)",
+            min_value=0, max_value=250, value=44, step=2, key="ch4_rn_target",
+        )
+
+        n_total = len(latest_df)
+        n_comply = int((latest_df['rn_minutes_actual'] >= wi_target).sum())
+        n_fail = n_total - n_comply
+        pct_comply = (n_comply / n_total * 100) if n_total else 0.0
+        median_actual = float(latest_df['rn_minutes_actual'].median())
+
+        k1, k2, k3 = st.columns(3)
+        k1.metric(
+            "Facilities compliant",
+            f"{n_comply:,}",
+            f"{pct_comply:.1f}% of {n_total:,}",
+            help=f"Facilities with rn_minutes_actual ≥ {wi_target}",
+        )
+        k2.metric(
+            "Facilities below target",
+            f"{n_fail:,}",
+            f"{100 - pct_comply:.1f}% would need to lift staffing",
+            delta_color="inverse",
+        )
+        k3.metric(
+            "Sector median actual",
+            f"{median_actual:.0f} min/day",
+            help="Median RN minutes per resident per day, latest snapshot",
+        )
+
+        fig_hist = px.histogram(
+            latest_df, x='rn_minutes_actual', nbins=40,
+            color_discrete_sequence=[C['teal']],
+            title=f'Distribution of facility RN minutes — {latest_snap.strftime("%b %Y")}',
+            labels={'rn_minutes_actual': 'RN minutes/resident/day (actual)'},
+        )
+        fig_hist.add_vline(
+            x=wi_target, line_dash='dash', line_color=C['red'], line_width=2,
+            annotation_text=f'Threshold: {wi_target}',
+            annotation_position='top right',
+        )
+        fig_hist.add_vline(
+            x=44, line_dash='dot', line_color=C['muted'],
+            annotation_text='Mandate 44', annotation_position='top left',
+        )
+        theme(fig_hist, height=280)
+        st.plotly_chart(fig_hist, use_container_width=True)
+
+        if pct_comply >= 65:
+            st.success(
+                f"✓ At a **{wi_target}**-minute threshold, **{pct_comply:.1f}%** of facilities "
+                f"would meet the bar — passes the 65% policy target."
+            )
+        else:
+            st.warning(
+                f"⚠️ At a **{wi_target}**-minute threshold, only **{pct_comply:.1f}%** of facilities "
+                f"would meet the bar — below the 65% policy target."
+            )

@@ -3,7 +3,7 @@ import plotly.express as px
 from tabs.utils import C, ORG_COLOURS, MMM_COLOURS, theme
 
 
-def render(df, ratings, funding, year_sel: int) -> None:
+def render(df, ratings, funding) -> None:
     st.markdown('<div class="sec-h1">Who runs the best facilities?</div>', unsafe_allow_html=True)
     st.markdown(
         '<p class="sec-p">Quality differences are not explained by geography — they are explained '
@@ -41,6 +41,64 @@ def render(df, ratings, funding, year_sel: int) -> None:
     fig_org.update_layout(showlegend=False, xaxis_range=[0, 5])
     theme(fig_org, height=260)
     st.plotly_chart(fig_org, use_container_width=True)
+
+    # ── Funding-efficiency scatter (SA3 level) ──────────────────────────────
+    st.markdown(
+        '<div class="sub-h">Does more funding per bed deliver better quality?</div>',
+        unsafe_allow_html=True,
+    )
+
+    latest_fund_yr = int(funding['year'].max())
+    fund_sa3 = (
+        funding[(funding['year'] == latest_fund_yr) & (funding['funding'] > 0)]
+        .groupby('sa3_code', as_index=False)['funding'].sum()
+    )
+    df_latest_yr = df[df['year'] == df['year'].max()].drop_duplicates('sa3_code')
+    sc = (
+        fund_sa3.merge(df_latest_yr[['sa3_code', 'sa3_name', 'state', 'mmm_code',
+                                      'quality_score', 'residential_places',
+                                      'n_private', 'n_residential']],
+                       on='sa3_code', how='inner')
+    )
+    sc = sc[(sc['residential_places'] > 0) & (sc['quality_score'].notna())].copy()
+    sc['funding_per_bed_k'] = sc['funding'] / sc['residential_places'] / 1_000
+    sc['private_share'] = (sc['n_private'] / sc['n_residential'].replace(0, 1) * 100).clip(0, 100)
+
+    if not sc.empty:
+        fig_fb = px.scatter(
+            sc,
+            x='funding_per_bed_k', y='quality_score',
+            color='private_share',
+            color_continuous_scale=[[0, C['teal']], [0.5, '#F5C842'], [1, C['red']]],
+            size='residential_places', size_max=22,
+            hover_data={
+                'sa3_name': True, 'state': True,
+                'funding_per_bed_k': ':,.0f', 'quality_score': ':.2f',
+                'residential_places': ':,d', 'private_share': ':.0f',
+            },
+            title=f'Funding per bed vs Quality Score by SA3 ({latest_fund_yr})<br>'
+                  '<sup>Bubble size = residential places · Colour = private share %</sup>',
+            labels={
+                'funding_per_bed_k': 'Govt funding per bed ($k / year)',
+                'quality_score':     'Avg Quality Score (1–5)',
+                'private_share':     'Private %',
+            },
+        )
+        fig_fb.update_layout(coloraxis_colorbar=dict(title='Private %', ticksuffix='%'))
+        theme(fig_fb, height=420)
+        st.plotly_chart(fig_fb, use_container_width=True)
+
+        corr = sc[['funding_per_bed_k', 'quality_score']].corr().iloc[0, 1]
+        avg_fb = sc['funding_per_bed_k'].mean()
+        st.info(
+            f"💰 Across **{len(sc)} SA3s** in {latest_fund_yr}, the correlation between "
+            f"funding-per-bed and quality is **r = {corr:+.2f}**. "
+            f"National average funding per bed: **${avg_fb:,.0f}k/year**. "
+            f"More dollars per bed does **not** translate cleanly to higher star ratings — "
+            f"ownership and management matter more than absolute spend."
+        )
+    else:
+        st.info("No funding+supply overlap for the latest year.")
 
     c1, c2 = st.columns(2)
     with c1:

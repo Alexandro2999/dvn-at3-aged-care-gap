@@ -1,7 +1,7 @@
 """
 Australia's Aged Care Gap — DVN AT3 Dashboard
 Design system: blue-spectrum / teal / gold / cream / care-gap-red
-Navigation: query-param routing (?page=home|map|correlation|reveal|mandate)
+Navigation: query-param routing (?page=home|map|correlation|reveal|mandate|forecast|fullmap)
 """
 
 import streamlit as st
@@ -21,6 +21,8 @@ import tabs.ch1_map        as pg_map
 import tabs.ch2_correlation as pg_corr
 import tabs.ch3_reveal     as pg_reveal
 import tabs.ch4_mandate    as pg_mandate
+import tabs.fullmap        as pg_fullmap
+import tabs.ch5_forecast   as pg_forecast
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -88,10 +90,40 @@ def load_shapefile():
     return gdf
 
 
-master  = load_master()
-ratings = load_ratings()
-funding = load_funding()
-gdf     = load_shapefile()
+@st.cache_data
+def load_supply():
+    return pd.read_csv(os.path.join(CLEAN, 'service_supply_by_sa3.csv'))
+
+
+@st.cache_data
+def load_population():
+    return pd.read_csv(os.path.join(CLEAN, 'abs_population_by_sa3.csv'))
+
+
+@st.cache_data
+def load_acpr_residential_users():
+    return pd.read_csv(os.path.join(CLEAN, 'residential_users_by_acpr.csv'))
+
+
+@st.cache_data
+def load_acpr_homecare_users():
+    return pd.read_csv(os.path.join(CLEAN, 'home_care_users_by_acpr.csv'))
+
+
+@st.cache_data
+def load_service_users():
+    return pd.read_csv(os.path.join(CLEAN, 'service_users_by_sa3.csv'))
+
+
+master        = load_master()
+ratings       = load_ratings()
+funding       = load_funding()
+supply        = load_supply()
+population    = load_population()
+service_users = load_service_users()
+acpr_res      = load_acpr_residential_users()
+acpr_hc       = load_acpr_homecare_users()
+gdf           = load_shapefile()
 
 hero_b64 = _b64(os.path.join(ASSETS, 'img-landing-bg.jpg'))
 ico_b64  = _b64(os.path.join(ASSETS, 'ico-dashboard.png'))
@@ -103,7 +135,8 @@ CSS = f"""<style>
 header[data-testid="stHeader"] {{ display: none !important; }}
 .stDeployButton, div[data-testid="stToolbar"] {{ display: none !important; }}
 
-.stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; }}
+html, body {{ font-size: 16px !important; }}
+.stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; font-size: 14px; }}
 
 .main .block-container {{
     padding-top: {NAV_H + 16}px !important;
@@ -136,16 +169,56 @@ section[data-testid="stSidebar"] details[data-testid="stExpander"] > div[data-te
 }}
 section[data-testid="stSidebar"] details summary svg {{ fill: white !important; }}
 
+section[data-testid="stSidebar"] label {{ color: {C['navy']} !important; font-weight: 600 !important; }}
+section[data-testid="stSidebar"] p {{ color: {C['navy']} !important; }}
+section[data-testid="stSidebar"] span {{ color: {C['navy']} !important; }}
+div[data-testid="stRadio"] label p {{ color: {C['navy']} !important; font-weight: 500 !important; }}
+div[data-testid="stMultiSelect"] span[data-baseweb="tag"] span {{ color: white !important; }}
+
+/* ── Main content — all widget labels and body text ── */
+body [data-testid="stWidgetLabel"] p {{ color: {C['navy']} !important; font-weight: 600 !important; font-size: 14px !important; }}
+body [data-testid="stWidgetLabel"] {{ color: {C['navy']} !important; font-size: 14px !important; }}
+body .stSelectbox label, body .stRadio label, body .stTextInput label,
+body .stSlider label, body .stCheckbox label, body .stNumberInput label {{
+    color: {C['navy']} !important; font-weight: 600 !important; font-size: 14px !important;
+}}
+body div[role="radiogroup"] label p {{ color: {C['navy']} !important; font-weight: 500 !important; font-size: 14px !important; }}
+body div[role="radiogroup"] label span {{ color: {C['navy']} !important; font-size: 14px !important; }}
+body div[data-baseweb="select"] div {{ color: {C['navy']} !important; font-size: 14px !important; }}
+div[data-baseweb="select"] > div {{
+    background: {C['white']} !important;
+    border-color: {C['border']} !important;
+    border-radius: 8px !important;
+}}
+div[data-baseweb="select"] > div:hover {{
+    border-color: {C['teal']} !important;
+}}
+body button[data-baseweb="tab"] p, body button[data-baseweb="tab"] span {{
+    color: {C['navy']} !important; font-weight: 600 !important; font-size: 15px !important;
+}}
+body button[data-baseweb="tab"][aria-selected="true"] p,
+body button[data-baseweb="tab"][aria-selected="true"] span {{
+    color: {C['navy']} !important;
+}}
+
 .stPlotlyChart {{
     background: {C['white']}; border-radius: 12px;
     border: 1px solid {C['border']}; padding: 4px;
 }}
 
-.stTextInput input {{
+body [data-testid="stAlert"] {{ opacity: 1 !important; }}
+body [data-testid="stAlert"] p, body [data-testid="stAlert"] span,
+body [data-testid="stAlert"] li, body [data-testid="stAlert"] strong,
+body [data-testid="stAlert"] div {{
+    color: {C['navy']} !important; font-size: 14px !important; line-height: 1.6 !important;
+}}
+
+body .stTextInput input {{
     border-radius: 24px !important; border: 1px solid {C['border']} !important;
     padding: 8px 20px !important; background: {C['white']} !important;
+    font-size: 14px !important;
 }}
-.stTextInput label {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 0.95rem !important; }}
+body .stTextInput label {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 14px !important; }}
 
 .stSlider [data-baseweb="slider"] [role="slider"] {{
     background-color: {C['teal']} !important; border-color: {C['teal']} !important;
@@ -154,12 +227,13 @@ section[data-testid="stSidebar"] details summary svg {{ fill: white !important; 
     background-color: {C['teal']} !important;
 }}
 
-[data-testid="stMetric"] {{
+body [data-testid="stMetric"] {{
     background: {C['white']}; border: 1px solid {C['border']};
     border-radius: 12px; padding: 16px 20px;
 }}
-[data-testid="stMetricLabel"] {{ color: {C['teal']} !important; font-weight: 700 !important; }}
-[data-testid="stMetricValue"] {{ color: {C['navy']} !important; }}
+body [data-testid="stMetricLabel"] {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 13px !important; }}
+body [data-testid="stMetricValue"] {{ color: {C['navy']} !important; font-size: 30px !important; font-weight: 800 !important; }}
+body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 
 .nav-bar {{
     position: fixed; top: 0; left: calc(21rem - 16px); right: 0;
@@ -192,7 +266,7 @@ section[data-testid="stSidebar"] details summary svg {{ fill: white !important; 
 }}
 .nav-ch.active::before {{ background: {C['teal']}; box-shadow: 0 0 0 3px rgba(0,167,157,0.3); }}
 .nav-ch-link {{
-    display: block; color: white !important; font-size: 13px;
+    display: block; color: white !important; font-size: 14px;
     padding: 5px 14px; border-radius: 6px; white-space: nowrap; transition: all 0.15s;
 }}
 .nav-ch-link:hover {{ color: white !important; background: rgba(255,255,255,0.1); }}
@@ -204,7 +278,7 @@ section[data-testid="stSidebar"] details summary svg {{ fill: white !important; 
     border-radius: 12px; padding: 20px 24px 18px;
 }}
 .kpi-label {{
-    color: {C['teal']}; font-weight: 700; font-size: 0.78rem;
+    color: {C['navy']}; font-weight: 700; font-size: 33px;
     letter-spacing: 0.04em; text-transform: uppercase;
     display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
 }}
@@ -232,9 +306,9 @@ section[data-testid="stSidebar"] details summary svg {{ fill: white !important; 
 .kpi-value {{ color: {C['navy']}; font-size: 2.4rem; font-weight: 800; line-height: 1; }}
 .kpi-suffix {{ font-size: 1rem; color: {C['muted']}; font-weight: 500; }}
 
-.sec-h1 {{ color: {C['navy']}; font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }}
-.sec-p {{ color: {C['muted']}; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.65; max-width: 900px; }}
-.sub-h {{ color: {C['navy']}; font-size: 1.05rem; font-weight: 700; margin: 24px 0 8px; }}
+.sec-h1 {{ color: {C['navy']}; font-size: 28px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.3px; }}
+.sec-p {{ color: #3D4F63; font-size: 15px; margin-bottom: 20px; line-height: 1.6; max-width: 900px; }}
+.sub-h {{ color: {C['navy']}; font-size: 18px; font-weight: 700; margin: 24px 0 8px; }}
 
 .hero-wrap {{
     border-radius: 16px; overflow: hidden; margin-bottom: 28px;
@@ -254,7 +328,7 @@ section[data-testid="stSidebar"] details summary svg {{ fill: white !important; 
 .nb-card {{
     background: {C['white']}; border: 1.5px solid {C['teal']};
     border-radius: 10px; padding: 14px 20px; margin-bottom: 16px;
-    color: {C['navy']}; font-size: 0.95rem;
+    color: {C['navy']}; font-size: 14px;
 }}
 
 .whatif-box {{
@@ -264,7 +338,7 @@ section[data-testid="stSidebar"] details summary svg {{ fill: white !important; 
 .whatif-title {{ color: {C['navy']}; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }}
 .whatif-sub {{ color: {C['muted']}; font-size: 0.87rem; margin-bottom: 0; }}
 
-.data-caption {{ color: {C['muted']}; font-size: 0.8rem; font-style: italic; margin-top: 28px; }}
+.data-caption {{ color: {C['muted']}; font-size: 0.88rem; font-style: italic; margin-top: 28px; }}
 
 span[data-baseweb="tag"] {{
     background-color: {C['navy']} !important; border-color: {C['navy']} !important;
@@ -295,6 +369,7 @@ NAV_CHAPTERS = [
     ("Chapter 2: The Correlation", "correlation"),
     ("Chapter 3: The Reveal",      "reveal"),
     ("Chapter 4: Mandate Effect",  "mandate"),
+    ("Chapter 5: The Forecast",    "forecast"),
 ]
 ch_html = "".join(
     f'<div class="nav-ch {"active" if page == k else ""}">'
@@ -338,16 +413,12 @@ with st.sidebar:
     st.markdown(
         f'<p style="margin:0 0 2px;color:{C["navy"]};font-weight:700;font-size:1rem">'
         f'Global Filter</p>'
-        f'<p style="margin:0 0 14px;color:{C["muted"]};font-size:0.78rem">'
-        f'Selections update all tabs dynamically</p>',
+        f'<p style="margin:0 0 14px;color:{C["navy"]};font-size:0.78rem">'
+        f'State &amp; remoteness — apply to all tabs</p>',
         unsafe_allow_html=True,
     )
 
-    with st.expander("Year", expanded=True):
-        year_sel = st.radio("Year", [2023, 2024], index=1,
-                            horizontal=True, label_visibility="collapsed")
-
-    with st.expander("State / Territory"):
+    with st.expander("State / Territory", expanded=True):
         states = sorted(master['state'].dropna().unique())
         state_sel = st.multiselect("State", states, default=states,
                                    label_visibility="collapsed")
@@ -361,17 +432,20 @@ with st.sidebar:
 _states = state_sel if state_sel else states
 _mmm    = mmm_sel   if mmm_sel   else mmm_opts
 
-df = master[
-    (master['year'] == year_sel) &
+# master_filt: all years, state+MMM filtered — passed to each tab
+master_filt = master[
     (master['state'].isin(_states)) &
     (master['mmm_code'].isin(_mmm))
 ].copy()
 
+# KPI uses latest year only
+_latest = master_filt[master_filt['year'] == master_filt['year'].max()]
+
 # ── KPI values (computed once, shared across pages) ────────────────────────────
-n_sa3       = df['sa3_code'].nunique()
-n_deficit   = int((df.drop_duplicates('sa3_name')['waitlist_pressure'] > 1.0).sum()) if not df.empty else 0
-med_quality = round(float(df['quality_score'].median()), 2) if not df.empty else 0.0
-med_cgi     = round(float(df['care_gap_index'].median()), 2) if not df.empty else 0.0
+n_sa3       = _latest['sa3_code'].nunique()
+n_deficit   = int((_latest.drop_duplicates('sa3_name')['waitlist_pressure'] > 1.0).sum()) if not _latest.empty else 0
+med_quality = round(float(_latest['quality_score'].median()), 2) if not _latest.empty else 0.0
+med_cgi     = round(float(_latest['care_gap_index'].median()), 2) if not _latest.empty else 0.0
 
 KPI_HTML = f"""
 <div class="kpi-grid">
@@ -405,17 +479,23 @@ KPI_HTML = f"""
 if page == "home":
     pg_home.render(hero_b64, KPI_HTML)
 
+elif page == "fullmap":
+    pg_fullmap.render(master_filt, gdf, supply, population, service_users)
+
 elif page == "map":
-    pg_map.render(df, gdf, year_sel)
+    pg_map.render(master_filt, gdf, supply, population, ratings, service_users)
 
 elif page == "correlation":
-    pg_corr.render(df, ratings, funding, year_sel)
+    pg_corr.render(master_filt, ratings, funding)
 
 elif page == "reveal":
-    pg_reveal.render(df, year_sel, n_deficit)
+    pg_reveal.render(master_filt, supply, n_deficit, acpr_res, acpr_hc, service_users)
 
 elif page == "mandate":
     pg_mandate.render(ratings)
+
+elif page == "forecast":
+    pg_forecast.render(master_filt, supply, service_users, ratings, population, gdf)
 
 else:
     pg_home.render(hero_b64, KPI_HTML)
