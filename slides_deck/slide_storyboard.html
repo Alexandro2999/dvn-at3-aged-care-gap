@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AT3 Pitch Deck — Slide Storyboard v2 (Detective Arc)</title>
+<style>
+:root {
+  --navy: #1B3F6E;
+  --navy-deep: #122B4E;
+  --teal: #00A79D;
+  --gold: #F5C842;
+  --red: #D94F3D;
+  --blue-mid: #4A7FC1;
+  --blue-lite: #E3F1FA;
+  --red-lite: #FDECEA;
+  --teal-lite: #E0F5F3;
+  --grey-100: #F7F9FB;
+  --grey-300: #D6DCE3;
+  --grey-500: #6B7280;
+  --grey-700: #374151;
+  --grey-900: #111827;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+  background: var(--grey-100);
+  color: var(--grey-900);
+  line-height: 1.55;
+  font-size: 14px;
+}
+.cover {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: white;
+  padding: 56px 48px 48px;
+  border-left: 8px solid var(--gold);
+}
+.cover h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.cover .sub { font-size: 16px; color: var(--blue-lite); margin-bottom: 24px; }
+.cover .meta-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px;
+}
+.cover .meta-grid div {
+  background: rgba(255,255,255,0.08); padding: 12px 14px; border-radius: 6px;
+  border-left: 3px solid var(--teal);
+}
+.cover .meta-grid strong { color: var(--gold); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.cover .meta-grid span { font-size: 14px; }
+
+nav.toc {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy); color: white; padding: 10px 24px;
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  border-bottom: 2px solid var(--gold);
+}
+nav.toc strong { font-size: 11px; letter-spacing: 1.5px; color: var(--gold); margin-right: 12px; }
+nav.toc a {
+  color: white; text-decoration: none; padding: 4px 10px; font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; font-weight: 600;
+}
+nav.toc a:hover { background: var(--teal); border-color: var(--teal); }
+
+.overview {
+  background: white; padding: 32px 48px; border-bottom: 1px solid var(--grey-300);
+}
+.overview h2 { font-size: 20px; color: var(--navy); margin-bottom: 16px; }
+.overview .grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px;
+}
+.overview .card {
+  background: var(--grey-100); padding: 16px; border-radius: 6px;
+  border-top: 3px solid var(--teal);
+}
+.overview .card h3 { font-size: 13px; color: var(--navy); margin-bottom: 8px; }
+.overview table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.overview table th, .overview table td {
+  text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--grey-300);
+}
+.overview table th { color: var(--grey-500); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+.overview table td.act { font-weight: 700; color: var(--navy); }
+.overview table td.time { color: var(--grey-500); font-family: monospace; }
+
+main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.slide {
+  background: white; border-radius: 10px; margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(27, 63, 110, 0.08);
+  overflow: hidden;
+  border-top: 5px solid var(--navy);
+}
+.slide.accent-navy { border-top-color: var(--navy); }
+.slide.accent-gold { border-top-color: var(--gold); }
+.slide.accent-teal { border-top-color: var(--teal); }
+.slide.accent-red  { border-top-color: var(--red); }
+
+.slide-header {
+  background: var(--navy); color: white; padding: 14px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.slide-header h2 { font-size: 17px; font-weight: 800; }
+.slide-header h2 small { font-weight: 400; color: var(--blue-lite); margin-left: 8px; }
+.slide-header .time {
+  font-family: monospace; font-size: 13px;
+  background: rgba(245,200,66,0.2); color: var(--gold);
+  padding: 4px 10px; border-radius: 4px;
+}
+
+.slide-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 0; }
+
+/* --- 16:9 SLIDE MOCKUP --- */
+.mockup-wrap { padding: 20px; background: var(--grey-100); }
+.mockup {
+  aspect-ratio: 16/9; border-radius: 4px; overflow: hidden;
+  position: relative; box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+  color: white; font-family: -apple-system, sans-serif;
+  display: flex; flex-direction: column;
+}
+.mockup .accent-bar {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--gold);
+}
+.mockup .headline {
+  font-size: 16px; font-weight: 800; line-height: 1.2; padding: 16px 20px 4px 28px;
+}
+.mockup .sub {
+  font-size: 11px; font-weight: 400; padding: 0 20px 8px 28px; opacity: 0.85;
+}
+.mockup .body { flex: 1; padding: 8px 20px 8px 28px; position: relative; }
+.mockup .footer-band {
+  background: var(--navy-deep); padding: 10px 20px; font-size: 10px;
+  display: flex; gap: 12px; align-items: center;
+}
+.mockup-asset-tag {
+  position: absolute; bottom: 6px; right: 8px;
+  background: rgba(0,0,0,0.55); color: var(--gold); padding: 3px 7px;
+  border-radius: 3px; font-size: 9px; font-family: monospace; font-weight: 600;
+}
+.zone {
+  border: 1px dashed rgba(255,255,255,0.4); padding: 8px;
+  border-radius: 3px; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; text-align: center;
+}
+
+/* --- SIDE META PANEL --- */
+.meta-panel { padding: 20px 22px; border-left: 1px solid var(--grey-300); }
+.meta-panel h3 {
+  font-size: 10px; color: var(--grey-500); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 5px; margin-top: 14px;
+}
+.meta-panel h3:first-child { margin-top: 0; }
+.meta-panel .asset { background: var(--navy); color: var(--gold); padding: 8px 10px; border-radius: 4px; font-family: monospace; font-size: 11px; font-weight: 700; }
+.meta-panel .award {
+  display: inline-block; padding: 3px 9px; border-radius: 12px;
+  font-size: 11px; font-weight: 700; margin: 2px 4px 2px 0;
+}
+.award.heart { background: var(--red-lite); color: var(--red); }
+.award.truth { background: var(--teal-lite); color: var(--teal); }
+.award.change { background: #FFF4D6; color: #B7791F; }
+.award.tech { background: #E8E9FF; color: #5A4FCF; }
+.meta-panel .feature {
+  display: inline-block; padding: 3px 9px; border-radius: 4px;
+  background: var(--blue-lite); color: var(--navy);
+  font-size: 11px; font-weight: 600; margin: 2px 4px 2px 0;
+}
+
+/* --- SPEAKER SCRIPT + BRIDGE --- */
+.script-block {
+  background: var(--grey-100); padding: 18px 24px; border-top: 1px solid var(--grey-300);
+}
+.script-block .label {
+  font-size: 10px; color: var(--grey-500); text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.script-block .script {
+  font-family: Georgia, "Times New Roman", serif; font-size: 14px; font-style: italic;
+  color: var(--navy); line-height: 1.6;
+  border-left: 3px solid var(--gold); padding: 6px 14px; background: white;
+}
+.script-block .timing {
+  margin-top: 6px; font-size: 11px; color: var(--grey-500); font-family: monospace;
+}
+
+.bridge {
+  padding: 16px 24px; background: white; border-top: 1px solid var(--grey-300);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.bridge .col h3 {
+  font-size: 10px; color: var(--grey-500); text-transform: uppercase;
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+.bridge .col p { font-size: 13px; color: var(--grey-700); }
+
+/* --- MOCKUP STYLES PER SLIDE --- */
+.mockup.s1 { background: var(--navy); }
+.mockup.s1 .ghost {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: rgba(0,167,157,0.08); font-size: 140px; font-weight: 900;
+}
+.mockup.s1 .footer-band { background: var(--teal); color: var(--navy); }
+
+.mockup.s2 { background: var(--blue-lite); color: var(--navy); }
+.mockup.s2 .accent-bar { background: var(--gold); }
+.mockup.s2 .persona {
+  background: var(--navy); color: white; border-radius: 4px;
+  padding: 10px; margin: 4px 12% 8px 12%; text-align: center;
+  font-size: 11px; font-weight: 700;
+}
+.mockup.s2 .three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; padding: 0 14px; }
+.mockup.s2 .three .card {
+  background: var(--teal); color: white; padding: 8px 6px; border-radius: 3px;
+  font-size: 9px; text-align: center;
+}
+
+.mockup.s3 { background: var(--navy); }
+.mockup.s3 .map-zone {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 24px;
+}
+.mockup.s3 .glow-gold {
+  width: 60px; height: 60px; background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.mockup.s3 .blot-red {
+  width: 32px; height: 32px; background: var(--red); border-radius: 50%;
+  box-shadow: 0 0 20px var(--red);
+}
+.mockup.s3 .reveal {
+  background: var(--navy-deep); padding: 8px 20px 10px 28px; font-size: 10px;
+}
+.mockup.s3 .reveal b { color: var(--gold); }
+
+.mockup.s4 { background: white; color: var(--navy); }
+.mockup.s4 .accent-bar { background: var(--navy); }
+.mockup.s4 .body { display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px; padding: 4px 16px 4px 28px; }
+.mockup.s4 .map { background: linear-gradient(180deg, var(--blue-lite), var(--gold), var(--red)); border-radius: 3px; position: relative; }
+.mockup.s4 .map::after { content: "📍 Unley 2.78"; position: absolute; top: 60%; left: 50%; background: var(--gold); color: var(--navy); padding: 2px 5px; font-size: 8px; border-radius: 2px; font-weight: 700; }
+.mockup.s4 .panel { font-size: 9px; color: var(--navy); }
+.mockup.s4 .panel .row { background: var(--grey-100); padding: 3px 5px; margin-bottom: 2px; border-radius: 2px; display: flex; justify-content: space-between; }
+.mockup.s4 .alert { background: var(--red); color: white; padding: 4px; font-size: 9px; text-align: center; }
+
+.mockup.s5 { background: white; color: var(--navy); }
+.mockup.s5 .accent-bar { background: var(--navy); }
+.mockup.s5 .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; padding: 6px 16px 6px 28px; }
+.mockup.s5 .stat { padding: 8px 6px; border-radius: 3px; color: white; text-align: center; font-weight: 800; }
+.mockup.s5 .stat.govt { background: var(--teal); }
+.mockup.s5 .stat.nfp { background: var(--blue-mid); }
+.mockup.s5 .stat.fp { background: var(--red); }
+.mockup.s5 .stat span { font-size: 18px; display: block; }
+.mockup.s5 .stat em { font-size: 9px; font-style: normal; opacity: 0.9; }
+.mockup.s5 .chart {
+  flex: 1; margin: 4px 20px 8px 28px; position: relative;
+  background: linear-gradient(180deg, transparent 0%, transparent 96%, var(--grey-300) 96%);
+}
+.mockup.s5 .chart::before, .mockup.s5 .chart::after, .mockup.s5 .chart .line-fp {
+  content: ""; position: absolute; left: 5%; right: 5%; height: 2px;
+}
+.mockup.s5 .chart::before { top: 18%; background: var(--teal); }
+.mockup.s5 .chart::after  { top: 50%; background: var(--blue-mid); }
+.mockup.s5 .chart .line-fp { top: 78%; background: var(--red); }
+.mockup.s5 .mandate {
+  position: absolute; left: 55%; top: 0; bottom: 0; width: 2px;
+  background: repeating-linear-gradient(0deg, var(--gold) 0 4px, transparent 4px 8px);
+}
+
+.mockup.s6 { background: white; color: var(--navy); }
+.mockup.s6 .accent-bar { background: var(--red); }
+.mockup.s6 .body { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; padding: 4px 16px 6px 28px; }
+.mockup.s6 .left { background: var(--navy); color: white; padding: 8px; border-radius: 3px; font-size: 9px; }
+.mockup.s6 .right { background: var(--grey-100); border-radius: 3px; position: relative; }
+.mockup.s6 .bubble {
+  position: absolute; border-radius: 50%; color: white; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; font-size: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.mockup.s6 .b-govt { width: 26px; height: 26px; background: var(--teal); top: 18%; left: 12%; }
+.mockup.s6 .b-nfp  { width: 32px; height: 32px; background: var(--blue-mid); top: 40%; left: 40%; }
+.mockup.s6 .b-fp   { width: 44px; height: 44px; background: var(--red); top: 56%; left: 64%; }
+.mockup.s6 .arrow {
+  position: absolute; top: 30%; left: 18%; color: var(--gold); font-size: 10px; font-weight: 800;
+}
+
+.mockup.s7 { background: white; color: var(--navy); }
+.mockup.s7 .accent-bar { background: var(--red); }
+.mockup.s7 .body { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; padding: 4px 16px 6px 28px; }
+.mockup.s7 .left-stack { text-align: center; padding: 6px; }
+.mockup.s7 .ratio-num { font-size: 36px; font-weight: 900; color: var(--red); line-height: 1; }
+.mockup.s7 .ratio-cap { font-size: 9px; color: var(--navy); margin-top: 4px; }
+.mockup.s7 .ratio-people { font-size: 14px; margin: 6px 0; }
+.mockup.s7 .bars { font-size: 8px; }
+.mockup.s7 .bar { background: var(--red); color: white; padding: 2px 6px; margin: 2px 0; border-radius: 2px; font-weight: 700; }
+.mockup.s7 .bar.first { background: var(--navy); }
+
+.mockup.s8 { background: white; color: var(--navy); }
+.mockup.s8 .accent-bar { background: var(--red); }
+.mockup.s8 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px 16px 4px 28px; }
+.mockup.s8 .col-red { background: var(--red-lite); color: var(--red); padding: 8px; border-radius: 3px; text-align: center; font-weight: 800; font-size: 12px; }
+.mockup.s8 .col-teal { background: var(--teal-lite); color: var(--teal); padding: 8px; border-radius: 3px; text-align: center; font-weight: 800; font-size: 12px; }
+.mockup.s8 .col-red em, .mockup.s8 .col-teal em { display: block; font-size: 8px; font-style: normal; margin-top: 2px; }
+.mockup.s8 .chart {
+  flex: 1; margin: 4px 20px 8px 28px; position: relative;
+  border-bottom: 1px solid var(--grey-300);
+}
+.mockup.s8 .chart::before {
+  content: ""; position: absolute; left: 5%; right: 5%; top: 30%;
+  height: 2px; background: var(--teal);
+  transform: rotate(-5deg);
+}
+.mockup.s8 .chart::after {
+  content: ""; position: absolute; left: 5%; right: 5%; top: 60%;
+  height: 2px; background: var(--red);
+  transform: rotate(3deg);
+}
+
+.mockup.s9 { background: var(--blue-lite); color: var(--navy); position: relative; }
+.mockup.s9::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--gold);
+}
+.mockup.s9 .grid2x2 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px 16px 6px 28px; flex: 1;
+}
+.mockup.s9 .feat {
+  background: white; border: 2px solid var(--teal); border-radius: 3px;
+  padding: 6px; font-size: 8px; position: relative;
+}
+.mockup.s9 .feat b { display: block; color: var(--navy); font-size: 9px; margin-bottom: 2px; }
+.mockup.s9 .feat .num {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--gold); color: var(--navy); width: 16px; height: 16px;
+  border-radius: 50%; font-size: 9px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+}
+
+.mockup.s10 { background: white; color: var(--navy); }
+.mockup.s10 .accent-bar { background: var(--navy); }
+.mockup.s10 .dual { display: grid; grid-template-columns: 1fr auto 1fr; gap: 4px; padding: 4px 16px 4px 28px; align-items: center; }
+.mockup.s10 .map-mini {
+  aspect-ratio: 1.2/1; background: linear-gradient(180deg, var(--blue-lite), var(--blue-mid), var(--navy));
+  border-radius: 3px; position: relative; font-size: 8px; color: white;
+}
+.mockup.s10 .map-mini.r { background: linear-gradient(180deg, var(--blue-lite), var(--gold), var(--red)); }
+.mockup.s10 .map-mini::after { content: attr(data-year); position: absolute; bottom: 2px; left: 4px; font-weight: 800; font-size: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+.mockup.s10 .arrow-gold { font-size: 20px; color: var(--gold); font-weight: 900; }
+.mockup.s10 .kpi { background: var(--grey-100); padding: 4px; font-size: 9px; display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin: 0 16px 4px 28px; text-align: center; }
+.mockup.s10 .kpi div { background: white; padding: 3px; border-radius: 2px; }
+
+.mockup.s11 { background: var(--navy); }
+.mockup.s11 .body { display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; padding: 4px 16px 4px 28px; flex: 1; }
+.mockup.s11 .bullets { font-size: 9px; line-height: 1.6; }
+.mockup.s11 .bullets div { margin-bottom: 4px; }
+.mockup.s11 .bullets b { color: var(--gold); }
+.mockup.s11 .chart-mini {
+  background: var(--navy-deep); border-radius: 3px; position: relative;
+}
+.mockup.s11 .chart-mini::before {
+  content: ""; position: absolute; left: 8%; right: 8%; top: 60%; height: 2px;
+  background: var(--blue-lite);
+}
+.mockup.s11 .chart-mini::after {
+  content: "+0.25★"; position: absolute; top: 30%; right: 12%; color: var(--gold); font-weight: 800; font-size: 11px;
+}
+.mockup.s11 .step {
+  position: absolute; left: 8%; width: 92%; top: 60%; height: 2px; background: var(--blue-lite);
+}
+.mockup.s11 .mandate-v {
+  position: absolute; left: 55%; top: 10%; bottom: 10%; width: 2px;
+  background: repeating-linear-gradient(0deg, var(--gold) 0 4px, transparent 4px 8px);
+}
+.mockup.s11 .cta {
+  background: var(--teal); color: var(--navy); padding: 10px 28px; font-weight: 800;
+  font-size: 11px;
+}
+.mockup.s11 .cta small { display: block; font-weight: 400; font-style: italic; font-size: 9px; margin-top: 2px; }
+
+footer.legend {
+  background: var(--navy); color: var(--blue-lite); padding: 32px 48px;
+  font-size: 13px; line-height: 1.7; border-top: 4px solid var(--gold);
+}
+footer.legend h2 { color: white; font-size: 18px; margin-bottom: 12px; }
+footer.legend .swatch {
+  display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; vertical-align: middle;
+}
+
+@media print {
+  body { background: white; font-size: 11px; }
+  nav.toc { display: none; }
+  .slide { page-break-inside: avoid; box-shadow: none; border: 1px solid var(--grey-300); margin-bottom: 16px; }
+  main { padding: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <h1>AT3 Pitch Deck — Slide Storyboard v2</h1>
+  <p class="sub"><strong>Detective Arc</strong> · 11 slides · 5:00 live + 1:30 Q&amp;A · Wed 13 May 2026 midday</p>
+  <div class="meta-grid">
+    <div><strong>Stakeholder</strong><span>CEO of a Not-For-Profit aged-care provider — asking "where to expand?"</span></div>
+    <div><strong>Audience served</strong><span>Families · Workers · Investors — all answered through the NFP CEO lens</span></div>
+    <div><strong>Source data</strong><span>323 SA3 regions · 12 quarters · 7 clean datasets (Ch1–Ch5)</span></div>
+    <div><strong>Output format</strong><span>Canva manual build — PNG charts from <code>visual_for_slides.ipynb</code></span></div>
+  </div>
+</header>
+
+<nav class="toc">
+  <strong>JUMP TO</strong>
+  <a href="#overview">Overview</a>
+  <a href="#s1">S1</a><a href="#s2">S2</a><a href="#s3">S3</a><a href="#s4">S4</a>
+  <a href="#s5">S5</a><a href="#s6">S6</a><a href="#s7">S7</a><a href="#s8">S8</a>
+  <a href="#s9">S9</a><a href="#s10">S10</a><a href="#s11">S11</a>
+  <a href="#legend">Legend</a>
+</nav>
+
+<section id="overview" class="overview">
+  <h2>Deck Overview — 5 Acts</h2>
+  <table>
+    <thead><tr><th>Act</th><th>Slides</th><th>Time</th><th>Function</th></tr></thead>
+    <tbody>
+      <tr><td class="act">1. Open</td><td>S1 · S2</td><td class="time">0:00–0:35</td><td>Title → stakeholder lens (NFP CEO frame)</td></tr>
+      <tr><td class="act">2. Crisis hook</td><td>S3 · S4</td><td class="time">0:35–1:30</td><td>"Guess wrong" → Ch1 map payoff</td></tr>
+      <tr><td class="act">3. Cause</td><td>S5 · S6</td><td class="time">1:30–2:30</td><td>Ch2: ownership gap + funding paradox</td></tr>
+      <tr><td class="act">4. Human cost</td><td>S7 · S8</td><td class="time">2:30–3:30</td><td>Ch3: crisis zones + supply divergence</td></tr>
+      <tr><td class="act">5. Tool + Future + Close</td><td>S9 · S10 · S11</td><td class="time">3:30–5:00</td><td>Demo (4 features) → Ch5 forecast → Ch4 verdict + CTA</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid" style="margin-top: 24px;">
+    <div class="card">
+      <h3>Peer awards targeted</h3>
+      <table>
+        <tr><td><span class="award heart" style="display:inline-block; padding: 2px 8px; border-radius: 10px; background: var(--red-lite); color: var(--red); font-size: 10px; font-weight: 700;">Heart-String</span></td><td>S3, S7, S11</td></tr>
+        <tr><td><span class="award truth" style="display:inline-block; padding: 2px 8px; border-radius: 10px; background: var(--teal-lite); color: var(--teal); font-size: 10px; font-weight: 700;">Truth-Teller</span></td><td>S4, S5, S6, S10</td></tr>
+        <tr><td><span class="award change" style="display:inline-block; padding: 2px 8px; border-radius: 10px; background: #FFF4D6; color: #B7791F; font-size: 10px; font-weight: 700;">Changemaker</span></td><td>S2, S8, S11</td></tr>
+        <tr><td><span class="award tech" style="display:inline-block; padding: 2px 8px; border-radius: 10px; background: #E8E9FF; color: #5A4FCF; font-size: 10px; font-weight: 700;">Technical Masterclass</span></td><td>S9, S10</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>4 AT3 advanced features — surfaced in S9</h3>
+      <table>
+        <tr><td>1. Context-Aware Filtering</td><td>Sidebar rewrites all charts + callouts</td></tr>
+        <tr><td>2. Visual Tooltips &amp; Modals</td><td>Click SA3 → drill-down panel</td></tr>
+        <tr><td>3. Narrative Scrollytelling</td><td>5-chapter detective arc</td></tr>
+        <tr><td>4. What-If Parameterisation</td><td>Ch4 slider + Ch5 scenario radio</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Border-accent system</h3>
+      <table>
+        <tr><td><span class="swatch" style="background: var(--navy); display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px;"></span>Navy</td><td>Title / closing</td></tr>
+        <tr><td><span class="swatch" style="background: var(--teal); display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px;"></span>Teal</td><td>Solution / demo</td></tr>
+        <tr><td><span class="swatch" style="background: var(--gold); display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px;"></span>Gold</td><td>Transition</td></tr>
+        <tr><td><span class="swatch" style="background: var(--red); display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px;"></span>Red</td><td>Urgency</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<main>
+
+<!-- ========== S1 ========== -->
+<section id="s1" class="slide accent-navy">
+  <div class="slide-header">
+    <h2>S1 — Title <small>The deck opens</small></h2>
+    <span class="time">0:00 – 0:15 · 15s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s1">
+        <div class="accent-bar"></div>
+        <div class="ghost">AU</div>
+        <div class="headline" style="margin-top: 28%; text-align: center; padding-left: 28px;">Australia's Aged Care Gap</div>
+        <div class="sub" style="text-align: center;">Where to build next — and where we'll fail if we don't.</div>
+        <div class="footer-band">323 SA3 regions · 12 quarters · 7 datasets · DVN AT3 · UTS MDSI Autumn 2026</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p>None from notebook — Canva-built title slide. Background: Navy full-bleed, faint Teal 8% Australia silhouette.</p>
+      <h3>Layout</h3>
+      <p>Gold 8px vertical bar left edge · Title at 40% from top, centered · Teal 18% bottom band for footer.</p>
+      <h3>Typography</h3>
+      <p>Montserrat Bold 800, 64pt title · 22pt subtitle · 11pt footer.</p>
+      <h3>Award setup</h3>
+      <p>No award scored here — sets tone for the rest of the deck.</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">[Silent. Hold while introduced. The image speaks: a continent, a question, a promise to answer it.]</p>
+    <p class="timing">⏱ 0:00 → 0:15 — silent open. Title card lingers while moderator finishes introduction.</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>A title slide that earns 15 seconds of silence sets a serious tone. The faint silhouette behind the headline tells the audience the story is about <em>place</em> before a single word is spoken.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S2</h3>
+      <p>The continent on screen is one country, but the audience in the room is three audiences (families, workers, investors). S2 immediately resolves that tension.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S2 ========== -->
+<section id="s2" class="slide accent-gold">
+  <div class="slide-header">
+    <h2>S2 — Stakeholder Hat <small>One lens, three audiences</small></h2>
+    <span class="time">0:15 – 0:35 · 20s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s2">
+        <div class="headline" style="text-align: center; color: var(--navy);">One lens. Three audiences.</div>
+        <div class="sub" style="text-align: center;">We pitch as CEO of a Not-For-Profit aged-care provider — asking where to expand.</div>
+        <div class="persona">🎩 CEO · NFP Provider — "Where do we expand?"</div>
+        <div class="three">
+          <div class="card">FAMILIES<br/>"Near my parents?"</div>
+          <div class="card">WORKERS<br/>"Where needed?"</div>
+          <div class="card">INVESTORS<br/>"Where structural?"</div>
+        </div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p>None from notebook — Canva-built stakeholder card. No chart.</p>
+      <h3>Layout</h3>
+      <p>Blue-lite background, persona top-centre Navy card with hat glyph, 3 Teal audience cards bottom row at 1/3 width each.</p>
+      <h3>Award targeted</h3>
+      <p><span class="award change">Changemaker</span></p>
+      <h3>Why this lens?</h3>
+      <p>The NFP CEO frame is the only stakeholder whose single decision ("where to expand?") answers all 3 audiences at once. A government policymaker frame would distance the room; a family frame couldn't justify the supply slide.</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"We're wearing one hat tonight: CEO of a not-for-profit aged-care provider, deciding where to expand next. That single decision answers three audiences at once — families asking <em>'is the care near my parents any good?'</em>, workers asking <em>'where am I actually needed?'</em>, and investors asking <em>'where is the undersupply structural, not cyclical?'</em>. Same decision. Three answers. Watch."</p>
+    <p class="timing">⏱ 0:15 → 0:35 — 20s · pace ~3 words/sec · pause on "Watch."</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Rubric move — anchors the pitch to a real decision-maker (Changemaker award). Without S2, the deck would be a "data tour"; with S2, it is a recommendation memo.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S3</h3>
+      <p>"To expand smartly, you first need to know where the crisis actually is. Most rooms guess wrong." → cues the gut-check question on S3.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S3 ========== -->
+<section id="s3" class="slide accent-navy">
+  <div class="slide-header">
+    <h2>S3 — The Hook (Take a Guess) <small>Most people guess remote. The data flips the map.</small></h2>
+    <span class="time">0:35 – 0:55 · 20s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s3">
+        <div class="accent-bar" style="background: var(--gold);"></div>
+        <div class="headline">Where is Australia's aged-care crisis worst?</div>
+        <div class="sub" style="color: var(--gold);">Most people guess remote. The data laughs.</div>
+        <div class="map-zone body">
+          <div class="glow-gold"></div>
+          <div class="blot-red"></div>
+          <div class="blot-red" style="margin-top: 30px;"></div>
+          <div class="glow-gold" style="opacity: 0.7;"></div>
+        </div>
+        <div class="reveal">
+          <b>MM7 Very Remote 3.90★ HIGHEST</b> · <b>MM1 Major City 3.55★ LOWEST</b> · The crisis lives in our four biggest cities.
+        </div>
+        <div class="mockup-asset-tag">S3_australia_silhouette.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S3_australia_silhouette.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">Map silhouette · gold glow on MM6–7 remote zones · red blots on MM1 metro cores (Sydney/Melbourne/Brisbane/Perth). Labels: city names, "OUTBACK 3.90★", mini legend.</p>
+      <h3>Layout</h3>
+      <p>Navy full-bleed · Gold 8px left bar · Headline white upper-third, Gold sub-head · Silhouette mid-slide ~50% height · Dark inset <code>#122B4E</code> bottom 35% carries the reveal text.</p>
+      <h3>Awards targeted</h3>
+      <p><span class="award heart">Heart-String</span> <span class="award truth">Truth-Teller</span></p>
+      <h3>Source</h3>
+      <p><code>assets/chapter_01_the_map.md</code> Insight 5</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"Quick gut check — which Australian communities have the worst aged-care crisis? <strong>[2-second pause — let the room point to the outback]</strong> Most rooms point to the outback. The data flips the map. Very-remote Australia — MM7 — is the highest-quality band in the country at 3.90 stars. Major cities sit at 3.55 — the lowest. The crisis lives in our four biggest cities."</p>
+    <p class="timing">⏱ 0:35 → 0:55 — 20s · the 2s pause is the move · land with conviction on "four biggest cities"</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>The deck's first emotional flip. Heart-String earned through the silence + visual reveal; Truth-Teller earned through the counterintuitive numbers (3.90 vs 3.55). 20 seconds invested here pays for the next 90 seconds of attention.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S4</h3>
+      <p>"If the cities are the crisis — show me where, specifically." S4 zooms from the silhouette into the full SA3 choropleth, naming Unley, South Perth, Caboolture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S4 ========== -->
+<section id="s4" class="slide accent-navy">
+  <div class="slide-header">
+    <h2>S4 — The Map (Chapter 1 payoff) <small>Every top-10 worst region is a major city</small></h2>
+    <span class="time">0:55 – 1:30 · 35s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s4">
+        <div class="accent-bar"></div>
+        <div class="headline">Every top-10 worst region is a major city.</div>
+        <div class="sub">Unley, SA: Care Gap Index 2.78 — 2.46× the national average of 1.13.</div>
+        <div class="body">
+          <div class="map"></div>
+          <div class="panel">
+            <div class="row"><b>Top-10 worst</b><span>all MM1</span></div>
+            <div class="row"><b>ACT lead</b><span>1.37 / 5.01%</span></div>
+            <div class="row"><b>1 · Unley</b><span>SA · 2.78</span></div>
+            <div class="row"><b>2 · S Perth</b><span>WA · 2.55</span></div>
+            <div class="row"><b>3 · Perth City</b><span>WA · 2.49</span></div>
+            <div class="row"><b>4 · Caboolture</b><span>QLD · 2.42</span></div>
+            <div class="row"><b>5 · Southport</b><span>QLD · 2.37</span></div>
+          </div>
+        </div>
+        <div class="alert">The crisis is geographic — concentrated in cities, not the outback.</div>
+        <div class="mockup-asset-tag">S4_choropleth_caregap_2024.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S4_choropleth_caregap_2024.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">Choropleth of <code>care_gap_index</code> 2024 · Blue-lite → Gold → Red ramp · Unley annotated with gold pin "2.78".</p>
+      <h3>Layout</h3>
+      <p>55/45 split — map left, panel right · Navy headline bar top · Red 4px alert strip bottom.</p>
+      <h3>Award targeted</h3>
+      <p><span class="award truth">Truth-Teller</span></p>
+      <h3>Key numbers</h3>
+      <p>Unley 2.78 (2.46× nat'l avg 1.13) · ACT residential access 5.01% (highest in AU) · 12 of 20 worst = MM1 cities · All top-10 = MM1.</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"Here are the ten worst SA3 regions in Australia, ranked by Care Gap Index — that's how much demand pressure sits on top of every quality star. <strong>All ten are major cities. None are rural. None are remote.</strong> Unley in South Australia tops the list at 2.78 — nearly two-and-a-half times the national average. Three of the top five are in Perth and Brisbane suburbs. And our capital, ACT, has the highest residential demand rate of any state at 5.01 percent — meaning more elderly Canberrans are in facilities, per capita, than anywhere else."</p>
+    <p class="timing">⏱ 0:55 → 1:30 — 35s · slow on "All ten are major cities" · gesture down the table on Unley/S.Perth/Perth City/Caboolture/Southport</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Pays the S3 promise with named places. A pitch deck full of percentages forgets every one of them; a pitch deck with "Unley" sticks. Top-5 table gives families a scannable anchor and investors a regional shortlist.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S5</h3>
+      <p>"But if these are all cities — why these cities specifically? Why these suburbs? Answer: it's not <em>where</em> the facility sits. It's <em>who runs it</em>."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S5 ========== -->
+<section id="s5" class="slide accent-teal">
+  <div class="slide-header">
+    <h2>S5 — The Correlation (Ch2 part 1) <small>The 0.57-star gap that hasn't moved in 12 quarters</small></h2>
+    <span class="time">1:30 – 2:00 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s5">
+        <div class="accent-bar"></div>
+        <div class="headline">The 0.57-star gap that hasn't moved in 12 quarters.</div>
+        <div class="sub">Govt 4.07★ · NFP 3.61★ · For-profit 3.50★ — stable across every state and remoteness band.</div>
+        <div class="stats">
+          <div class="stat govt"><span>4.07★</span><em>Government</em></div>
+          <div class="stat nfp"><span>3.61★</span><em>Not-for-profit</em></div>
+          <div class="stat fp"><span>3.50★</span><em>For-profit</em></div>
+        </div>
+        <div class="chart">
+          <div class="line-fp"></div>
+          <div class="mandate"></div>
+        </div>
+        <div class="mockup-asset-tag">S5_ownership_trend_12q.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S5_ownership_trend_12q.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">Three parallel flat lines: Govt (teal) · NFP (blue-mid) · For-profit (red) · Gold dashed Oct 2023 mandate vline · 12 quarterly snapshots May 2023 → Feb 2026.</p>
+      <h3>Layout</h3>
+      <p>3 stat boxes top third (1/3 width each) · trend chart fills bottom two-thirds full width.</p>
+      <h3>Award targeted</h3>
+      <p><span class="award truth">Truth-Teller</span></p>
+      <h3>Source</h3>
+      <p><code>assets/chapter_02_the_correlation.md</code> Insights 1, 6</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"The culprit is ownership. Government-run facilities: 4.07 stars. Not-for-profit: 3.61. For-profit: 3.50. A 0.57-point gap between the highest and lowest — and look at this chart. <strong>Three flat lines, in parallel, for three years.</strong> The October 2023 staffing mandate lifted everyone — but it didn't close the gap by a single decimal. Whoever owns the building is the strongest single predictor of the care your parent receives."</p>
+    <p class="timing">⏱ 1:30 → 2:00 — 30s · weight on "three flat lines, in parallel, for three years" · point to the gold mandate vline</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Truth-Teller: a numerical claim ("0.57-star gap") proven by a chart that shows <em>stability</em>, not noise. Stability is harder to argue with than a single snapshot.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S6</h3>
+      <p>"You'd expect the underfunded operators to score worst. The opposite is true." Pivots to the funding paradox — the deck's strongest Truth-Teller card.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S6 ========== -->
+<section id="s6" class="slide accent-red">
+  <div class="slide-header">
+    <h2>S6 — The Funding Paradox (Ch2 part 2) <small>2.6× more money. Lower quality.</small></h2>
+    <span class="time">2:00 – 2:30 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s6">
+        <div class="accent-bar"></div>
+        <div class="headline">2.6× more money. Lower quality. Identical outcomes.</div>
+        <div class="sub">For-profit facilities receive $7.46M public funding. Government: $2.85M.</div>
+        <div class="body">
+          <div class="left">
+            <b style="color: var(--gold);">Staffing</b><br/>Govt 4.39 vs FP 2.61<br/><em style="opacity:0.7">−1.78 pt input gap</em>
+            <br/><br/>
+            <b style="color: var(--gold);">Outcomes (QM)</b><br/>3.52 vs 3.51<br/><em style="opacity:0.7">virtually identical</em>
+            <br/><br/>
+            <b style="color: var(--gold);">Chu et al. JAMDA '24</b><br/>FP 8× less likely to reach 4–5★
+          </div>
+          <div class="right">
+            <div class="bubble b-govt">G</div>
+            <div class="bubble b-nfp">N</div>
+            <div class="bubble b-fp">P</div>
+            <div class="arrow">+2.6×→</div>
+          </div>
+        </div>
+        <div class="mockup-asset-tag">S6_funding_quality_scatter.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S6_funding_quality_scatter.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">3 bubbles — bubble size = n_facilities · Govt (teal, $2.85M, 4.07★) · NFP (blue-mid, $5.54M, 3.61★) · FP (red, $7.46M, 3.50★) · Gold "+2.6× funding" arrow.</p>
+      <h3>Layout</h3>
+      <p>45/55 — body block left on Navy card · scatter right · Red 4px top accent (urgency mode begins).</p>
+      <h3>Awards targeted</h3>
+      <p><span class="award truth">Truth-Teller</span> <span class="award change">Changemaker setup</span></p>
+      <h3>External validation</h3>
+      <p>Chu et al. JAMDA 2024 (n=2,476) — for-profit OR 0.12 vs government for 4–5 stars · KPMG 2025 — top 25 providers hold 44.7% of all places.</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"Here's the paradox. For-profit facilities receive 2.6 times more public funding per site than government — $7.46 million versus $2.85 million — and return the lowest quality. Why? <strong>It's a staffing gap, not a clinical gap.</strong> Staffing scores: government 4.39, for-profit 2.61 — a 1.78-point spread. But Quality Measures — actual resident health outcomes — are 3.52 versus 3.51. Identical. For-profit operators are deploying fewer staff hours to produce similar clinical floors. Independent research backs this up: Chu et al., 2024, two thousand four hundred facilities — for-profit is <em>eight times</em> less likely to achieve 4 or 5 stars than government."</p>
+    <p class="timing">⏱ 2:00 → 2:30 — 30s · land hard on "8× less likely" · point at the red bubble</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>The deck's strongest Truth-Teller card. The paradox is undeniable: more money, less quality, same outcomes. Sets up "the system is broken — but here's where the NFP angle wins" (S11 CTA).</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S7</h3>
+      <p>"Numbers like 3.50 stars feel abstract. Let me show you what that means for one Tasmanian community right now." Pivots from <em>structural</em> failure to <em>human</em> cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S7 ========== -->
+<section id="s7" class="slide accent-red">
+  <div class="slide-header">
+    <h2>S7 — The Human Cost (Ch3 part 1) <small>3.1 high-needs people · 1 bed</small></h2>
+    <span class="time">2:30 – 3:00 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s7">
+        <div class="accent-bar"></div>
+        <div class="headline">3.1 high-needs people. 1 bed.</div>
+        <div class="sub">Central Highlands, Tasmania — Australia's worst supply-demand ratio. 56 people. 18 beds.</div>
+        <div class="body">
+          <div class="left-stack">
+            <div class="ratio-num">3.1</div>
+            <div class="ratio-cap">high-needs<br/>people per bed</div>
+            <div class="ratio-people">👤👤👤 / 🛏</div>
+            <div style="font-size: 8px; text-align: left; margin-top: 8px; line-height: 1.5;">
+              <b>58 SA3s</b> in structural deficit<br/>
+              <b>+10 net</b> new crisis zones (12 mo)<br/>
+              <b>59.1%</b> of HCP approvals = L3-L4<br/>
+              <b>12 of 20</b> worst = MM1 cities
+            </div>
+          </div>
+          <div class="bars">
+            <div class="bar first">Central Highlands TAS · 3.11</div>
+            <div class="bar">Noosa Hinterland QLD · 2.83</div>
+            <div class="bar">Sunshine Coast Hinter QLD · 2.62</div>
+            <div class="bar">Wheat Belt N WA · 2.61</div>
+            <div class="bar">Gympie–Cooloola QLD · 2.32</div>
+            <div class="bar">…</div>
+          </div>
+        </div>
+        <div class="mockup-asset-tag">S7_waitlist_top10_2024.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S7_waitlist_top10_2024.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">Top-10 horizontal bar · waitlist_pressure 2024 · gold dashed "Crisis threshold = 1.0" · Central Highlands TAS at top with bold label.</p>
+      <h3>Layout</h3>
+      <p>45/55 — emotional callout left (huge "3.1" red number + person/bed glyph) · bar chart right.</p>
+      <h3>Awards targeted</h3>
+      <p><span class="award heart">Heart-String</span> <span class="award truth">Truth-Teller</span></p>
+      <h3>Source</h3>
+      <p><code>assets/chapter_03_the_reveal.md</code> Insights 2, 3, 5</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"Central Highlands, Tasmania. Fifty-six elderly people, assessed as needing high-level care, competing for eighteen residential beds. <strong>Three-point-one people for every bed that exists.</strong> This isn't a queue. It's a holding pen — and the holding pen is the home-care system, where 59 percent of all current approvals are at Level 3 or Level 4 — the two highest care tiers. These are people whose own assessments say they belong in residential care. Fifty-eight regions are now in this structural deficit. We added ten new ones — net — in a single year."</p>
+    <p class="timing">⏱ 2:30 → 3:00 — 30s · pause after "fifty-six people, eighteen beds" · the "3.1 / 1 bed" graphic does the emotional lifting</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Heart-String earned through named place + concrete ratio (56/18). 59.1% L3-L4 is the structural anchor — Truth-Teller. Tension created: "if 58 are in deficit, why aren't we building beds?"</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S8</h3>
+      <p>"You'd expect 58 communities with documented unmet demand to be the obvious build targets. Look what actually happened."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S8 ========== -->
+<section id="s8" class="slide accent-red">
+  <div class="slide-header">
+    <h2>S8 — Supply Failure (Ch3 part 2) <small>12,027 new beds. None where they're needed.</small></h2>
+    <span class="time">3:00 – 3:30 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s8">
+        <div class="accent-bar"></div>
+        <div class="headline">12,027 new beds. None where they're needed.</div>
+        <div class="sub">Crisis zones lost 551 places while the rest of Australia added 12,027 (2019–2024).</div>
+        <div class="two-col">
+          <div class="col-red">58 CRISIS ZONES<br/><span style="font-size: 22px;">−551 beds</span><em>+10 net new zones in 2024</em></div>
+          <div class="col-teal">REST OF AUSTRALIA<br/><span style="font-size: 22px;">+12,027 beds</span><em>flowing to already-served areas</em></div>
+        </div>
+        <div class="chart"></div>
+        <div class="mockup-asset-tag">S8_supply_divergence_indexed.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S8_supply_divergence_indexed.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">Indexed line chart 2019=100 · Rest of Australia (teal) climbs above 105 · Crisis SA3s (red) drifts to ~98 · Gold shaded "supply divergence" gap.</p>
+      <h3>Layout</h3>
+      <p>Two-column band top third (Red-lite left / Teal-lite right) · divergence chart bottom two-thirds full width.</p>
+      <h3>Award targeted</h3>
+      <p><span class="award change">Changemaker</span></p>
+      <h3>Source</h3>
+      <p><code>assets/chapter_03_the_reveal.md</code> Insight 7</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"This is not a national bed shortage. <strong>This is a misallocation.</strong> Between 2019 and 2024, the 58 communities in structural deficit collectively <em>lost</em> 551 residential places. The rest of Australia added 12,027. New supply is flowing toward regions that already have enough — and away from the communities where demand has outrun capacity. This is a market failure, not a budget failure. And it is exactly the kind of failure a mission-led not-for-profit is built to correct."</p>
+    <p class="timing">⏱ 3:00 → 3:30 — 30s · weight on "misallocation" and "market failure" · CTA setup begins</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Changemaker move — names the system failure with one comparable number pair (−551 vs +12,027) and explicitly invites the NFP-CEO frame to be the answer.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S9</h3>
+      <p>"So how would you actually find those 58 zones, screen them, and decide where to build first? That's what the tool does — and here are its four advanced features."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S9 ========== -->
+<section id="s9" class="slide accent-teal">
+  <div class="slide-header">
+    <h2>S9 — The Tool (Demo · 4 advanced features) <small>Not a report. A live decision system.</small></h2>
+    <span class="time">3:30 – 4:00 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s9">
+        <div class="accent-bar" style="background: var(--gold);"></div>
+        <div class="headline" style="margin-top: 12px;">Not a report. A live decision system.</div>
+        <div class="sub">Four advanced capabilities. Built for any user wearing any hat.</div>
+        <div class="grid2x2">
+          <div class="feat"><span class="num">1</span><b>Context-Aware Filtering</b>Sidebar rewrites every chart + callout across all 5 chapters</div>
+          <div class="feat"><span class="num">2</span><b>Visual Tooltips &amp; Modals</b>Click any SA3 → pressure, demand, ownership drill-down</div>
+          <div class="feat"><span class="num">3</span><b>Narrative Scrollytelling</b>5-chapter detective arc, sub-tabs reveal as you scroll</div>
+          <div class="feat"><span class="num">4</span><b>What-If Parameterisation</b>Ch4 RN-minutes slider · Ch5 scenario radio · live recompute</div>
+        </div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">Dashboard screencaps × 4</p>
+      <p style="margin-top: 6px; font-size: 12px;">TL: Ch1 sidebar filter (state=TAS) + halo on changed map · TR: Ch3 click-drill modal (Central Highlands SA3 popup) · BL: Ch3 scrollytelling 3-tab strip · BR: Ch4 RN-minutes slider + Ch5 scenario radio side-by-side.</p>
+      <h3>Layout</h3>
+      <p>Blue-lite bg · Gold 4px top accent · 2×2 grid 70% of slide · each thumbnail Teal-bordered with Gold corner badge (1–4).</p>
+      <h3>Award targeted</h3>
+      <p><span class="award tech">Technical Masterclass</span></p>
+      <h3>Rubric tick</h3>
+      <p>All 4 AT3 advanced features in one field of view — explicit for the marker.</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"Four things this tool does that a PDF can't. <strong>One</strong> — every chart and every callout rewrites itself when you change a filter. Pick Tasmania, and the entire deck speaks Tasmania. <strong>Two</strong> — click any region, drill straight into its pressure, demand, and ownership profile. <strong>Three</strong> — the story unfolds as five chapters, not a chart dump. <strong>Four</strong> — slide the staffing-minutes lever, watch compliance recompute live. This is what we built."</p>
+    <p class="timing">⏱ 3:30 → 4:00 — 30s · count "One, Two, Three, Four" with finger gestures · keep cadence brisk to feel "live"</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>The rubric demands "at least 3 advanced features"; this slide stages all 4 in a single field of view. Technical Masterclass earned through composition, not narration.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S10</h3>
+      <p>"And because the tool parameterises population, we can run forward scenarios — without faking the supply or quality side." Cues the integrity disclosure on S10.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S10 ========== -->
+<section id="s10" class="slide accent-navy">
+  <div class="slide-header">
+    <h2>S10 — The Forecast (Ch5) <small>If the trend holds, where does 2025 land?</small></h2>
+    <span class="time">4:00 – 4:30 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s10">
+        <div class="accent-bar"></div>
+        <div class="headline">If the trend holds, where does 2025 land?</div>
+        <div class="sub">Three population scenarios · supply held at real 2025 · the gap widens.</div>
+        <div class="dual">
+          <div class="map-mini" data-year="2024 ACTUAL"></div>
+          <div class="arrow-gold">→</div>
+          <div class="map-mini r" data-year="2025 PROJECTED"></div>
+        </div>
+        <div class="kpi">
+          <div><b>Improved</b> 98</div>
+          <div><b>Worsened</b> 142</div>
+          <div><b>Net</b> ↓44</div>
+        </div>
+        <div style="text-align: center; font-size: 9px; color: var(--grey-500); padding: 4px;">
+          Only pop_65_plus is projected · quality / supply / HCP = real 2025
+        </div>
+        <div class="mockup-asset-tag">Dashboard Ch5 screencap</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">Dashboard Ch5 dual choropleth</p>
+      <p style="margin-top: 6px; font-size: 12px;">"Care Gap 2024 actual" left, "2025 projected (Baseline)" right · same colour scale · scenario radio visible at side.</p>
+      <h3>Layout</h3>
+      <p>Dual maps 70% slide side-by-side with Gold "→" between · bottom 3-cell KPI strip (Improved · Worsened · Net) · Navy headline bar.</p>
+      <h3>Awards targeted</h3>
+      <p><span class="award truth">Truth-Teller</span> <span class="award tech">Technical Masterclass</span></p>
+      <h3>Integrity move</h3>
+      <p>Disclose what's projected (pop) and what's real (quality, supply, HCP). Pre-empts the obvious Q&amp;A question.</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"We projected one year forward — three population scenarios, baseline, aggressive aging, and stagnation. <strong>One honest constraint: only population is projected.</strong> Quality, supply, and home-care numbers stay at the real 2025 values — no black box. Under the baseline trend, more SA3s worsen than improve. The 58 crisis zones don't shrink by themselves. Some — the top-10 movers — cross into the red for the first time."</p>
+    <p class="timing">⏱ 4:00 → 4:30 — 30s · the integrity sentence ("only population is projected") is the Truth-Teller move — say it cleanly</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Pre-empts the strongest Q&amp;A challenge ("how did you forecast 2025?"). Earns Truth-Teller through disclosure and Technical Masterclass through visible parameterisation.</p>
+    </div>
+    <div class="col">
+      <h3>→ Bridge to S11</h3>
+      <p>"If 2025 widens the gap and supply is misallocated — what does the mandate actually fix? And what's our move?" Sets up the verdict + CTA.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== S11 ========== -->
+<section id="s11" class="slide accent-navy">
+  <div class="slide-header">
+    <h2>S11 — Verdict + CTA (Ch4) <small>Better on paper. Not yet in lives.</small></h2>
+    <span class="time">4:30 – 5:00 · 30s</span>
+  </div>
+  <div class="slide-body">
+    <div class="mockup-wrap">
+      <div class="mockup s11">
+        <div class="accent-bar"></div>
+        <div class="headline">Better on paper. Not yet in lives.</div>
+        <div class="sub">Chapter 4 — The Mandate Effect, October 2023.</div>
+        <div class="body">
+          <div class="bullets">
+            <div><b>+</b> Quality <b>+0.25★</b> nationally (3.40 → 3.65). Staffing +0.51★. Compliance 26.1% → 65.2%.</div>
+            <div><b>~</b> Quality Measures (resident health outcomes): <b>−0.015★</b> — inputs fixed, outcomes flat.</div>
+            <div><b>−</b> For-profit compliance <b>30.2%</b> vs Government <b>84.1%</b> — a <b>54-point gap</b>.</div>
+            <div><b>▲</b> NT improved most (<b>+0.796★</b>, rose 8th → 1st state).</div>
+          </div>
+          <div class="chart-mini">
+            <div class="mandate-v"></div>
+          </div>
+        </div>
+        <div class="cta">
+          Build NFP capacity in the 58 crisis zones. Start with the top-10 movers.
+          <small>Filter to your state in the dashboard. The build list is already there.</small>
+        </div>
+        <div class="mockup-asset-tag">S11_quality_timeline_oct2023.png</div>
+      </div>
+    </div>
+    <div class="meta-panel">
+      <h3>Visual asset</h3>
+      <p class="asset">S11_quality_timeline_oct2023.png</p>
+      <p style="margin-top: 6px; font-size: 12px;">National quality line · 12 quarters · Gold Oct 2023 vline · "+0.25★" annotation on post-mandate plateau.</p>
+      <h3>Layout</h3>
+      <p>Navy background (bookends S1) · Body: bullets left 60%, chart right 40% · Teal CTA stripe full-width bottom 22% (brightest object on slide).</p>
+      <h3>Awards targeted</h3>
+      <p><span class="award change">Changemaker</span> <span class="award heart">Heart-String</span></p>
+      <h3>Source</h3>
+      <p><code>assets/chapter_04_mandate_effect.md</code> Insights 1, 2, 4, 8</p>
+    </div>
+  </div>
+  <div class="script-block">
+    <div class="label">Speaker script</div>
+    <p class="script">"The October-2023 mandate worked on paper. National quality up a quarter-star. Staffing up half a star. Compliance more than doubled, 26 to 65 percent. <strong>But resident health outcomes haven't followed</strong> — Quality Measures moved minus 0.015. And the for-profit compliance gap is 54 points wide — government 84 percent, for-profit 30. Northern Territory shows what's possible when an operator complies — they rose from last to first, plus 0.8 of a star. <strong>So here is our move.</strong> As a not-for-profit, we build in the 58 crisis zones. The top-10 movers list — generated live by this dashboard — tells you which to start with. The build list is already there. Thank you."</p>
+    <p class="timing">⏱ 4:30 → 5:00 — 30s · slow on the CTA · the "Thank you" lands cleanly on 5:00</p>
+  </div>
+  <div class="bridge">
+    <div class="col">
+      <h3>Why this slide</h3>
+      <p>Audience-targeted CTA (NFP, consistent with S2) + specific artefact (top-10 movers list — a real dashboard output). Heart-String through "not yet in lives" — names what hasn't worked, alongside what has.</p>
+    </div>
+    <div class="col">
+      <h3>Q&amp;A back-pocket (1:30)</h3>
+      <p>Be ready for: (1) MM7 quality paradox (S3) · (2) ownership stability across bands (S5) · (3) mandate input-vs-outcome gap (S11) · (4) "only pop is projected" disclosure (S10).</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer id="legend" class="legend">
+  <h2>Pacing &amp; rehearsal checklist</h2>
+  <p><span class="swatch" style="background: var(--gold);"></span>
+  <strong style="color: white;">Time it end-to-end without slides</strong> → must land 4:45–5:00. If you run long, the slide most likely to drop is S5 (move the 12-quarter discussion to Q&amp;A).</p>
+  <p><span class="swatch" style="background: var(--teal);"></span>
+  <strong style="color: white;">Read every number aloud once against the asset files</strong> — Unley 2.78, ACT 1.37, NFP 3.61, Central Highlands 3.11, crisis zones −551, mandate +0.25★, NT +0.796★.</p>
+  <p><span class="swatch" style="background: var(--red);"></span>
+  <strong style="color: white;">Rubric tick on S9</strong> — confirm all 4 advanced feature thumbnails are recognisable from 3m away.</p>
+  <p><span class="swatch" style="background: var(--navy); border: 1px solid var(--blue-lite);"></span>
+  <strong style="color: white;">Award alignment</strong> — 2× Heart-String (S3, S7, S11), 4× Truth-Teller (S4, S5, S6, S10), 3× Changemaker (S2, S8, S11), 2× Technical Masterclass (S9, S10).</p>
+  <p style="margin-top: 18px; font-size: 11px; opacity: 0.7;">Generated from <code>~/.claude/plans/b-n-c-v-th-m-zippy-tide.md</code> · numbers verified against <code>assets/chapter_01–04*.md</code> · 2026-05-12.</p>
+</footer>
+
+</body>
+</html>
