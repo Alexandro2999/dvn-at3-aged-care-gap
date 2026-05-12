@@ -477,25 +477,25 @@ KPI_HTML = f"""
 
 # ── Page routing ───────────────────────────────────────────────────────────────
 if page == "home":
-    pg_home.render(hero_b64, KPI_HTML)
+    pg_home.render(hero_b64, KPI_HTML, master_filt, gdf, supply, population, ratings, service_users)
 
 elif page == "fullmap":
-    pg_fullmap.render(master_filt, gdf, supply, population, service_users)
+    pg_fullmap.render(master_filt, gdf, supply, population, service_users=service_users, ratings=ratings)
 
 elif page == "map":
     pg_map.render(master_filt, gdf, supply, population, ratings, service_users)
 
 elif page == "correlation":
-    pg_corr.render(master_filt, ratings, funding)
+    pg_corr.render(master_filt, ratings, funding, supply)
 
 elif page == "reveal":
     pg_reveal.render(master_filt, supply, n_deficit, acpr_res, acpr_hc, service_users)
 
 elif page == "mandate":
-    pg_mandate.render(ratings)
+    pg_mandate.render(ratings, master_filt)
 
 elif page == "forecast":
     pg_forecast.render(master_filt, supply, service_users, ratings, population, gdf)
 
 else:
-    pg_home.render(hero_b64, KPI_HTML)
+    pg_home.render(hero_b64, KPI_HTML, master_filt, gdf, supply, population, ratings, service_users)

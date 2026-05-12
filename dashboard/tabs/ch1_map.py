@@ -27,22 +27,18 @@ _RANK_METRICS = {
 
 
 def render(df, gdf, supply, population, ratings, service_users=None) -> None:
-    st.markdown('<div class="sec-h1">Is aged care near me any good?</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sec-h1">Where do the patterns live?</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p class="sec-p">Start with the national picture, zoom into the structural decline, '
-        'then find your own area.</p>',
+        '<p class="sec-p">Zoom into state and remoteness patterns, then trace the '
+        'structural supply decline. The interactive map and SA3 search live on the '
+        '<a href="?page=home" target="_self">Home</a> page.</p>',
         unsafe_allow_html=True,
     )
 
-    tab_map, tab_a, tab_b, tab_c = st.tabs([
-        "🗺 Interactive Map",
+    tab_a, tab_b = st.tabs([
         "📊 The Overview",
         "📉 The Decline",
-        "🔍 Find My Area",
     ])
-
-    with tab_map:
-        pg_fullmap.render(df, gdf, supply, population, service_users)
 
     # ════════════════════════════════════════════════════════════════════════════
     # TAB A — Overview: care gap · quality · access × state / MMM + Top N rankings
@@ -309,93 +305,3 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             "Beds per 1,000 elderly dropped from ~76 (2020) to ~67 (2024), a **12% decline in 5 years**."
         )
 
-
-    # ════════════════════════════════════════════════════════════════════════════
-    # TAB C — Find My Area: search + choropleth with year slider + full metrics
-    # ════════════════════════════════════════════════════════════════════════════
-    with tab_c:
-        st.info(
-            "The full interactive map — switch metrics, change year, and see region movement — "
-            "is available on the **Interactive Map** page. Use the nav bar above or click "
-            "[Discover the Map](?page=fullmap)."
-        )
-
-        # ── Search your area ──────────────────────────────────────────────────
-        st.markdown("---")
-        _sa3_opts = [""] + sorted(df_yr['sa3_name'].dropna().unique().tolist()) if not df_yr.empty else [""]
-        search = st.selectbox("Find your area", options=_sa3_opts, index=0, key="c_search",
-                              format_func=lambda x: "— type to search SA3 name —" if x == "" else x)
-        if search and not df_yr.empty:
-            row = df_yr[df_yr['sa3_name'] == search].iloc[0]
-            st.markdown(
-                f'<div class="nb-card">'
-                f'<b>{search}</b> ({row.get("state", "")})'
-                f'&nbsp;&nbsp;·&nbsp;&nbsp;Care Gap: <b>{row["care_gap_index"]:.2f}</b>'
-                f'&nbsp;&nbsp;·&nbsp;&nbsp;Quality: <b>{row["quality_score"]:.2f}★</b>'
-                f'&nbsp;&nbsp;·&nbsp;&nbsp;Access Rate: <b>{row["access_rate"]:.1f}%</b>'
-                f'&nbsp;&nbsp;·&nbsp;&nbsp;Remoteness: <b>{MMM_LABELS.get(row.get("mmm_code", ""), row.get("mmm_code", ""))}</b>'
-                f'</div>',
-                unsafe_allow_html=True,
-            )
-            # ── Top 5 facilities in this SA3 ──────────────────────────────────
-            _sa3_code = row['sa3_code'] if 'sa3_code' in row.index else None
-            if _sa3_code is not None:
-                _fac = ratings[ratings['sa3_code'] == _sa3_code].copy()
-                if not _fac.empty:
-                    _top5 = (
-                        _fac.sort_values('snapshot_date')
-                        .groupby('Service Name', as_index=False)
-                        .last()
-                        .nlargest(5, 'quality_score')
-                        [['Service Name', 'Provider Name', 'org_type', 'quality_score', 'overall_rating']]
-                        .rename(columns={
-                            'Service Name': 'Facility',
-                            'Provider Name': 'Provider',
-                            'org_type': 'Type',
-                            'quality_score': 'Quality',
-                            'overall_rating': 'Stars',
-                        })
-                    )
-                    _top5['Quality'] = _top5['Quality'].round(2)
-                    _org_colour = {
-                        'profit': '#D94F3D',
-                        'not_for_profit': '#1B3F6E',
-                        'government': '#00A79D',
-                    }
-                    _org_label = {
-                        'profit': 'For Profit',
-                        'not_for_profit': 'Not for Profit',
-                        'government': 'Government',
-                    }
-                    _rows_html = ''
-                    for _i, _r in enumerate(_top5.itertuples(index=False)):
-                        _bg = '#FFFFFF' if _i % 2 == 0 else '#F3F9FE'
-                        _oc = _org_colour.get(_r.Type, '#6B7C93')
-                        _ol = _org_label.get(_r.Type, _r.Type)
-                        _rows_html += (
-                            f'<tr style="background:{_bg}">'
-                            f'<td style="padding:12px 16px;color:#1B3F6E;font-weight:500;font-size:16px">{_r.Facility}</td>'
-                            f'<td style="padding:12px 16px;color:#6B7C93;font-size:15px">{_r.Provider}</td>'
-                            f'<td style="padding:12px 16px;font-size:15px"><span style="color:{_oc};font-weight:600">{_ol}</span></td>'
-                            f'<td style="padding:12px 16px;text-align:right;color:#1B3F6E;font-weight:700;font-size:16px">{_r.Quality:.2f}</td>'
-                            f'<td style="padding:12px 16px;text-align:right;color:#1B3F6E;font-size:16px">{_r.Stars:.1f} ★</td>'
-                            f'</tr>'
-                        )
-                    st.markdown(
-                        f'<p style="margin:16px 0 8px;color:#1B3F6E;font-weight:700;font-size:17px">'
-                        f'Top 5 facilities in this area <span style="font-weight:400;color:#6B7C93;font-size:14px">(latest ratings)</span></p>'
-                        f'<table style="width:100%;border-collapse:collapse;font-size:16px;'
-                        f'border:1px solid #C8DCF0;border-radius:10px;overflow:hidden">'
-                        f'<thead><tr style="background:#1B3F6E">'
-                        f'<th style="padding:12px 16px;text-align:left;color:white;font-weight:700;font-size:16px">Facility</th>'
-                        f'<th style="padding:12px 16px;text-align:left;color:white;font-weight:700;font-size:16px">Provider</th>'
-                        f'<th style="padding:12px 16px;text-align:left;color:white;font-weight:700;font-size:16px">Type</th>'
-                        f'<th style="padding:12px 16px;text-align:right;color:white;font-weight:700;font-size:16px">Quality</th>'
-                        f'<th style="padding:12px 16px;text-align:right;color:white;font-weight:700;font-size:16px">Stars</th>'
-                        f'</tr></thead>'
-                        f'<tbody>{_rows_html}</tbody>'
-                        f'</table>',
-                        unsafe_allow_html=True,
-                    )
-                else:
-                    st.caption("No facility-level data for this SA3.")

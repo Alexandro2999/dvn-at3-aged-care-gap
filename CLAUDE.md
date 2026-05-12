@@ -29,10 +29,18 @@ jupyter notebook notebooks/clean_pipeline/
 
 ## Current Phase
 
-🟡 **Phase 1: Story & Insights** — active  
-⬜ **Phase 2: Dashboard** — blocked until Phase 1 complete
+✅ **Phase 1: Story & Insights** — done (4 chapter assets verified, all numbers traced to source)
+✅ **Phase 2: Dashboard build** — done (5 chapters in `dashboard/app.py`)
+✅ **Part 2: Pitch slides** — shipped 2026-05-12 (`slides_deck/Australias-Aged-Care-Gap.pptx` + `slides_deck/pitch_master.md`)
+🟡 **Part 3: Final Portfolio polish** — ACTIVE · due Sun 17 May 2026
 
-Phase 2 command: `.claude/commands/phase2/dashboard.md` (inactive — move to `.claude/commands/` when Phase 2 begins)
+Part 3 critical path (5 days):
+1. Verify 4 advanced features end-to-end (filtering, click-drill, scrollytelling, what-if sliders) — pitch S9 publicly promises these
+2. Deploy to Streamlit Cloud
+3. Record 3-min video walkthrough showcasing the 4 features
+4. Polish data dictionary (`data/clean/README.md`) + annotate `dashboard/tabs/*.py`
+
+Reference: `slides_deck/pitch_master.md` Part C has the full dashboard gap analysis.
 
 ---
 
@@ -51,16 +59,27 @@ dvn-at3-aged-care-gap/
 │   │   └── abs_geography/               ← SA3 shapefile for choropleth
 │   └── clean/                           ← pipeline outputs, never edit manually
 ├── notebooks/
-│   ├── clean_pipeline/                  ← run in order 01 → 07
-│   ├── architect/                       ← 01_eda.ipynb only (02_metrics pending Phase 2)
-│   └── analyst/                         ← one notebook per story angle
+│   ├── clean_pipeline/                  ← 01 → 07, produces data/clean/
+│   ├── architect/                       ← EDA + master_sa3.csv builder
+│   └── analyst/                         ← one notebook per chapter
+│       ├── 01_chapter_the_map.ipynb
+│       ├── 02_chapter_the_correlation.ipynb
+│       ├── 03_chapter_the_reveal.ipynb
 │       └── 04_chapter_mandate_effect.ipynb
-├── dashboard/                           ← Streamlit app (app.py)
-├── assets/                              ← insight files, one per chapter (English only)
-│   ├── chapter_01_the_map.md            ← dashboard narrative arc
-│   ├── chapter_02_the_correlation.md    ← dashboard narrative arc
-│   ├── chapter_03_the_reveal.md         ← dashboard narrative arc
-│   └── chapter_04_mandate_effect.md     ← story angle deep-dive (done)
+├── dashboard/                           ← Streamlit app (5 chapter tabs)
+│   ├── app.py
+│   └── tabs/                            ← ch1_map, ch2_correlation, ch3_reveal, ch4_mandate, ch5_forecast, fullmap, utils
+├── assets/                              ← chapter insight files (English only)
+│   ├── chapter_01_the_map.md
+│   ├── chapter_02_the_correlation.md
+│   ├── chapter_03_the_reveal.md
+│   └── chapter_04_mandate_effect.md
+├── slides_deck/                         ← Part 2 pitch deliverable
+│   ├── Australias-Aged-Care-Gap.pptx    ← final deck
+│   ├── pitch_master.md                  ← scripts + 52/52 data audit + Q&A + dashboard checklist
+│   ├── slide_storyboard.html            ← layout reference for Part 3 video
+│   ├── visual_for_slides.ipynb          ← chart PNG generator
+│   └── assets/                          ← 7 chart PNGs (S3, S4, S5, S6, S7, S8, S11)
 └── requirements.txt
 ```
 
@@ -80,34 +99,22 @@ dvn-at3-aged-care-gap/
 
 ## Core Chapters
 
-| Chapter | Asset | Notebook | Status |
-|---------|-------|----------|--------|
-| Ch 1 — The Map | `chapter_01_the_map.md` | `01_chapter_the_map.ipynb` | ✅ done |
-| Ch 2 — The Correlation | `chapter_02_the_correlation.md` | `02_chapter_the_correlation.ipynb` | ✅ done |
-| Ch 3 — The Reveal | `chapter_03_the_reveal.md` | `03_chapter_the_reveal.ipynb` | ✅ done |
+| Chapter | Asset | Notebook | Dashboard tab | Status |
+|---------|-------|----------|---------------|--------|
+| Ch 1 — The Map | `chapter_01_the_map.md` | `01_chapter_the_map.ipynb` | `tabs/ch1_map.py` + `tabs/fullmap.py` | ✅ done |
+| Ch 2 — The Correlation | `chapter_02_the_correlation.md` | `02_chapter_the_correlation.ipynb` | `tabs/ch2_correlation.py` | ✅ done |
+| Ch 3 — The Reveal | `chapter_03_the_reveal.md` | `03_chapter_the_reveal.ipynb` | `tabs/ch3_reveal.py` | ✅ done |
+| Ch 4 — Mandate Effect | `chapter_04_mandate_effect.md` | `04_chapter_mandate_effect.ipynb` | `tabs/ch4_mandate.py` | ✅ done |
+| Ch 5 — Forecast | (no asset — dashboard-only) | (computed live in tab) | `tabs/ch5_forecast.py` | ✅ done |
 
----
-
-## Story Angle Pattern
-
-Each story angle requires two files — follow `chapter_04_mandate_effect` as the reference:
-
-| File | Purpose |
-|------|---------|
-| `notebooks/analyst/0X_chapter_<angle>.ipynb` | Runnable charts from `data/clean/` |
-| `assets/chapter_0X_<angle>.md` | Pure insights + numbers, no code, English only |
-
-| Angle | Notebook | Asset | Status |
-|-------|----------|-------|--------|
-| Mandate Effect | `04_chapter_mandate_effect.ipynb` | `chapter_04_mandate_effect.md` | ✅ done (provenance tags added) |
-| For-Profit Problem | `05_chapter_for_profit.ipynb` | `chapter_05_for_profit.md` | pending |
-| Waitlist Trap | `06_chapter_waitlist.ipynb` | `chapter_06_waitlist.md` | pending |
-| Supply Collapse | `07_chapter_supply.ipynb` | `chapter_07_supply.md` | pending |
+Earlier "story angle" notebooks (For-Profit, Waitlist, Supply Collapse) were merged into Ch 2 / Ch 3 themes rather than created as separate notebooks. The 5-chapter dashboard structure is the canonical narrative now.
 
 ---
 
 ## Detail References
 
 - Pipeline + extended metrics + geo: `.claude/rules/data.md`
-- Story angles + narrative rules: `.claude/rules/narrative.md`
-- Dashboard visuals + features (Phase 2): `.claude/rules/dashboard.md`
+- Narrative rules + audience tones: `.claude/rules/narrative.md`
+- Dashboard visuals + advanced features rules: `.claude/rules/dashboard.md`
+- External research citations (for callouts): `.claude/rules/external_research.md`
+- Pitch deck source of truth: `slides_deck/pitch_master.md`
