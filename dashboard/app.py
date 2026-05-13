@@ -132,8 +132,25 @@ ico_b64  = _b64(os.path.join(ASSETS, 'ico-dashboard.png'))
 NAV_H = 64
 CSS = f"""<style>
 #MainMenu, footer {{ visibility: hidden; }}
-header[data-testid="stHeader"] {{ display: none !important; }}
-.stDeployButton, div[data-testid="stToolbar"] {{ display: none !important; }}
+/* Keep header element + sidebar toggle visible ABOVE the custom nav-bar.
+   pointer-events:none on header lets clicks pass through to nav-bar except
+   on the actual buttons (which re-enable pointer events). */
+header[data-testid="stHeader"] {{
+    background: transparent !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+    z-index: 10000 !important;
+}}
+header[data-testid="stHeader"] button,
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebarCollapsedControl"],
+[data-testid="stSidebarCollapsedControl"] button {{
+    pointer-events: auto !important;
+    z-index: 10001 !important;
+}}
+header [data-testid="stMainMenu"],
+.stDeployButton,
+div[data-testid="stToolbar"] {{ display: none !important; }}
 
 html, body {{ font-size: 16px !important; }}
 .stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; font-size: 14px; }}
@@ -147,7 +164,10 @@ html, body {{ font-size: 16px !important; }}
 section[data-testid="stSidebar"] {{
     background: {C['white']} !important;
     border-right: 1px solid {C['border']};
+    z-index: 10002 !important;
+    pointer-events: auto !important;
 }}
+section[data-testid="stSidebar"] * {{ pointer-events: auto !important; }}
 section[data-testid="stSidebar"] > div:first-child {{ padding-top: 1.5rem !important; }}
 
 section[data-testid="stSidebar"] details[data-testid="stExpander"] {{

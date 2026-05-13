@@ -11,13 +11,6 @@ MMM_LABELS = {
     'MM4': 'Remote', 'MM5': 'Small Rural', 'MM6': 'Remote Community', 'MM7': 'Very Remote',
 }
 
-OECD_DATA = {
-    'Country':                    ['Netherlands', 'Sweden', 'Denmark', 'Australia', 'Canada', 'United Kingdom', 'Japan', 'OECD Average'],
-    'Beds per 1,000 aged 65+':    [77.1, 63.9, 37.3, 47.6, 49.2, 41.3, 34.5, 42.1],
-    'Combined LTC coverage (%)':  [12, 16, 14, 9, 5, 5.5, 3, 12.7],
-    'highlight':                  ['Other', 'Other', 'Other', 'Australia', 'Other', 'Other', 'Other', 'OECD Avg'],
-}
-
 # (col_name, worst_is_high, fmt, suffix, color)
 _RANK_METRICS = {
     'Care Gap Index': ('care_gap_index', True,  ':.2f', '',   C['red']),
@@ -61,11 +54,25 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             k3.metric("Avg Residential Access", f"{df_yr['access_rate'].mean():.1f}%",
                       help="% of 65+ in residential care")
 
-            st.warning(
-                "Every SA3 in the top 10 worst-performing list is **MM1 — major city**. "
-                "Unley (SA) has a care gap of **2.78** — more than 2× the national average. "
-                "The crisis is in the suburbs, not the outback."
-            )
+            top10 = df_yr.nlargest(10, 'care_gap_index')[
+                ['sa3_name', 'state', 'mmm_code', 'care_gap_index']
+            ]
+            n_mm1 = int((top10['mmm_code'] == 'MM1').sum())
+            nat_avg_cg = float(df_yr['care_gap_index'].mean())
+            if not top10.empty and nat_avg_cg > 0:
+                worst = top10.iloc[0]
+                ratio = worst['care_gap_index'] / nat_avg_cg
+                mm1_lead = (
+                    f"All **{n_mm1} of the top 10** worst-performing SA3s are **MM1 — major city**. "
+                    if n_mm1 == 10 else
+                    f"**{n_mm1} of the top 10** worst-performing SA3s are **MM1 — major city**. "
+                )
+                st.warning(
+                    mm1_lead +
+                    f"{worst['sa3_name']} ({worst['state']}) has a care gap of "
+                    f"**{worst['care_gap_index']:.2f}** — **{ratio:.1f}× the national average** "
+                    f"in {year_sel}. The crisis is in the suburbs, not the outback."
+                )
 
             # ── View toggle ────────────────────────────────────────────────────
             view_a = st.radio(
@@ -121,11 +128,33 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 theme(fig, height=420)
                 widget_col.plotly_chart(fig, use_container_width=True, key=f"a_bar_{metric}")
 
-            st.info(
-                "**Remote paradox:** MM7 (Very Remote) averages **3.90★** vs MM1 (Major City) at **3.55★**. "
-                "The remote disadvantage is **access**, not quality. "
-                "ACT has the highest access rate (**5.01%**) — driven by demand, not better supply."
+            mmm_q = (
+                df_yr.dropna(subset=['mmm_code', 'quality_score'])
+                .groupby('mmm_code')['quality_score'].mean()
             )
+            state_acc = (
+                df_yr.dropna(subset=['state', 'access_rate'])
+                .groupby('state')['access_rate'].mean()
+            )
+            parts = []
+            if len(mmm_q) >= 2:
+                best_mmm = mmm_q.idxmax()
+                worst_mmm = mmm_q.idxmin()
+                parts.append(
+                    f"**Remote paradox:** {MMM_LABELS.get(best_mmm, best_mmm)} ({best_mmm}) averages "
+                    f"**{mmm_q[best_mmm]:.2f}★**, the highest of all bands, vs "
+                    f"{MMM_LABELS.get(worst_mmm, worst_mmm)} ({worst_mmm}) at "
+                    f"**{mmm_q[worst_mmm]:.2f}★**. "
+                    "The remote disadvantage is **access**, not quality. "
+                )
+            if len(state_acc) >= 2:
+                top_st = state_acc.idxmax()
+                parts.append(
+                    f"{top_st} has the highest access rate "
+                    f"(**{state_acc[top_st]:.2f}%**) — driven by demand, not better supply."
+                )
+            if parts:
+                st.info(''.join(parts))
 
             # Single-state context callout
             selected_states = df_yr['state'].dropna().unique()
@@ -299,9 +328,41 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 theme(fig_fac, height=380)
                 st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_mmm")
 
+        sup_grp = supply.groupby('year').agg(
+            n_fac=('n_residential', 'sum'),
+            n_bed=('residential_places', 'sum'),
+        )
+        sup_y0, sup_y1 = int(sup_grp.index.min()), int(sup_grp.index.max())
+        fac_delta = int(sup_grp.loc[sup_y1, 'n_fac'] - sup_grp.loc[sup_y0, 'n_fac'])
+        bed_delta = int(sup_grp.loc[sup_y1, 'n_bed'] - sup_grp.loc[sup_y0, 'n_bed'])
+
+        ss_piv = state_supply.pivot(index='state', columns='year', values='beds_per_1k')
+        ss_y0, ss_y1 = int(ss_piv.columns.min()), int(ss_piv.columns.max())
+        ss_piv['delta'] = ss_piv[ss_y1] - ss_piv[ss_y0]
+        n_lost = int((ss_piv['delta'] < 0).sum())
+        n_states = len(ss_piv)
+        worst2 = ss_piv['delta'].nsmallest(2)
+        coverage_lead = (
+            "Every state" if n_lost == n_states
+            else f"{n_lost} of {n_states} states/territories"
+        )
+
+        nat_grp = state_supply.groupby('year').agg(
+            rp=('residential_places', 'sum'),
+            pp=('pop_65_plus', 'sum'),
+        )
+        nat_grp['b1k'] = nat_grp['rp'] / nat_grp['pp'] * 1000
+        nat_y0, nat_y1 = int(nat_grp.index.min()), int(nat_grp.index.max())
+        nat_pct = (nat_grp.loc[nat_y0, 'b1k'] - nat_grp.loc[nat_y1, 'b1k']) / nat_grp.loc[nat_y0, 'b1k'] * 100
+
         st.warning(
-            "**Supply consolidation:** 2019→2025 saw **−104 facilities** but **+12,270 beds** nationally. "
-            "Every state lost beds per 1,000 elderly — NT and SA fell the most (−7.4 each). "
-            "Beds per 1,000 elderly dropped from ~76 (2020) to ~67 (2024), a **12% decline in 5 years**."
+            f"**Supply consolidation:** {sup_y0}→{sup_y1} saw "
+            f"**{fac_delta:+d} facilities** but **{bed_delta:+,} beds** nationally. "
+            f"{coverage_lead} lost beds per 1,000 elderly — "
+            f"{worst2.index[0]} and {worst2.index[1]} fell the most "
+            f"({worst2.iloc[0]:.1f} and {worst2.iloc[1]:.1f}). "
+            f"Beds per 1,000 elderly dropped from **{nat_grp.loc[nat_y0, 'b1k']:.1f}** ({nat_y0}) to "
+            f"**{nat_grp.loc[nat_y1, 'b1k']:.1f}** ({nat_y1}), a **{nat_pct:.1f}% decline** "
+            f"over {nat_y1 - nat_y0} years (denominator: pop 65+)."
         )
 

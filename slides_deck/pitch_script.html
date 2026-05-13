@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pitch Delivery v3 — Australia's Aged-Care Gap</title>
+<style>
+  :root{
+    --navy:#1B3F6E; --teal:#00A79D; --gold:#F5A623; --red:#D94F3D;
+    --muted:#6B7C93; --border:#C8DCF0; --bg:#E8F1FA; --light:#F3F9FE;
+    --demo:#5E3CA0;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--navy);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px; line-height:1.6;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:32px 24px 80px}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--navy),var(--teal));
+    color:white; border-radius:16px; padding:36px 32px; margin-bottom:24px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.08);
+  }
+  header.hero h1{margin:0 0 8px; font-size:1.85rem; font-weight:800; letter-spacing:-0.3px}
+  header.hero p.sub{margin:0 0 12px; opacity:0.92; font-size:1rem}
+  header.hero .meta{display:flex; gap:14px; font-size:0.82rem; flex-wrap:wrap}
+  header.hero .meta span{background:rgba(255,255,255,0.18); padding:6px 14px; border-radius:20px}
+
+  .principles{
+    background:white; border:1px solid var(--border); border-radius:12px;
+    padding:18px 24px; margin-bottom:24px;
+  }
+  .principles h2{margin:0 0 12px; font-size:0.95rem; color:var(--muted);
+                 text-transform:uppercase; letter-spacing:0.06em; font-weight:700}
+  .principles ol{margin:0; padding-left:22px}
+  .principles li{margin-bottom:8px; line-height:1.6}
+  .principles li b{color:var(--navy)}
+
+  .toc{
+    background:white; border:1px solid var(--border); border-radius:12px;
+    padding:14px 20px; margin-bottom:28px;
+    position:sticky; top:8px; z-index:50;
+  }
+  .toc h2{margin:0 0 8px; font-size:0.78rem; color:var(--muted);
+          text-transform:uppercase; letter-spacing:0.06em; font-weight:700}
+  .toc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:6px}
+  .toc-grid a{
+    color:var(--navy); text-decoration:none; padding:5px 8px;
+    border-radius:6px; font-size:0.82rem; text-align:center;
+    border:1px solid var(--border); background:var(--light);
+    transition:all 0.12s;
+  }
+  .toc-grid a:hover{background:var(--teal); color:white !important; border-color:var(--teal)}
+
+  .budget{
+    background:white; border:1px solid var(--border); border-radius:12px;
+    padding:16px 20px; margin-bottom:28px;
+  }
+  .budget h2{margin:0 0 10px; font-size:0.95rem; color:var(--muted);
+             text-transform:uppercase; letter-spacing:0.06em; font-weight:700}
+  .budget-bar{display:flex; height:36px; border-radius:8px; overflow:hidden;
+              border:1px solid var(--border)}
+  .budget-seg{
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-size:11px; font-weight:700;
+    border-right:1px solid rgba(255,255,255,0.2);
+  }
+  .budget-seg:last-child{border-right:none}
+  .budget-key{display:flex; gap:14px; margin-top:8px; font-size:0.78rem; flex-wrap:wrap; color:var(--muted)}
+  .budget-key span b{color:var(--navy)}
+
+  .slide{
+    background:white; border:1px solid var(--border); border-radius:14px;
+    padding:0; margin-bottom:18px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.04); overflow:hidden;
+  }
+  .slide-head{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:14px 24px; background:var(--light);
+    border-bottom:1px solid var(--border);
+  }
+  .slide-num{
+    background:var(--navy); color:white; font-weight:800;
+    padding:5px 12px; border-radius:7px; font-size:0.82rem;
+    letter-spacing:0.04em;
+  }
+  .slide-title{font-size:1.18rem; font-weight:800; margin:0; flex:1; color:var(--navy)}
+  .slide-time{
+    background:var(--gold); color:white; font-weight:700;
+    padding:4px 11px; border-radius:14px; font-size:0.74rem;
+  }
+  .slide-dur{
+    background:var(--teal); color:white; font-weight:700;
+    padding:4px 11px; border-radius:14px; font-size:0.74rem;
+  }
+
+  .layers{padding:14px 22px 18px}
+  .layer{display:flex; gap:14px; margin-bottom:10px; align-items:flex-start}
+  .layer:last-child{margin-bottom:0}
+  .layer-icon{
+    flex-shrink:0; font-size:1.2rem; line-height:1;
+    margin-top:2px; width:24px; text-align:center;
+  }
+  .layer-label{
+    flex-shrink:0; font-weight:700; font-size:0.74rem;
+    text-transform:uppercase; letter-spacing:0.07em;
+    width:62px; padding-top:4px; color:var(--muted);
+  }
+  .layer-body{flex:1; font-size:0.96rem; line-height:1.65}
+  .layer.sees .layer-body{color:var(--navy)}
+  .layer.meaning .layer-body{color:var(--muted); font-style:italic; font-size:0.9rem;
+                              padding:8px 12px; background:#FAFCFE;
+                              border-left:3px solid var(--muted); border-radius:6px}
+  .layer.says .layer-body{color:var(--navy); padding:10px 14px; background:#F8FBFD;
+                          border-left:3px solid var(--teal); border-radius:6px}
+  .layer.says .layer-body em{color:var(--muted); font-style:italic; font-weight:500}
+  .layer.says .layer-body p{margin:0 0 8px}
+  .layer.says .layer-body p:last-child{margin-bottom:0}
+  .layer.pacing .layer-body{color:var(--red); font-size:0.88rem; padding:8px 12px;
+                            background:#FDF2F1; border-left:3px solid var(--red); border-radius:6px}
+  .layer.pacing .layer-body ul{margin:0; padding-left:18px}
+  .layer.pacing .layer-body li{margin-bottom:4px}
+
+  .pause{background:#FFF4CC; padding:2px 8px; border-radius:4px;
+         color:#8B6F00; font-weight:700; font-size:0.85em}
+  .gesture{background:#E7F4F3; padding:2px 8px; border-radius:4px;
+           color:#006B65; font-weight:600; font-size:0.85em}
+  .body-lang{background:#F4EFFA; padding:2px 8px; border-radius:4px;
+             color:var(--demo); font-weight:600; font-size:0.85em}
+
+  .section-head{
+    margin:48px 0 14px; padding:18px 24px;
+    background:var(--navy); color:white;
+    border-radius:12px;
+  }
+  .section-head h2{margin:0; font-size:1.18rem}
+  .section-head p{margin:4px 0 0; opacity:0.85; font-size:0.85rem}
+
+  .qa-item{
+    background:white; border:1px solid var(--border);
+    padding:16px 22px; margin-bottom:10px; border-radius:10px;
+  }
+  .qa-q{font-weight:700; color:var(--gold); font-size:0.92rem; margin-bottom:6px}
+  .qa-a{color:var(--navy); line-height:1.6; font-size:0.95rem}
+  .qa-a b{color:var(--navy)}
+
+  .checklist-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+  }
+  .checklist-card{
+    background:white; border:1.5px solid var(--teal); border-radius:12px;
+    padding:18px 22px;
+  }
+  .checklist-card h3{margin:0 0 10px; color:var(--teal); font-size:1rem}
+  .checklist-card ul{margin:0; padding-left:18px}
+  .checklist-card li{margin-bottom:6px; font-size:0.9rem; line-height:1.5}
+
+  .rehearsal{
+    background:white; border:1px solid var(--border); border-radius:12px;
+    padding:18px 24px;
+  }
+  .rehearsal table{width:100%; border-collapse:collapse; font-size:0.92rem}
+  .rehearsal th{
+    background:var(--light); color:var(--navy); padding:8px 12px;
+    text-align:left; border-bottom:2px solid var(--border); font-weight:700;
+  }
+  .rehearsal td{padding:8px 12px; border-bottom:1px solid var(--border)}
+  .rehearsal td:first-child{font-weight:700; color:var(--gold); width:100px}
+
+  @media print{
+    body{background:white; font-size:12px}
+    .wrap{max-width:none; padding:10px}
+    .toc{position:static}
+    .slide{break-inside:avoid; box-shadow:none; margin-bottom:10px}
+    header.hero, .principles, .budget, .section-head, .qa-item,
+    .checklist-card, .rehearsal{
+      -webkit-print-color-adjust:exact !important;
+      print-color-adjust:exact !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Australia's Aged-Care Gap — Pitch Delivery v3</h1>
+  <p class="sub">Slide-first, narrator-light · QR-invite at S9 · 11 slides · ~4:30 total</p>
+  <div class="meta">
+    <span>🎯 Target ~4:30 (breathing room for Q&amp;A)</span>
+    <span>📊 Data refreshed 2026-05-13</span>
+    <span>🎙 Voice complements visual — never duplicates</span>
+  </div>
+</header>
+
+<!-- Principles -->
+<section class="principles">
+  <h2>4 delivery principles</h2>
+  <ol>
+    <li><b>Numbers on the slide → don't read them.</b> Audiences read faster than you can speak. Voice carries story, not narration. The only exception: S7 human-scale numbers (56 / 18) are read slowly, intentionally, to convey weight.</li>
+    <li><b>Voice = story + emphasis.</b> Lines like <em>"Here's the paradox"</em>, <em>"This isn't a queue, it's a trap"</em>, <em>"Execution matters"</em> live only in the spoken voice — never on the slide.</li>
+    <li><b>Pause is a weapon.</b> A 2-second silence after a hook lets the audience study the slide. S3 and S7 have built-in pauses.</li>
+    <li><b>S9 = brief mention + QR invite</b>, NOT a live demo. The audience explores the dashboard themselves after the pitch. Reason: saves ~28s and removes tech risk. A backup demo flow is ready if the Q&amp;A asks.</li>
+  </ol>
+</section>
+
+<!-- Time budget visualization -->
+<section class="budget">
+  <h2>Pacing budget (~4:30 total · 272s)</h2>
+  <div class="budget-bar">
+    <div class="budget-seg" style="background:var(--muted);width:5.5%" title="S1 15s">S1</div>
+    <div class="budget-seg" style="background:var(--navy);width:7.4%" title="S2 20s">S2</div>
+    <div class="budget-seg" style="background:var(--teal);width:9.2%" title="S3 25s">S3</div>
+    <div class="budget-seg" style="background:var(--navy);width:11%" title="S4 30s">S4</div>
+    <div class="budget-seg" style="background:var(--teal);width:9.2%" title="S5 25s">S5</div>
+    <div class="budget-seg" style="background:var(--gold);width:11%" title="S6 30s">S6</div>
+    <div class="budget-seg" style="background:var(--red);width:11%" title="S7 30s">S7</div>
+    <div class="budget-seg" style="background:var(--navy);width:7.4%" title="S8 20s">S8</div>
+    <div class="budget-seg" style="background:var(--demo);width:8.1%" title="S9 22s">S9</div>
+    <div class="budget-seg" style="background:var(--navy);width:7.4%" title="S10 20s">S10</div>
+    <div class="budget-seg" style="background:var(--gold);width:12.9%" title="S11 35s">S11</div>
+  </div>
+  <div class="budget-key">
+    <span><b>S1</b> 15s · "Good evening"</span>
+    <span><b>S2</b> 20s · NFP stance</span>
+    <span><b>S3</b> 25s · 2s-pause hook</span>
+    <span><b>S4</b> 30s · Map proof</span>
+    <span><b>S5</b> 25s · Ownership pattern</span>
+    <span><b>S6</b> 30s · Paradox punch</span>
+    <span><b>S7</b> 30s · Human cost</span>
+    <span><b>S8</b> 20s · Misallocation</span>
+    <span><b>S9</b> 22s · QR invite</span>
+    <span><b>S10</b> 20s · Forecast honesty</span>
+    <span><b>S11</b> 35s · CTA + thank you</span>
+  </div>
+</section>
+
+<nav class="toc">
+  <h2>Jump to slide</h2>
+  <div class="toc-grid">
+    <a href="#s1">S1 · Title</a>
+    <a href="#s2">S2 · Stance</a>
+    <a href="#s3">S3 · Hook</a>
+    <a href="#s4">S4 · Map</a>
+    <a href="#s5">S5 · Pattern</a>
+    <a href="#s6">S6 · Paradox</a>
+    <a href="#s7">S7 · Human</a>
+    <a href="#s8">S8 · Supply</a>
+    <a href="#s9">S9 · Tool</a>
+    <a href="#s10">S10 · Forecast</a>
+    <a href="#s11">S11 · Verdict</a>
+    <a href="#qa">Q&amp;A</a>
+    <a href="#rehearse">Rehearsal</a>
+    <a href="#check">Pre-pitch</a>
+  </div>
+</nav>
+
+<!-- S1 -->
+<section class="slide" id="s1">
+  <div class="slide-head">
+    <span class="slide-num">S1</span>
+    <h3 class="slide-title">Title — Trigger curiosity</h3>
+    <span class="slide-time">0:00–0:15</span>
+    <span class="slide-dur">15s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Title + your name + role + date</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"Good evening, everyone."</p>
+        <p><span class="pause">[1-second pause — eye contact, scan room]</span></p>
+        <p>"Tonight, I want to show you a <b>paradox</b> in Australia's aged-care system — one you might not expect."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Good evening" — slow and warm, no rush</li>
+          <li>Lean lightly on the word <b>"paradox"</b>, stretch it by one beat</li>
+          <li>Drop volume slightly on "you might not expect" — curiosity hook</li>
+          <li>Don't reveal the NFP stance or the paradox content yet — save those for S2 / S6</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2 -->
+<section class="slide" id="s2">
+  <div class="slide-head">
+    <span class="slide-num">S2</span>
+    <h3 class="slide-title">Stakeholder stance — NFP CEO</h3>
+    <span class="slide-time">0:15–0:35</span>
+    <span class="slide-dur">20s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">"CEO of a not-for-profit aged-care provider" + 3 audience icons (Families · Workers · Investors)</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">Commitment slide: declare the stance (NFP CEO) and name the three beneficiaries. Sets the frame for the remaining nine slides — every data point will be read through the lens of "an NFP CEO choosing where to build".</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"Tonight I'm speaking from one perspective — a CEO of a not-for-profit aged-care provider, deciding where to build next."</p>
+        <p>"One decision — three audiences." <span class="gesture">[gesture at 3 icons]</span> "Watch."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>Gesture clearly at "three audiences" so eyes track to the icons</li>
+          <li>Land <b>"Watch."</b> with one beat (~0.5s) before clicking — creates suspense going into S3</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3 -->
+<section class="slide" id="s3">
+  <div class="slide-head">
+    <span class="slide-num">S3</span>
+    <h3 class="slide-title">The Hook — Plot twist</h3>
+    <span class="slide-time">0:35–1:00</span>
+    <span class="slide-dur">25s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Australia silhouette + "MM7 (remote): 3.95★ / MM1 (cities): 3.55★"</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">The first plot twist — breaks the default assumption that "the crisis lives in the outback". Hooks curiosity for S4 (the audience will pay close attention because they want to understand why).</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"Quick gut check — where do you think Australia's aged-care crisis is worst?"</p>
+        <p><span class="pause">[PAUSE 2 SECONDS — eye contact, let the room think 'outback']</span></p>
+        <p>"Remote scores 3.95 stars. Cities, 3.55."</p>
+        <p>"The data <b>flips the map</b> — the crisis lives in our biggest cities, not the outback."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Quick gut check" — friendly, conversational, like a quiz prompt</li>
+          <li>The 2-second silence IS the move — count silently "1–2", scan the room, do NOT fill with "umm"</li>
+          <li>Read "3.95 stars ... 3.55" slowly so the contrast tells itself</li>
+          <li>Lean on <b>"flips the map"</b>; drop volume on "not the outback" — that's the reveal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4 -->
+<section class="slide" id="s4">
+  <div class="slide-head">
+    <span class="slide-num">S4</span>
+    <h3 class="slide-title">The Map — Where the crisis lives</h3>
+    <span class="slide-time">1:00–1:30</span>
+    <span class="slide-dur">30s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Choropleth (Care Gap Index by SA3) + top-5 worst SA3 list + state Care Gap table (ACT leads)</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">Proof slide following the S3 hook. The top five are all major-city suburbs. ACT leads not because its quality is the worst but because its <b>demand is the highest</b>.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"Before we read the map, one quick note. The Care Gap Index you see here is demand divided by quality — so a higher score means more pressure concentrated on fewer good beds."</p>
+        <p><span class="gesture">[brief pause, point at top-5 list]</span></p>
+        <p>"Now look at the top five worst regions on the right. <b>Every single one of them</b> is a major-city suburb — not rural, not remote."</p>
+        <p><span class="gesture">[pivot hand to the state table]</span></p>
+        <p>"And when we zoom out to the state level, the ACT leads the country. Not because Canberra's quality is the worst — but because <b>Canberra's demand is the highest</b> in Australia."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Before we read the map" — easing-in opener (~1.5s), professional warm-up</li>
+          <li>"Now look at" / "And when we zoom out" — transition cues; the audience's eyes follow your hand</li>
+          <li>Stress "every single one of them" slowly</li>
+          <li>"Not because… but because" — parallel structure + voice-only insight</li>
+          <li>Drop volume at the end of "the highest in Australia"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S5 -->
+<section class="slide" id="s5">
+  <div class="slide-head">
+    <span class="slide-num">S5</span>
+    <h3 class="slide-title">The Pattern — Ownership drives quality</h3>
+    <span class="slide-time">1:30–1:55</span>
+    <span class="slide-dur">25s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Bar chart (Govt 4.07★ · NFP 3.61★ · Profit 3.50★) + 3-year trend lines (2023–2025)</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">Pivots from WHERE to WHY. Reveals the big pattern: ownership drives quality, the gap has persisted across three years, and the Oct 2023 mandate did not close it. Sets up the paradox in S6.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"So what explains this pattern? <b>Ownership.</b>"</p>
+        <p><span class="gesture">[point at bar chart]</span></p>
+        <p>"Government homes, not-for-profits, and for-profits — three tiers, and the gap between them is consistent."</p>
+        <p><span class="gesture">[point at trend lines]</span></p>
+        <p>"Look at the trend over three years. <b>Three flat parallel lines.</b> The October 2023 staffing mandate — which was supposed to fix this — lifted everyone, but didn't close the gap by a single decimal."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Ownership." — a one-word punchy bridge from S4</li>
+          <li>Do NOT read 4.07 / 3.61 / 3.50 — the audience reads them</li>
+          <li>Stress "three tiers" slowly</li>
+          <li>"Three flat parallel lines" — money line; stretch "flat"</li>
+          <li>"Supposed to fix this" — a touch of irony; sets up the mandate verdict in S11</li>
+          <li>"Didn't close the gap by a single decimal" — drop volume, cynical edge → sets up the paradox in S6</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 -->
+<section class="slide" id="s6">
+  <div class="slide-head">
+    <span class="slide-num">S6</span>
+    <h3 class="slide-title">The Funding Paradox — Truth-teller moment</h3>
+    <span class="slide-time">1:55–2:25</span>
+    <span class="slide-dur">30s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">$8.97M vs $3.27M (2.7×) + staffing 4.39★ vs 2.61★ + Chu et al 2024 — 8× less likely</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">The paradox punch — payoff for the promise in S1. A three-layer logic: 2.7× more funding → lowest quality → driven by <b>staffing</b> (not clinical outcomes) → kills the "privatisation = efficiency" argument. Chu et al provides independent external validation.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"Here's <b>the paradox I promised you</b> at the start."</p>
+        <p><span class="gesture">[point at funding side]</span></p>
+        <p>"For-profit homes receive 2.7 times more public funding per facility than government-run homes — yet they score the lowest in the country."</p>
+        <p><span class="gesture">[point at staffing / QM side]</span></p>
+        <p>"And here's where the gap actually lives. <b>It's not in clinical outcomes</b> — those are nearly identical across all three sectors. <b>The gap is in staffing.</b>"</p>
+        <p><span class="gesture">[point at Chu et al stat]</span></p>
+        <p>"Independent research backs this — for-profits are <b>eight times less likely</b> to score four or five stars."</p>
+        <p><span class="pause">[beat]</span></p>
+        <p>"<b>More money in. Fewer staff. Lower quality.</b> The efficiency case for privatisation <b>does not survive this data</b>."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>The "the paradox I promised you" callback closes the loop back to S1</li>
+          <li>Gesture to three sources (funding · staffing · Chu) at three different hand positions</li>
+          <li>"Eight times less likely" — slow and stressed; an external stat lifts credibility</li>
+          <li>"More money in. Fewer staff. Lower quality." — three clipped sentences, one beat each</li>
+          <li><b>"Does not survive this data"</b> — truth-teller moment: drop volume, slow, deliberate. The strongest moment in the pitch.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S7 -->
+<section class="slide" id="s7">
+  <div class="slide-head">
+    <span class="slide-num">S7</span>
+    <h3 class="slide-title">The Human Cost — Heart-string</h3>
+    <span class="slide-time">2:25–2:55</span>
+    <span class="slide-dur">30s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Central Highlands, Tasmania callout + ratio 56 / 18 beds + 82 communities + +24 YoY</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">An abrupt shift from systemic analysis to people. A specific place, human-scale numbers. Sets the emotional anchor for the CTA in S11. "This isn't a queue, it's a trap" is the voice-only money line.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"Let me bring this back down to people."</p>
+        <p><span class="pause">[pause 1s, soften tone — drop volume]</span></p>
+        <p>"<b>Central Highlands, Tasmania.</b>"</p>
+        <p><span class="pause">[PAUSE 2 SECONDS — let the room read the 56 / 18 ratio]</span></p>
+        <p>"Fifty-six high-needs older Australians live there. Only eighteen residential beds — three people for every bed, with nowhere else nearby to go."</p>
+        <p>"<b>This isn't a queue. A queue moves. This is a trap.</b>"</p>
+        <p><span class="gesture">[point at the 82 callout]</span></p>
+        <p>"And Central Highlands isn't alone — eighty-two communities across Australia look like this. We added twenty-four of them <b>in just one year</b>."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Bring this back down to people" — tone-shift signal (data → human)</li>
+          <li>Drop volume + soften tone across the whole slide — this is NOT punchy; this is the human moment</li>
+          <li>"Central Highlands, Tasmania" — slowly, word by word, let the place name carry weight</li>
+          <li>"Fifty-six ... only eighteen" — read slowly, intentionally (the exception to the "don't read numbers" rule — human-scale numbers need to be heard slowly)</li>
+          <li>Three clipped sentences <b>"This isn't a queue. A queue moves. This is a trap."</b> — even rhythm, one beat each, the money line</li>
+          <li>"Twenty-four in just one year" — almost a whisper, signalling the trajectory is worsening</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S8 -->
+<section class="slide" id="s8">
+  <div class="slide-head">
+    <span class="slide-num">S8</span>
+    <h3 class="slide-title">Supply Failure — Misallocation diagnosis</h3>
+    <span class="slide-time">2:55–3:15</span>
+    <span class="slide-dur">20s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Crisis-vs-Rest beds chart (+12,593 national, −323 in 82 crisis zones)</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">The diagnosis line — this isn't a shortage, it's a <b>misallocation</b>. Justifies the NFP stance (the private market won't correct this on its own). An essential bridge from "problem" (S3–S7) to "solution" (S9–S11).</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"What we're looking at here <b>isn't a national shortage — it's a misallocation</b>."</p>
+        <p><span class="gesture">[point at chart, sweep hand from "rest of Australia" to "crisis zones"]</span></p>
+        <p>"Across Australia, we're adding new beds. But the new supply is <b>flowing away</b> from the 82 communities that need it most."</p>
+        <p>"This is a <b>market failure</b> — and it's exactly the gap a mission-led not-for-profit is built to correct."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Isn't a shortage — it's a misallocation" — diagnostic frame, slow and deliberate, a one-line synthesis of S3–S7</li>
+          <li>The "rest → crisis" hand sweep gives the contrast visually</li>
+          <li>Stress "flowing <b>away</b>" (the wrong direction, not merely slow)</li>
+          <li>"Market failure" — clinical and professional</li>
+          <li>"Mission-led NFP built to correct" — bridges into S9 and reasserts the stance</li>
+          <li>Do NOT drop volume at the end — keep energy high heading into S9</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S9 -->
+<section class="slide" id="s9">
+  <div class="slide-head">
+    <span class="slide-num">S9</span>
+    <h3 class="slide-title">The Tool — QR invite</h3>
+    <span class="slide-time">3:15–3:37</span>
+    <span class="slide-dur">22s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">QR code (scan dashboard) + 4 feature bullets + dashboard screenshot teaser</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">Briefly mention the four features and invite the audience to scan the QR. They explore the dashboard themselves after the pitch. Benefits: less tech risk, saves ~28s, total ~4:30. Trades a live-demo showmanship moment for reliability and time.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"So how do you actually find those 82 communities? How do you screen them, and decide where to build? <b>We built this dashboard</b>."</p>
+        <p><span class="gesture">[point at 4 feature bullets]</span></p>
+        <p>"It filters by state and region, searches any community by name, runs three projection scenarios for 2025, and lets you test the policy lever for staffing — <b>all live, all interactive</b>."</p>
+        <p><span class="gesture">[point at QR]</span></p>
+        <p>"Scan the QR. Try it yourself — see if <b>your region</b> is on the deficit list."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"We built this dashboard" — punchy open, no build-up</li>
+          <li>Run through the four features <b>briskly</b>, no special emphasis on any one (the audience reads the bullets)</li>
+          <li>"All live, all interactive" — parallel structure that closes the list</li>
+          <li>"Scan the QR. Try it yourself" — a warm invitation, not salesy (the strong CTA is saved for S11)</li>
+          <li>Do NOT drop volume at the end — keep energy high into S10/S11</li>
+          <li><b>Note:</b> If the Q&amp;A asks for a demo, run the ~35s backup flow: Filter TAS → Find My Area "Central Highlands" → Map scenario picker (Aggressive Aging) → Ch4 RN slider 44→80</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S10 -->
+<section class="slide" id="s10">
+  <div class="slide-head">
+    <span class="slide-num">S10</span>
+    <h3 class="slide-title">The Forecast — Honesty + build list</h3>
+    <span class="slide-time">3:37–3:57</span>
+    <span class="slide-dur">20s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">Scenario picker (Baseline / Aggressive aging / Stagnation) + projected 2025 choropleth + top-10 movers table</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">An honesty moment — proactively disclose the constraint (only population is projected) → lifts credibility. Reveal: under the baseline, the 82 crisis zones don't shrink → the build list is needed.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"We projected one year forward — and I want to be <b>upfront about how</b>. Only population was projected. Quality, supply, and demand are all real 2025 data."</p>
+        <p><span class="gesture">[point at map]</span></p>
+        <p>"Under the baseline scenario, the 82 crisis zones <b>don't shrink</b>."</p>
+        <p><span class="gesture">[point at top-10 table]</span></p>
+        <p>"And the top ten movers — that's <b>our build list</b>."</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Upfront about how" — honesty cue; the audience resets their attention</li>
+          <li>"Only population was projected" — slow, stress "<b>only</b>" → constraint admission</li>
+          <li>"Quality, supply, and demand are all real" — parallel structure closing the disclaimer professionally</li>
+          <li>"Don't shrink" — slow and deliberate; reveals that nothing changes without action</li>
+          <li>"Our build list" — sense of ownership, bridges into the S11 CTA</li>
+          <li>Do NOT drop volume at the end</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S11 -->
+<section class="slide" id="s11">
+  <div class="slide-head">
+    <span class="slide-num">S11</span>
+    <h3 class="slide-title">Verdict + CTA — Slow close</h3>
+    <span class="slide-time">3:57–4:32</span>
+    <span class="slide-dur">35s</span>
+  </div>
+  <div class="layers">
+    <div class="layer sees">
+      <div class="layer-icon">📺</div>
+      <div class="layer-label">Sees</div>
+      <div class="layer-body">4 verdict KPIs (Quality Δ · Compliance 26→65% · FP-Govt gap 39pt · NT proof) + NT slope chart (rank 4 → 1, +0.35★)</div>
+    </div>
+    <div class="layer meaning">
+      <div class="layer-icon">🎯</div>
+      <div class="layer-label">Meaning</div>
+      <div class="layer-body">Synthesis + CTA in three parts: (1) honest verdict on the mandate — worked on paper, no spin; (2) NT proof case — the gap can be closed when there's real execution; (3) the commitment — as an NFP, we build in the 82 crisis communities. After the CTA → pause → "Thank you." → small step back to invite Q&amp;A.</div>
+    </div>
+    <div class="layer says">
+      <div class="layer-icon">🎤</div>
+      <div class="layer-label">Says</div>
+      <div class="layer-body">
+        <p>"So where does that leave us?"</p>
+        <p><span class="gesture">[point at quality + compliance KPIs]</span></p>
+        <p>"The October 2023 mandate <b>worked — on paper</b>. National quality is up. Compliance jumped from 26 to 65 percent. Those are real wins."</p>
+        <p>"But here's what didn't change: <b>clinical outcomes</b>. The Quality Measures barely moved — and for-profit homes still lag government homes by 39 compliance points."</p>
+        <p><span class="gesture">[point at NT slope chart]</span></p>
+        <p>"And yet — the Northern Territory <b>proves the gap can be closed</b>. From rank four to rank one in just two years, gaining more than a third of a star. <b>Execution matters.</b>"</p>
+        <p><span class="body-lang">[look at audience — drop volume, slow]</span></p>
+        <p>"So here is our move. As a not-for-profit, <b>we build in those 82 communities. The list is already there.</b>"</p>
+        <p><span class="body-lang">[1-second pause + small step back]</span></p>
+        <p>"<b>Thank you.</b>"</p>
+      </div>
+    </div>
+    <div class="layer pacing">
+      <div class="layer-icon">💡</div>
+      <div class="layer-label">Pacing</div>
+      <div class="layer-body">
+        <ul>
+          <li>"Worked — on paper" — cynical edge; stretch "on paper"</li>
+          <li>"Compliance jumped 26 to 65" — read one stat to anchor the magnitude</li>
+          <li>"Here's what didn't change: clinical outcomes" — colon reveal, slow → sharp contrast</li>
+          <li>"Quality Measures barely moved" — specific, indirect callback to S6</li>
+          <li>"Northern Territory proves" — proof moment, slow</li>
+          <li>"Execution matters" — two-word punch, allowed to stand alone</li>
+          <li>Body language reset before the CTA — look at the audience and drop volume</li>
+          <li>"The list is already there" — practical commitment, deliberate, one beat per sentence</li>
+          <li>"Thank you" — warm and simple, no artificial lift</li>
+          <li>Hold the "Thank you", then nod for Q&amp;A — don't rush off stage</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Q&A -->
+<div class="section-head" id="qa">
+  <h2>Q&amp;A Backpocket</h2>
+  <p>6 likely questions · keep each answer ≤ 30 seconds</p>
+</div>
+
+<div class="qa-item">
+  <div class="qa-q">Q1: "Why is MM7 (very remote) higher quality than MM1 (cities)?"</div>
+  <div class="qa-a">"Two structural reasons. One — for-profit operators avoid MM6/7; remote facilities are almost entirely government or NFP, which score higher across the board. Two — remote facilities are smaller, embedded in tight communities, face less pressure to cut staff costs. The pattern holds within every year of data — not a sample artifact."</div>
+</div>
+
+<div class="qa-item">
+  <div class="qa-q">Q2: "Is the for-profit gap just confounded by location or case mix?"</div>
+  <div class="qa-a">"We tested that. The 0.57-star gap holds <b>inside every remoteness band</b> — MM1 cities through MM5 rural towns. In MM5 it actually widens. If it were location-confounded, the gap would shrink in MM1 where for-profits cluster. It doesn't."</div>
+</div>
+
+<div class="qa-item">
+  <div class="qa-q">Q3: "How did you forecast 2025?"</div>
+  <div class="qa-a">"Only population is projected — three scenarios: current ABS trend, faster aging at +4%/year, or no growth. Quality, supply, home care all use real 2025 data from latest GEN release. We didn't model quality or supply because they depend on policy enforcement — unpredictable. Population has 5 years of baseline — we can project honestly."</div>
+</div>
+
+<div class="qa-item">
+  <div class="qa-q">Q4: "What's a 'Care Gap Index'? Did you invent it?"</div>
+  <div class="qa-a">"Yes. Our metric: residential access rate ÷ quality score. Higher = more demand pressure per quality star. Captures <b>both</b> sides simultaneously — a region high on demand but low on quality scores high; a region with low demand but high quality scores low. Single-axis metrics hide regions that fail on both."</div>
+</div>
+
+<div class="qa-item">
+  <div class="qa-q">Q5: "Where does the '82 crisis zones' number come from?"</div>
+  <div class="qa-a">"Waitlist Pressure &gt; 1.0 — more high-needs home-care users than residential beds available, per SA3. Latest 2025 data. 82 SA3s cross the threshold, up from 58 a year earlier. List is regenerable in the dashboard — filter to your state."</div>
+</div>
+
+<div class="qa-item">
+  <div class="qa-q">Q6: "What if our region isn't on the top-10?"</div>
+  <div class="qa-a">"Filter to your state — the top-10 movers list is <b>state-aware</b>. Pick Tasmania, you get worst Tasmanian regions; pick NSW, worst NSW. The 82 zones span every state except ACT — no state where this isn't a problem."</div>
+</div>
+
+<!-- Rehearsal -->
+<div class="section-head" id="rehearse">
+  <h2>Rehearsal protocol</h2>
+  <p>6-day ramp-up · internalize beats + pauses, don't memorize verbatim</p>
+</div>
+
+<div class="rehearsal">
+  <table>
+    <thead>
+      <tr><th>Day</th><th>Task</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>D −7</td><td>Read the script aloud once. Note tongue-twister words. Adjust phrasing if needed.</td></tr>
+      <tr><td>D −5</td><td>Open the dashboard once and click through the four features (Filter / Find My Area / Scenario / RN slider) — preparation in case the Q&amp;A asks for a demo. No need to memorize, just make the tab path familiar.</td></tr>
+      <tr><td>D −3</td><td>Full run with a stopwatch. Target ~4:30. Cut anything over budget.</td></tr>
+      <tr><td>D −2</td><td>Record a video of yourself doing the full pitch. Watch it back. Cut "um/uh", tighten slow parts.</td></tr>
+      <tr><td>D −1</td><td>Dress rehearsal in front of a mirror or a friend. Get one piece of actionable feedback.</td></tr>
+      <tr><td>D 0</td><td>One calm read-through 30 min before stage. Don't over-rehearse on the same morning.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pre-pitch checklist -->
+<div class="section-head" id="check">
+  <h2>Pre-pitch checklist (morning of)</h2>
+  <p>Content · tech · voice · recovery moves</p>
+</div>
+
+<div class="checklist-grid">
+  <div class="checklist-card">
+    <h3>📊 Content / numbers</h3>
+    <ul>
+      <li>Numbers on S6/S7/S8/S10/S11 match the latest dashboard</li>
+      <li>5 SA3 pin names on S4 verified</li>
+      <li>7 state rows on S4: ACT · SA · VIC · NSW · WA · NT · TAS</li>
+      <li>S5 trio: 4.07 / 3.61 / 3.50</li>
+      <li>S6 funding: $8.97M vs $3.27M · 2.7×</li>
+      <li>S7: 3.1 ratio · 56 / 18 beds · 82 communities · +24 YoY</li>
+      <li>S8: −323 / +12,593 (2019→2025)</li>
+      <li>S11: 50% vs 89% · 39pt gap · NT rank 4→1, +0.35★</li>
+    </ul>
+  </div>
+
+  <div class="checklist-card">
+    <h3>💻 Tech / QR + backup</h3>
+    <ul>
+      <li>Streamlit Cloud URL live + tested from an external network</li>
+      <li>QR code on S9 points to the correct URL (test scan from phone)</li>
+      <li>Dashboard loads in &lt; 3s on first scan</li>
+      <li>Backup tab: pre-load dashboard in Tab 2 (Home / Ch0) in case the Q&amp;A asks for a demo</li>
+      <li>Sidebar EXPANDED, all states selected (default)</li>
+      <li>Browser zoom 100%, window maximized</li>
+      <li>Browser notifications disabled</li>
+      <li>Hotspot ready if venue WiFi fails</li>
+      <li>Printed copy of this script in your folder</li>
+    </ul>
+  </div>
+
+  <div class="checklist-card">
+    <h3>🎙 Voice / body</h3>
+    <ul>
+      <li>Water bottle nearby</li>
+      <li>Stand close to the screen; gesture at chart elements</li>
+      <li>Eye contact rotating across three sections of the room</li>
+      <li>Hold the 2-second pauses (S3, S7) — count silently</li>
+      <li>Drop volume + slow down on S6 "does not survive" and the S11 close</li>
+      <li>Step back on "Thank you" — signal Q&amp;A</li>
+    </ul>
+  </div>
+
+  <div class="checklist-card">
+    <h3>🩹 Recovery moves</h3>
+    <ul>
+      <li><b>Forget a number?</b> Gesture at the slide and say "as the chart shows"</li>
+      <li><b>Audience question mid-pitch?</b> "Great — let me come back to that in Q&amp;A"</li>
+      <li><b>Running over time?</b> Cut S8 entirely (the chart self-explains; transition straight from S7 to S9)</li>
+      <li><b>Running under time?</b> Add at S11: "And the dashboard is yours — feedback welcome"</li>
+      <li><b>Q&amp;A asks for a demo?</b> Switch tabs and run the 35s flow: Filter TAS → Central Highlands → Scenario picker → RN slider</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
