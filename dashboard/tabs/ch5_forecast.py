@@ -78,33 +78,41 @@ def render(master, supply, service_users, ratings, population, gdf) -> None:
     map_c1, map_c2 = st.columns(2)
 
     if gdf is not None:
+        geojson_data = gdf.__geo_interface__
+        hover_cols = {k: True for k in ['sa3_name', 'state'] if k in df24.columns}
+        hover_cols[col_c] = ':.2f'
+        map_center = {'lat': -27, 'lon': 134}
+
         with map_c1:
-            merged24 = gdf.merge(df24, on='sa3_code', how='left')
-            fig24 = px.choropleth(
-                merged24, geojson=merged24.__geo_interface__,
-                locations=merged24.index, color=col_c,
+            fig24 = px.choropleth_mapbox(
+                df24, geojson=geojson_data,
+                locations='sa3_code', featureidkey='properties.sa3_code',
+                color=col_c,
                 color_continuous_scale=cscale, range_color=[0, val_max],
-                hover_data={'sa3_name': True, 'state': True, col_c: ':.2f'},
+                hover_data=hover_cols,
                 title=f'{metric_label} — 2024 (actual)',
+                mapbox_style='carto-positron',
+                center=map_center, zoom=2.5, opacity=0.75,
             )
-            fig24.update_geos(fitbounds='locations', visible=False)
             theme(fig24, height=480)
             st.plotly_chart(fig24, use_container_width=True, key="ch5_map_24")
 
         with map_c2:
-            merged25 = gdf.merge(df25[['sa3_code', 'sa3_name', 'state', col_c]], on='sa3_code', how='left')
-            fig25 = px.choropleth(
-                merged25, geojson=merged25.__geo_interface__,
-                locations=merged25.index, color=col_c,
+            df25_map = df25[['sa3_code', 'sa3_name', 'state', col_c]].copy()
+            fig25 = px.choropleth_mapbox(
+                df25_map, geojson=geojson_data,
+                locations='sa3_code', featureidkey='properties.sa3_code',
+                color=col_c,
                 color_continuous_scale=cscale, range_color=[0, val_max],
-                hover_data={'sa3_name': True, 'state': True, col_c: ':.2f'},
+                hover_data=hover_cols,
                 title=f'{metric_label} — 2025 (projected, {scenario})',
+                mapbox_style='carto-positron',
+                center=map_center, zoom=2.5, opacity=0.75,
             )
-            fig25.update_geos(fitbounds='locations', visible=False)
             theme(fig25, height=480)
             st.plotly_chart(fig25, use_container_width=True, key="ch5_map_25")
     else:
-        st.info("Shapefile not loaded — choropleth unavailable.")
+        st.info("GeoJSON not loaded — choropleth unavailable.")
 
     # ── Movement KPIs ─────────────────────────────────────────────────────────
     st.markdown("---")

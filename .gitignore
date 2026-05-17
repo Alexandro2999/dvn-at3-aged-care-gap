@@ -1,5 +1,11 @@
 # ABS geography shapefiles (large binary, not tracked)
-data/raw/abs_geography/
+data/raw/abs_geography/*.shp
+data/raw/abs_geography/*.dbf
+data/raw/abs_geography/*.shx
+data/raw/abs_geography/*.prj
+data/raw/abs_geography/*.cpg
+data/raw/abs_geography/*.qmd
+# sa3_simplified.geojson is tracked — needed for Streamlit deployment
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

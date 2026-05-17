@@ -456,12 +456,23 @@ def render(ratings, master_filt) -> None:
                 x=wi_target, line_dash='dash', line_color=C['red'], line_width=2,
                 annotation_text=f'Threshold: {wi_target}',
                 annotation_position='top right',
+                annotation=dict(
+                    yref='paper', y=1.12,
+                    font=dict(color=C['red'], size=12),
+                    bgcolor='rgba(0,0,0,0)', borderwidth=0,
+                ),
             )
             fig_hist.add_vline(
-                x=44, line_dash='dot', line_color=C['muted'],
-                annotation_text='Mandate 44', annotation_position='top left',
+                x=44, line_dash='dot', line_color=C['muted'], line_width=2,
+                annotation_text='Mandate: 44',
+                annotation_position='top left',
+                annotation=dict(
+                    yref='paper', y=1.04,
+                    font=dict(color=C['muted'], size=12),
+                    bgcolor='rgba(0,0,0,0)', borderwidth=0,
+                ),
             )
-            theme(fig_hist, height=280)
+            theme(fig_hist, height=320)
             st.plotly_chart(fig_hist, use_container_width=True)
 
             if pct_comply >= 65:

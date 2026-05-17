@@ -235,38 +235,38 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
 
     # ── Choropleth ────────────────────────────────────────────────────────────
     if gdf is not None and not map_data.empty and col_c in map_data.columns:
-        merged = gdf.merge(map_data, on='sa3_code', how='left')
         val_max = float(map_data[col_c].quantile(0.95)) if map_data[col_c].notna().any() else 5
-        hover = {k: True for k in ['sa3_name', 'state', 'mmm_code'] if k in merged.columns}
-        for extra in ['care_gap_index', 'quality_score', 'access_rate']:
-            if extra != col_c and extra in merged.columns:
-                hover[extra] = ':.2f'
+        hover = {k: True for k in ['sa3_name', 'state', 'mmm_code'] if k in map_data.columns}
 
         proj_marker = ' ★' if is_proj_metric and year_c == 2025 else ''
-        fig_map = px.choropleth(
-            merged,
-            geojson=merged.__geo_interface__,
-            locations=merged.index,
+        geojson_data = gdf.__geo_interface__
+        fig_map = px.choropleth_mapbox(
+            map_data,
+            geojson=geojson_data,
+            locations='sa3_code',
+            featureidkey='properties.sa3_code',
             color=col_c,
             color_continuous_scale=cscale_c,
             range_color=[0, max(val_max, 0.1)],
             hover_data=hover,
             title=f'{metric_label} by SA3 — {year_c}{proj_marker}',
             labels={col_c: cbar_c},
+            mapbox_style='carto-positron',
+            center={'lat': -27, 'lon': 134},
+            zoom=3,
+            opacity=0.75,
         )
-        fig_map.update_geos(fitbounds='locations', visible=False)
         fig_map.update_coloraxes(colorbar_title_text=cbar_c)
 
         # Overlay major cities for visual orientation
-        fig_map.add_trace(go.Scattergeo(
+        fig_map.add_trace(go.Scattermapbox(
             lon=[c[2] for c in _CITIES],
             lat=[c[1] for c in _CITIES],
             text=[c[0] for c in _CITIES],
             mode='markers+text',
-            marker=dict(size=8, color=C['navy'], symbol='circle',
-                        line=dict(width=2, color='white')),
+            marker=dict(size=8, color=C['navy']),
             textposition='top right',
-            textfont=dict(size=11, color=C['navy'], family='Inter'),
+            textfont=dict(size=11, color=C['navy']),
             hoverinfo='text',
             showlegend=False,
             name='Major cities',
@@ -284,7 +284,7 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
             unsafe_allow_html=True,
         )
     elif not map_data.empty:
-        st.info("Shapefile not loaded — map unavailable. Run `load_shapefile()` from inside `dashboard/`.")
+        st.info("GeoJSON not loaded — map unavailable.")
     else:
         st.info("No data available for the current filter and year selection.")
 

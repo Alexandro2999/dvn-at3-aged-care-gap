@@ -1,7 +1,7 @@
 """
 Australia's Aged Care Gap — DVN AT3 Dashboard
 Design system: blue-spectrum / teal / gold / cream / care-gap-red
-Navigation: query-param routing (?page=home|map|correlation|reveal|mandate|forecast|fullmap)
+Navigation: query-param routing (?page=home|map|correlation|reveal|mandate|fullmap)
 """
 
 import streamlit as st
@@ -10,6 +10,7 @@ import geopandas as gpd
 import base64
 import os
 import sys
+import urllib.request
 
 # ── Make tabs/ importable ──────────────────────────────────────────────────────
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -22,7 +23,7 @@ import tabs.ch2_correlation as pg_corr
 import tabs.ch3_reveal     as pg_reveal
 import tabs.ch4_mandate    as pg_mandate
 import tabs.fullmap        as pg_fullmap
-import tabs.ch5_forecast   as pg_forecast
+
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -77,16 +78,23 @@ def load_funding():
     return pd.read_csv(os.path.join(CLEAN, 'service_funding_by_facility.csv'))
 
 
+_GEOJSON_URL = (
+    'https://raw.githubusercontent.com/Alexandro2999/dvn-at3-aged-care-gap'
+    '/main/data/raw/abs_geography/sa3_simplified.geojson'
+)
+
 @st.cache_resource
-def load_shapefile():
-    shp = os.path.join(GEO, 'SA3_2021_AUST_GDA2020.shp')
-    if not os.path.exists(shp):
-        return None
-    gdf = gpd.read_file(shp)
-    gdf = gdf.rename(columns={'SA3_CODE21': 'sa3_code'})
+def load_geojson():
+    geojson = os.path.join(GEO, 'sa3_simplified.geojson')
+    if not os.path.exists(geojson):
+        try:
+            os.makedirs(os.path.dirname(geojson), exist_ok=True)
+            urllib.request.urlretrieve(_GEOJSON_URL, geojson)
+        except Exception:
+            return None
+    gdf = gpd.read_file(geojson)
     gdf['sa3_code'] = pd.to_numeric(gdf['sa3_code'], errors='coerce').astype('Int64')
-    gdf = gdf.to_crs(epsg=4326)
-    gdf['geometry'] = gdf['geometry'].simplify(tolerance=0.01, preserve_topology=True)
+    gdf = gdf[gdf.geometry.notna()].reset_index(drop=True)
     return gdf
 
 
@@ -123,7 +131,7 @@ population    = load_population()
 service_users = load_service_users()
 acpr_res      = load_acpr_residential_users()
 acpr_hc       = load_acpr_homecare_users()
-gdf           = load_shapefile()
+gdf           = load_geojson()
 
 hero_b64 = _b64(os.path.join(ASSETS, 'img-landing-bg.jpg'))
 ico_b64  = _b64(os.path.join(ASSETS, 'ico-dashboard.png'))
@@ -141,12 +149,13 @@ header[data-testid="stHeader"] {{
     pointer-events: none !important;
     z-index: 10000 !important;
 }}
-header[data-testid="stHeader"] button,
-[data-testid="stSidebarCollapseButton"],
-[data-testid="stSidebarCollapsedControl"],
-[data-testid="stSidebarCollapsedControl"] button {{
+header[data-testid="stHeader"] button {{
     pointer-events: auto !important;
     z-index: 10001 !important;
+}}
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebarCollapsedControl"] {{
+    display: none !important;
 }}
 header [data-testid="stMainMenu"],
 .stDeployButton,
@@ -250,6 +259,8 @@ body .stTextInput label {{ color: {C['navy']} !important; font-weight: 700 !impo
 body [data-testid="stMetric"] {{
     background: {C['white']}; border: 1px solid {C['border']};
     border-radius: 12px; padding: 16px 20px;
+    min-height: 130px !important;
+    display: flex !important; flex-direction: column !important; justify-content: space-between !important;
 }}
 body [data-testid="stMetricLabel"] {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 13px !important; }}
 body [data-testid="stMetricValue"] {{ color: {C['navy']} !important; font-size: 30px !important; font-weight: 800 !important; }}
@@ -264,11 +275,13 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 }}
 .nav-bar a {{ text-decoration: none !important; }}
 .nav-home-btn {{
-    color: white; padding: 6px 18px; border-radius: 6px;
+    color: rgba(255,255,255,0.6); padding: 6px 18px; border-radius: 6px;
     font-weight: 700; font-size: 14px; white-space: nowrap;
-    cursor: pointer; transition: background 0.15s; display: inline-block;
+    cursor: pointer; transition: background 0.15s, color 0.15s; display: inline-block;
+    background: rgba(255,255,255,0.12);
 }}
-.nav-home-btn:hover, .nav-home-btn.active {{ background: {C['teal']}; color: white !important; }}
+.nav-home-btn:hover {{ background: rgba(255,255,255,0.22); color: white !important; }}
+.nav-home-btn.active {{ background: {C['teal']}; color: white !important; }}
 
 .nav-chapters {{
     display: flex; align-items: flex-end; margin-left: auto;
@@ -286,7 +299,7 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 }}
 .nav-ch.active::before {{ background: {C['teal']}; box-shadow: 0 0 0 3px rgba(0,167,157,0.3); }}
 .nav-ch-link {{
-    display: block; color: white !important; font-size: 14px;
+    display: block; color: rgba(255,255,255,0.55) !important; font-size: 14px;
     padding: 5px 14px; border-radius: 6px; white-space: nowrap; transition: all 0.15s;
 }}
 .nav-ch-link:hover {{ color: white !important; background: rgba(255,255,255,0.1); }}
@@ -298,8 +311,8 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
     border-radius: 12px; padding: 20px 24px 18px;
 }}
 .kpi-label {{
-    color: {C['navy']}; font-weight: 700; font-size: 33px;
-    letter-spacing: 0.04em; text-transform: uppercase;
+    color: {C['navy']}; font-weight: 700; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
     display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
 }}
 .kpi-help {{
@@ -367,11 +380,7 @@ span[data-baseweb="tag"] {{
 span[data-baseweb="tag"] span {{ color: white !important; }}
 span[data-baseweb="tag"] button span svg {{ fill: rgba(255,255,255,0.75) !important; }}
 
-div[data-baseweb="radio"] div[role="radio"][aria-checked="true"] {{
-    background-color: {C['teal']} !important; border-color: {C['teal']} !important;
-}}
-div[data-baseweb="radio"] div[role="radio"][aria-checked="true"] > div {{ background-color: white !important; }}
-div[data-baseweb="radio"]:hover div[role="radio"] {{ border-color: {C['teal']} !important; }}
+input[type="radio"] {{ accent-color: {C['navy']} !important; }}
 
 li[role="option"] span[data-baseweb="checkbox"] > div {{ border-color: {C['teal']} !important; }}
 li[role="option"][aria-selected="true"] span[data-baseweb="checkbox"] > div {{
@@ -389,7 +398,6 @@ NAV_CHAPTERS = [
     ("Chapter 2: The Correlation", "correlation"),
     ("Chapter 3: The Reveal",      "reveal"),
     ("Chapter 4: Mandate Effect",  "mandate"),
-    ("Chapter 5: The Forecast",    "forecast"),
 ]
 ch_html = "".join(
     f'<div class="nav-ch {"active" if page == k else ""}">'
@@ -514,8 +522,7 @@ elif page == "reveal":
 elif page == "mandate":
     pg_mandate.render(ratings, master_filt)
 
-elif page == "forecast":
-    pg_forecast.render(master_filt, supply, service_users, ratings, population, gdf)
+
 
 else:
     pg_home.render(hero_b64, KPI_HTML, master_filt, gdf, supply, population, ratings, service_users)
