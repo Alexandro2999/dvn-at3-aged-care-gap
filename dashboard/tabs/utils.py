@@ -135,8 +135,8 @@ _AXIS = dict(
     gridcolor=C['bg'],
     linecolor=C['border'],
     tickcolor=C['border'],
-    tickfont=dict(color=C['navy'], size=12, family=_FONT),
-    title_font=dict(color=C['navy'], size=13, family=_FONT),
+    tickfont=dict(color=C['navy'], size=15, family=_FONT),
+    title_font=dict(color=C['navy'], size=16, family=_FONT),
 )
 
 
@@ -145,14 +145,14 @@ def theme(fig, height=None):
     fig.update_layout(
         plot_bgcolor='white',
         paper_bgcolor='white',
-        font=dict(family=_FONT, color=C['navy'], size=13),
-        title_font=dict(size=16, color=C['navy'], family=_FONT),
+        font=dict(family=_FONT, color=C['navy'], size=16),
+        title_font=dict(size=19, color=C['navy'], family=_FONT),
         margin=dict(l=0, r=16, t=56, b=8),
         legend=dict(
             bgcolor='rgba(255,255,255,0.92)',
             bordercolor=C['border'],
             borderwidth=1,
-            font=dict(color=C['navy'], size=12),
+            font=dict(color=C['navy'], size=15),
         ),
         xaxis=_AXIS,
         yaxis=_AXIS,

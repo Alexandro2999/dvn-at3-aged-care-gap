@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from tabs.utils import C, MMM_COLOURS, theme
 from tabs import fullmap as pg_fullmap
 
@@ -29,8 +30,8 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
     )
 
     tab_a, tab_b = st.tabs([
-        "📊 The Overview",
-        "📉 The Decline",
+        "📊 Snapshot",
+        "📉 Trend",
     ])
 
     # ════════════════════════════════════════════════════════════════════════════
@@ -103,30 +104,58 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 ('quality_score',  f'Quality Score — {year_sel}',       C['teal'],  '%{text:.2f}★'),
                 ('access_rate',    f'Residential Access — {year_sel}',  '#4A7FC1',  '%{text:.1f}%'),
             ]
-            c1, c2, c3 = st.columns(3)
-            for widget_col, (metric, title, color, text_fmt) in zip([c1, c2, c3], bar_specs):
+
+            # Build a single subplot figure with shared Y-axis (states/MMM listed once on left)
+            if grp == 'mmm_code':
+                y_categories = [MMM_LABELS.get(k, k) for k in ref_order]
+            else:
+                y_categories = ref_order
+
+            fig = make_subplots(
+                rows=1, cols=3, shared_yaxes=True,
+                subplot_titles=[title for (_, title, _, _) in bar_specs],
+                horizontal_spacing=0.04,
+            )
+
+            for col_idx, (metric, _, color, text_fmt) in enumerate(bar_specs, start=1):
                 agg = plot_df.groupby(grp, observed=True)[metric].mean().reset_index()
                 if grp == 'mmm_code':
                     agg['x_label'] = agg[grp].map(MMM_LABELS).fillna(agg[grp].astype(str))
-                    label_order = [MMM_LABELS.get(k, k) for k in ref_order]
-                    agg['x_label'] = pd.Categorical(agg['x_label'], categories=label_order, ordered=True)
+                    agg['x_label'] = pd.Categorical(agg['x_label'], categories=y_categories, ordered=True)
                     agg = agg.sort_values('x_label')
-                    y_col = 'x_label'
+                    y_vals = agg['x_label'].astype(str).tolist()
                 else:
-                    agg[grp] = pd.Categorical(agg[grp], categories=ref_order, ordered=True)
+                    agg[grp] = pd.Categorical(agg[grp], categories=y_categories, ordered=True)
                     agg = agg.sort_values(grp)
-                    y_col = grp
-                fig = px.bar(
-                    agg, x=metric, y=y_col, orientation='h',
-                    color_discrete_sequence=[color], text=metric,
-                    title=title, labels={metric: '', y_col: ''},
+                    y_vals = agg[grp].astype(str).tolist()
+
+                fig.add_trace(
+                    go.Bar(
+                        x=agg[metric].tolist(),
+                        y=y_vals,
+                        orientation='h',
+                        marker=dict(color=color),
+                        text=agg[metric].tolist(),
+                        texttemplate=text_fmt,
+                        textposition='outside',
+                        textfont=dict(size=14),
+                        showlegend=False,
+                        hovertemplate='%{y}: %{x:.2f}<extra></extra>',
+                    ),
+                    row=1, col=col_idx,
                 )
-                fig.update_traces(
-                    texttemplate=text_fmt, textposition='outside',
-                    textfont=dict(size=11),
-                )
-                theme(fig, height=420)
-                widget_col.plotly_chart(fig, use_container_width=True, key=f"a_bar_{metric}")
+
+            theme(fig, height=440)
+            fig.update_layout(
+                margin=dict(l=0, r=16, t=64, b=16),
+                bargap=0.28,
+            )
+            # Pad each x-axis a bit so the outside labels don't get clipped
+            for col_idx in range(1, 4):
+                fig.update_xaxes(automargin=True, row=1, col=col_idx)
+            fig.update_yaxes(categoryorder='array', categoryarray=y_categories)
+
+            st.plotly_chart(fig, use_container_width=True, key="a_bar_combined")
 
             mmm_q = (
                 df_yr.dropna(subset=['mmm_code', 'quality_score'])
@@ -203,7 +232,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             )
             fig_rank.update_traces(
                 texttemplate=f'%{{text{fmt_str}}}{suffix}', textposition='outside',
-                textfont=dict(size=11),
+                textfont=dict(size=14),
             )
             theme(fig_rank, height=max(400, n_top * 48))
             st.plotly_chart(fig_rank, use_container_width=True, key="a_rank")
@@ -213,6 +242,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
     # TAB B — The Decline: beds/1k + n_facilities (State or MMM)
     # ════════════════════════════════════════════════════════════════════════════
     with tab_b:
+        st.caption("📍 *National context — these trends show all states and remoteness bands regardless of the sidebar filter.*")
         st.info(
             "Beds per 1,000 elderly **fell in every state** while the total number of facilities "
             "consolidated year on year. Supply is shrinking as the elderly population grows."

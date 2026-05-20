@@ -27,6 +27,37 @@ _METRIC_DEFS = [
     ('Number of Facilities',   'n_facilities',         [[0,'#E6F4F1'],[0.5,'#00A79D'],[1,'#005F5A']], 'Facilities',         'supply_nopop',  True,  False),
 ]
 
+# Per-metric explainer: (formula, plain-English interpretation)
+_METRIC_INFO = {
+    'Care Gap Index': (
+        'access_rate ÷ quality_score',
+        'Composite indicator of unmet need. <b>Higher value = region is underserved</b> '
+        '(high demand relative to low quality). Values &gt; 1 flag concern.',
+    ),
+    'Quality Score': (
+        'mean of 4 ACQSC sub-ratings (Residents\' Experience, Staffing, Compliance, Quality Measures)',
+        'Average facility rating in the region, on a 0–5 ★ scale. <b>Higher = better quality of care.</b>',
+    ),
+    'Residential Access Rate': (
+        '(total_residential ÷ pop_65_plus) × 100',
+        'Share of the 65+ population currently living in residential aged care. '
+        '<b>Higher = more elderly placed in residential beds locally.</b>',
+    ),
+    'Waitlist Pressure': (
+        'hcp_high_needs ÷ residential_places',
+        'High-needs home-care users per residential bed. '
+        '<b>Values &gt; 1.0 = crisis zone</b> — demand outpaces local supply.',
+    ),
+    'Beds per 1,000 elderly': (
+        '(residential_places ÷ pop_65_plus) × 1,000',
+        'Residential supply density. <b>Higher = more beds available per 1,000 people aged 65+.</b>',
+    ),
+    'Number of Facilities': (
+        'count of aged-care services in the SA3 (residential + home-care combined)',
+        'Service points operating in the region. <b>Higher = more provider presence.</b>',
+    ),
+}
+
 
 def _project_df_to_2025(df, supply, service_users, ratings, population, scenario):
     """Return df with a projected 2025 row appended via the given Ch5 scenario.
@@ -67,20 +98,22 @@ def _build_map_data(metric_key, col_c, src_c, year_c, df, supply, population, sa
     elif src_c == 'waitlist':
         wp_yr = (wp_frame if wp_frame is not None else pd.DataFrame())
         wp_yr = wp_yr[wp_yr['year'] == year_c][['sa3_code', 'waitlist_pressure']]
-        return wp_yr.merge(sa3_meta, on='sa3_code', how='left')
+        # inner join — only keep SA3 codes in the (filtered) sa3_meta
+        return wp_yr.merge(sa3_meta, on='sa3_code', how='inner')
     elif src_c == 'supply':
         # Prefer df (master) when year is in it — handles 2025 projected via build_master_2025
         if 'beds_per_1k' in df.columns and year_c in df['year'].unique():
             df_c = df[df['year'] == year_c][['sa3_code', 'beds_per_1k']].copy()
-            return df_c.merge(sa3_meta, on='sa3_code', how='left')
+            return df_c.merge(sa3_meta, on='sa3_code', how='inner')
         _s = supply.merge(population[['sa3_code', 'year', 'pop_65_plus']], on=['sa3_code', 'year'], how='inner')
         _s = _s[_s['pop_65_plus'] > 0].copy()
         _s['beds_per_1k'] = _s['residential_places'] / _s['pop_65_plus'] * 1000
         _s_yr = _s[_s['year'] == year_c][['sa3_code', 'beds_per_1k']]
-        return _s_yr.merge(sa3_meta, on='sa3_code', how='left')
+        return _s_yr.merge(sa3_meta, on='sa3_code', how='inner')
     else:  # supply_nopop
         _s_yr = supply[supply['year'] == year_c][['sa3_code', 'n_facilities']]
-        return _s_yr.merge(sa3_meta, on='sa3_code', how='left')
+        # inner join — drop SA3s not in filtered sa3_meta
+        return _s_yr.merge(sa3_meta, on='sa3_code', how='inner')
 
 
 def _movement_kpis(col_c, src_c, higher_is_better, metric_label, year_c, year_prev,
@@ -153,46 +186,58 @@ def _movement_kpis(col_c, src_c, higher_is_better, metric_label, year_c, year_pr
         help=f"SA3s with identical {metric_label} both years",
     )
 
-    if n_imp >= n_wor:
-        st.success(
-            f"**{n_imp} SA3s ({pct_imp}%) improved** {metric_label} from {year_prev}→{year_c}. "
-            f"The **{n_wor} worsening SA3s** may signal areas of continued structural pressure."
-        )
-    else:
-        st.warning(
-            f"**{n_wor} SA3s ({pct_wor}%) worsened** {metric_label} from {year_prev}→{year_c}. "
-            f"Only {n_imp} SA3s ({pct_imp}%) showed improvement over this period."
-        )
 
 
 def render(df, gdf, supply, population, service_users=None, ratings=None, show_movement=True) -> None:
     st.markdown('<div class="sec-h1">Interactive Map</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<p class="sec-p">Explore aged care outcomes across every SA3 region in Australia. '
-        'Switch metrics and years to reveal where supply is collapsing, '
-        'where quality is falling, and where demand outstrips capacity.</p>',
-        unsafe_allow_html=True,
-    )
 
-    # ── Scenario picker for 2025 projection ─────────────────────────────────
+    # ── Data type radio: which metrics show, based on 2025 source ──────────
     scenario_options = list(SCENARIO_GROWTH_RATES.keys())
-    sel_metric, sel_year, sel_scenario = st.columns([2, 1, 2])
+    _PROJ_LABEL = "📈 2025 forecast"
+    _REAL_LABEL = "Real 2025 data"
 
-    with sel_scenario:
-        scenario = st.selectbox(
-            "Projection scenario (for 2025 ★)",
-            options=scenario_options,
-            index=0,
-            key="fm_scenario",
-            help="Applies only to metrics where 2025 is projected (Care Gap Index, "
-                 "Quality Score, Residential Access Rate, Beds per 1,000 elderly).",
+    def _on_data_type_change():
+        # When user toggles data type, snap fm_metric to a valid option in the new pool.
+        new_type = st.session_state.get('fm_data_type', _PROJ_LABEL)
+        if new_type.startswith("📈"):
+            new_pool = [m for m in _METRIC_DEFS if m[6]]
+        else:
+            new_pool = [m for m in _METRIC_DEFS if not m[6]]
+        if new_pool and st.session_state.get('fm_metric') not in [m[0] for m in new_pool]:
+            st.session_state['fm_metric'] = new_pool[0][0]
+
+    # All controls grouped inside a bordered card
+    controls_card = st.container(border=True)
+    with controls_card:
+        data_type = st.radio(
+            "Data type",
+            options=[_PROJ_LABEL, _REAL_LABEL],
+            horizontal=True,
+            key="fm_data_type",
+            on_change=_on_data_type_change,
+            help="📈 Forecast = metrics where 2025 is computed from ABS trends "
+                 "(Care Gap, Access, Beds per 1k — they need pop_65_plus which ABS hasn't released). "
+                 "Real 2025 = metrics where actual 2025 data exists (Quality, Waitlist, Facilities).",
         )
+    is_projected_mode = data_type.startswith("📈")
+    metric_pool = [m for m in _METRIC_DEFS if (m[6] if is_projected_mode else not m[6])]
+
+    # Read scenario from session state for projection (picker renders below if needed)
+    scenario = st.session_state.get('fm_scenario', scenario_options[0])
+    if scenario not in scenario_options:
+        scenario = scenario_options[0]
 
     # ── Project df to include a 2025 row using selected scenario ───────────
     df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
 
     # ── Build waitlist frame (uses service_users + supply, no pop dependency) ─
     wp_frame = _build_waitlist_frame(service_users, supply)
+    # Respect global filter — keep only SA3 codes present in (filtered) df
+    _allowed_sa3 = set(df['sa3_code'].dropna().unique())
+    if not wp_frame.empty:
+        wp_frame = wp_frame[wp_frame['sa3_code'].isin(_allowed_sa3)]
+    # Same filter on supply (used directly by 'supply_nopop' metric + Movement KPIs)
+    supply = supply[supply['sa3_code'].isin(_allowed_sa3)].copy()
 
     # ── Derive available years dynamically ────────────────────────────────────
     _df_years   = sorted(df['year'].dropna().unique().tolist())
@@ -206,26 +251,87 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
     _YEAR_MAP = {'df': _df_years, 'waitlist': _wp_years,
                  'supply': _beds_years, 'supply_nopop': _sup_years}
 
-    # ── Metric selectbox (label only — no year range text) ─────────────────
+    # ── Metric / Year / (Scenario) row + Definition (all inside controls card) ─
     metric_options = {
         label: (col, cscale, cbar, src, higher_is_better, label, is_proj)
-        for label, col, cscale, cbar, src, higher_is_better, is_proj in _METRIC_DEFS
+        for label, col, cscale, cbar, src, higher_is_better, is_proj in metric_pool
     }
+    with controls_card:
+        if is_projected_mode:
+            sel_metric, sel_year, sel_scenario = st.columns([2, 1, 2])
+        else:
+            sel_metric, sel_year = st.columns([2, 1])
+            sel_scenario = None
 
-    with sel_metric:
-        metric_sel = st.selectbox(
-            "Colour map by", options=list(metric_options.keys()), index=0, key="fm_metric",
-        )
-    col_c, cscale_c, cbar_c, src_c, higher_is_better, metric_label, is_proj_metric = metric_options[metric_sel]
-    avail_years = _YEAR_MAP[src_c]
+        with sel_metric:
+            metric_sel = st.selectbox(
+                "Colour map by", options=list(metric_options.keys()), index=0, key="fm_metric",
+            )
+        col_c, cscale_c, cbar_c, src_c, higher_is_better, metric_label, is_proj_metric = metric_options[metric_sel]
+        avail_years = _YEAR_MAP[src_c]
 
-    with sel_year:
-        year_c = st.selectbox(
-            "Year",
-            options=[int(y) for y in avail_years],
-            index=len(avail_years) - 1,
-            key="fm_year",
-            format_func=lambda y: f'{y} ★' if (is_proj_metric and y == 2025) else str(y),
+        # Force one extra rerun on metric change so the year dropdown and
+        # "No data" check both see the fresh metric state. Streamlit's selectbox
+        # cached value lags by one render otherwise.
+        _prev_metric = st.session_state.get('_fm_last_metric')
+        st.session_state['_fm_last_metric'] = metric_sel
+        if _prev_metric is not None and _prev_metric != metric_sel:
+            _y_state = st.session_state.get('fm_year')
+            if _y_state is None or _y_state not in avail_years:
+                st.session_state['fm_year'] = int(avail_years[-1])
+            st.rerun()
+
+        with sel_year:
+            year_c = st.selectbox(
+                "Year",
+                options=[int(y) for y in avail_years],
+                index=len(avail_years) - 1,
+                key="fm_year",
+                format_func=lambda y: f'{y} 📈' if (is_proj_metric and y == 2025) else str(y),
+            )
+
+        if is_projected_mode and sel_scenario is not None:
+            with sel_scenario:
+                scenario = st.selectbox(
+                    "Projection scenario",
+                    options=scenario_options,
+                    index=scenario_options.index(scenario),
+                    key="fm_scenario",
+                    help="Per-state CAGR applied to pop_65_plus when projecting 2025.",
+                )
+
+        # Per-metric definition (updates with each metric selection)
+        if metric_sel in _METRIC_INFO:
+            _formula, _interp = _METRIC_INFO[metric_sel]
+            st.markdown(
+                f'<div style="background:linear-gradient(135deg,#E0F7F4 0%,#D6EAF8 100%);'
+                f'border-left:5px solid #00A79D;border-radius:8px;'
+                f'padding:14px 18px;margin:20px 18px 12px;'
+                f'box-shadow:0 1px 3px rgba(0,0,0,0.06);'
+                f'color:{C["navy"]};font-size:20px;line-height:1.65">'
+                f'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px">'
+                f'<span style="font-weight:800;font-size:21px;color:#1B3F6E">📊 {metric_sel}</span>'
+                f'<span style="font-family:Consolas,Menlo,monospace;background:#1B3F6E;'
+                f'color:#FFFFFF;padding:3px 10px;border-radius:14px;font-size:17.5px;'
+                f'font-weight:600;letter-spacing:0.2px">{_formula}</span>'
+                f'</div>'
+                f'<span style="color:#2C4257">{_interp}</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    # ── Forecast note shown above the map (only when projected + 2025) ────────
+    if is_proj_metric and year_c == 2025:
+        st.markdown(
+            f'<div style="background:#FFF8E1;border-left:4px solid #F5A623;'
+            f'padding:14px 18px;border-radius:8px;margin:18px 0 16px;'
+            f'color:{C["navy"]};font-size:19.5px;line-height:1.55">'
+            f'📈 <b>You are viewing a 2025 forecast.</b> '
+            f'<b>{metric_label}</b> for 2025 is computed using the <b>{scenario}</b> scenario '
+            f'applied to ABS pop_65_plus growth. '
+            f'Switch to <i>Real 2025 data</i> above to view metrics with actual 2025 values.'
+            f'</div>',
+            unsafe_allow_html=True,
         )
 
     # ── Build map data ────────────────────────────────────────────────────────
@@ -233,12 +339,33 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
     map_data = _build_map_data(metric_sel, col_c, src_c, year_c, df, supply, population, sa3_meta,
                                 wp_frame=wp_frame)
 
+    # ── Movement KPIs above the map (dynamic, tied to selected metric + year) ─
+    if show_movement:
+        year_prev = year_c - 1
+        if year_prev in avail_years:
+            _movement_kpis(
+                col_c, src_c, higher_is_better, metric_label,
+                year_c, year_prev, df, supply, population, sa3_meta,
+                wp_frame=wp_frame,
+            )
+        else:
+            if avail_years:
+                _avail_str = ", ".join(str(y) for y in avail_years)
+                st.info(
+                    f"📊 Year-on-year movement requires two consecutive years of data. "
+                    f"For **{metric_label}**, data is only available for: {_avail_str}. "
+                    f"Pick a year after {avail_years[0]} to see how SA3s shifted."
+                )
+            else:
+                st.info(f"No {metric_label} data available under the current filter.")
+        st.markdown("")  # small gap
+
     # ── Choropleth ────────────────────────────────────────────────────────────
     if gdf is not None and not map_data.empty and col_c in map_data.columns:
         val_max = float(map_data[col_c].quantile(0.95)) if map_data[col_c].notna().any() else 5
         hover = {k: True for k in ['sa3_name', 'state', 'mmm_code'] if k in map_data.columns}
 
-        proj_marker = ' ★' if is_proj_metric and year_c == 2025 else ''
+        proj_marker = ' 📈' if is_proj_metric and year_c == 2025 else ''
         geojson_data = gdf.__geo_interface__
         fig_map = px.choropleth_mapbox(
             map_data,
@@ -266,7 +393,7 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
             mode='markers+text',
             marker=dict(size=8, color=C['navy']),
             textposition='top right',
-            textfont=dict(size=11, color=C['navy']),
+            textfont=dict(size=14, color=C['navy']),
             hoverinfo='text',
             showlegend=False,
             name='Major cities',
@@ -274,34 +401,8 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
 
         theme(fig_map, height=580)
         st.plotly_chart(fig_map, use_container_width=True, key="fm_map")
-
-        st.markdown(
-            f'<div style="color:{C["navy"]};font-size:13px;margin:2px 0 0;line-height:1.5">'
-            f'★ next to a year (in the Year dropdown) means values are <b>projected</b> '
-            f'using the <b>{scenario}</b> scenario. Real 2025 data is used for '
-            f'Quality Score, Waitlist Pressure, and Number of Facilities — no ★ on those.'
-            f'</div>',
-            unsafe_allow_html=True,
-        )
     elif not map_data.empty:
         st.info("GeoJSON not loaded — map unavailable.")
     else:
         st.info("No data available for the current filter and year selection.")
 
-    # ── Movement KPIs (dynamic, tied to selected metric + year) ───────────────
-    if show_movement:
-        st.markdown("---")
-        year_prev = year_c - 1
-        prev_available = year_prev in avail_years
-
-        if prev_available:
-            _movement_kpis(
-                col_c, src_c, higher_is_better, metric_label,
-                year_c, year_prev, df, supply, population, sa3_meta,
-                wp_frame=wp_frame,
-            )
-        else:
-            st.info(
-                f"Movement data not available — no {metric_label} data for {year_prev}. "
-                f"Select a later year to see year-on-year changes."
-            )
