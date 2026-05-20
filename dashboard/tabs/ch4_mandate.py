@@ -5,12 +5,12 @@ import plotly.graph_objects as go
 from tabs.utils import C, ORG_COLOURS, MANDATE, theme
 
 
-def render(ratings, master_filt) -> None:
+def render(ratings, master_filt, filter_active: bool = False) -> None:
     st.markdown(
         f'<div style="display:inline-block;background:{C["gold"]};color:white;'
-        f'padding:5px 14px;border-radius:14px;font-size:11px;font-weight:700;'
+        f'padding:5px 14px;border-radius:14px;font-size:17px;font-weight:700;'
         f'letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px">'
-        f'Part B · The intervention test</div>',
+        f'The Verdict</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -42,7 +42,7 @@ def render(ratings, master_filt) -> None:
 
     with st.expander("📖 Glossary — key terms in this chapter", expanded=False):
         st.markdown(
-            f'<div style="color:{C["navy"]};font-size:14px;line-height:1.7">'
+            f'<div style="color:{C["navy"]};font-size:20px;line-height:1.7">'
             f'<ul style="margin:0;padding-left:22px">'
             f'<li><b>Oct 2023 staffing mandate</b> — federal rule requiring 200 care minutes '
             f'per resident per day, 40 of which must come from a Registered Nurse.</li>'
@@ -72,18 +72,21 @@ def render(ratings, master_filt) -> None:
             f"government **{_govt:.2f}★** vs for-profit **{_profit:.2f}★** — a "
             f"**{_gap:.2f}-point gap** stable across {_n_snap} quarterly snapshots. "
             f"This chapter tests whether the **October 2023 staffing mandate** "
-            f"closed it. ← [Chapter 2: The Correlation](?page=correlation) for "
+            f"closed it. ← [Chapter 2: The Cause](?page=correlation) for "
             f"the diagnostic."
         )
 
     # Sidebar filter propagation: narrow ratings by the state + MMM set
     # carried by master_filt, so every chart in this tab respects the sidebar.
-    allowed_states = set(master_filt['state'].dropna().unique())
-    allowed_mmm = set(master_filt['mmm_code'].dropna().unique())
-    ratings = ratings[
-        ratings['state'].isin(allowed_states)
-        & ratings['mmm_code'].isin(allowed_mmm)
-    ].copy()
+    # Only apply when the sidebar is actively narrowed — at default scope we
+    # keep the full ratings frame so KPI cards match the national headline.
+    if filter_active:
+        allowed_states = set(master_filt['state'].dropna().unique())
+        allowed_mmm = set(master_filt['mmm_code'].dropna().unique())
+        ratings = ratings[
+            ratings['state'].isin(allowed_states)
+            & ratings['mmm_code'].isin(allowed_mmm)
+        ].copy()
 
     if ratings.empty:
         st.warning(
@@ -156,9 +159,9 @@ def render(ratings, master_filt) -> None:
 
     # ── Three sub-tabs ───────────────────────────────────────────────────────
     tab_nat, tab_org, tab_wi = st.tabs([
-        "🧭 National trend",
-        "👥 By ownership",
-        "🎚️ What-if RN target",
+        "🧭 Timeline",
+        "👥 By owner",
+        "🎚️ What-if",
     ])
 
     # ════════════════════════════════════════════════════════════════════════
@@ -173,7 +176,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="Avg quality score: After − Before mandate">?</span>
     </div>
     <div class="kpi-value">{q_delta_f:+.2f}<span class="kpi-suffix"> ★</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       {q_before_f:.2f} → {q_after_f:.2f}
     </div>
   </div>
@@ -182,7 +185,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="Staffing sub-rating change after mandate">?</span>
     </div>
     <div class="kpi-value">{staff_delta_f:+.2f}<span class="kpi-suffix"> ★</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       largest sub-rating gain
     </div>
   </div>
@@ -191,7 +194,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="Clinical outcomes sub-rating change after mandate">?</span>
     </div>
     <div class="kpi-value">{qm_delta_f:+.3f}<span class="kpi-suffix"> ★</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       clinical outcomes flat
     </div>
   </div>
@@ -200,7 +203,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="% of facilities meeting both RN and total care-minute targets, latest snapshot">?</span>
     </div>
     <div class="kpi-value">{nat_comp:.1f}<span class="kpi-suffix"> %</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       {latest_date_label} · target 65%
     </div>
   </div>
@@ -262,7 +265,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="% of govt-run facilities fully compliant, latest snapshot">?</span>
     </div>
     <div class="kpi-value">{gov_comp:.1f}<span class="kpi-suffix"> %</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       {latest_date_label}
     </div>
   </div>
@@ -271,7 +274,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="% of for-profit facilities fully compliant, latest snapshot">?</span>
     </div>
     <div class="kpi-value">{profit_comp:.1f}<span class="kpi-suffix"> %</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       {latest_date_label}
     </div>
   </div>
@@ -280,7 +283,7 @@ def render(ratings, master_filt) -> None:
       <span class="kpi-help" data-tooltip="Government minus For-profit, percentage points">?</span>
     </div>
     <div class="kpi-value" style="color:{C['red']}">{comp_gap:.0f}<span class="kpi-suffix"> pts</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       govt − for-profit
     </div>
   </div>
@@ -368,7 +371,7 @@ def render(ratings, master_filt) -> None:
                                 color=C['red'] if is_top else '#8FAFD0'),
                     text=[state, state],
                     textposition=['middle left', 'middle right'],
-                    textfont=dict(size=12 if is_top else 10,
+                    textfont=dict(size=15 if is_top else 10,
                                   color=C['red'] if is_top else C['muted']),
                     showlegend=False,
                     hovertemplate=f'<b>{state}</b><br>%{{x}}: %{{y:.2f}}★<extra></extra>',
@@ -458,7 +461,7 @@ def render(ratings, master_filt) -> None:
                 annotation_position='top right',
                 annotation=dict(
                     yref='paper', y=1.12,
-                    font=dict(color=C['red'], size=12),
+                    font=dict(color=C['red'], size=15),
                     bgcolor='rgba(0,0,0,0)', borderwidth=0,
                 ),
             )
@@ -468,7 +471,7 @@ def render(ratings, master_filt) -> None:
                 annotation_position='top left',
                 annotation=dict(
                     yref='paper', y=1.04,
-                    font=dict(color=C['muted'], size=12),
+                    font=dict(color=C['muted'], size=15),
                     bgcolor='rgba(0,0,0,0)', borderwidth=0,
                 ),
             )

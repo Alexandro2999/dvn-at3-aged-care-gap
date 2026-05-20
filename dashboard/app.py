@@ -139,6 +139,12 @@ ico_b64  = _b64(os.path.join(ASSETS, 'ico-dashboard.png'))
 # ── CSS ────────────────────────────────────────────────────────────────────────
 NAV_H = 64
 CSS = f"""<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+html, body, .stApp, [class*="css"], button, input, select, textarea {{
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}}
+
 #MainMenu, footer {{ visibility: hidden; }}
 /* Keep header element + sidebar toggle visible ABOVE the custom nav-bar.
    pointer-events:none on header lets clicks pass through to nav-bar except
@@ -153,16 +159,12 @@ header[data-testid="stHeader"] button {{
     pointer-events: auto !important;
     z-index: 10001 !important;
 }}
-[data-testid="stSidebarCollapseButton"],
-[data-testid="stSidebarCollapsedControl"] {{
-    display: none !important;
-}}
 header [data-testid="stMainMenu"],
 .stDeployButton,
 div[data-testid="stToolbar"] {{ display: none !important; }}
 
-html, body {{ font-size: 16px !important; }}
-.stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; font-size: 14px; }}
+html, body {{ font-size: 22px !important; }}
+.stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; font-size: 21px; }}
 
 .main .block-container {{
     padding-top: {NAV_H + 16}px !important;
@@ -173,8 +175,6 @@ html, body {{ font-size: 16px !important; }}
 section[data-testid="stSidebar"] {{
     background: {C['white']} !important;
     border-right: 1px solid {C['border']};
-    z-index: 10002 !important;
-    pointer-events: auto !important;
 }}
 section[data-testid="stSidebar"] * {{ pointer-events: auto !important; }}
 section[data-testid="stSidebar"] > div:first-child {{ padding-top: 1.5rem !important; }}
@@ -198,6 +198,26 @@ section[data-testid="stSidebar"] details[data-testid="stExpander"] > div[data-te
 }}
 section[data-testid="stSidebar"] details summary svg {{ fill: white !important; }}
 
+/* Force navy text on ALL expander summary descendants outside sidebar */
+html body details[data-testid="stExpander"] summary,
+html body details[data-testid="stExpander"] summary * {{
+    color: {C['navy']} !important;
+    font-weight: 600 !important;
+}}
+html body details[data-testid="stExpander"] summary svg,
+html body details[data-testid="stExpander"] summary svg * {{
+    fill: {C['navy']} !important;
+}}
+/* Sidebar expanders re-asserted white (later rule + matching specificity) */
+html body section[data-testid="stSidebar"] details[data-testid="stExpander"] summary,
+html body section[data-testid="stSidebar"] details[data-testid="stExpander"] summary * {{
+    color: white !important;
+}}
+html body section[data-testid="stSidebar"] details[data-testid="stExpander"] summary svg,
+html body section[data-testid="stSidebar"] details[data-testid="stExpander"] summary svg * {{
+    fill: white !important;
+}}
+
 section[data-testid="stSidebar"] label {{ color: {C['navy']} !important; font-weight: 600 !important; }}
 section[data-testid="stSidebar"] p {{ color: {C['navy']} !important; }}
 section[data-testid="stSidebar"] span {{ color: {C['navy']} !important; }}
@@ -205,15 +225,15 @@ div[data-testid="stRadio"] label p {{ color: {C['navy']} !important; font-weight
 div[data-testid="stMultiSelect"] span[data-baseweb="tag"] span {{ color: white !important; }}
 
 /* ── Main content — all widget labels and body text ── */
-body [data-testid="stWidgetLabel"] p {{ color: {C['navy']} !important; font-weight: 600 !important; font-size: 14px !important; }}
-body [data-testid="stWidgetLabel"] {{ color: {C['navy']} !important; font-size: 14px !important; }}
+body [data-testid="stWidgetLabel"] p {{ color: {C['navy']} !important; font-weight: 600 !important; font-size: 20px !important; }}
+body [data-testid="stWidgetLabel"] {{ color: {C['navy']} !important; font-size: 20px !important; }}
 body .stSelectbox label, body .stRadio label, body .stTextInput label,
 body .stSlider label, body .stCheckbox label, body .stNumberInput label {{
-    color: {C['navy']} !important; font-weight: 600 !important; font-size: 14px !important;
+    color: {C['navy']} !important; font-weight: 600 !important; font-size: 20px !important;
 }}
-body div[role="radiogroup"] label p {{ color: {C['navy']} !important; font-weight: 500 !important; font-size: 14px !important; }}
-body div[role="radiogroup"] label span {{ color: {C['navy']} !important; font-size: 14px !important; }}
-body div[data-baseweb="select"] div {{ color: {C['navy']} !important; font-size: 14px !important; }}
+body div[role="radiogroup"] label p {{ color: {C['navy']} !important; font-weight: 500 !important; font-size: 20px !important; }}
+body div[role="radiogroup"] label span {{ color: {C['navy']} !important; font-size: 20px !important; }}
+body div[data-baseweb="select"] div {{ color: {C['navy']} !important; font-size: 20px !important; }}
 div[data-baseweb="select"] > div {{
     background: {C['white']} !important;
     border-color: {C['border']} !important;
@@ -223,7 +243,7 @@ div[data-baseweb="select"] > div:hover {{
     border-color: {C['teal']} !important;
 }}
 body button[data-baseweb="tab"] p, body button[data-baseweb="tab"] span {{
-    color: {C['navy']} !important; font-weight: 600 !important; font-size: 15px !important;
+    color: {C['navy']} !important; font-weight: 600 !important; font-size: 21px !important;
 }}
 body button[data-baseweb="tab"][aria-selected="true"] p,
 body button[data-baseweb="tab"][aria-selected="true"] span {{
@@ -239,15 +259,15 @@ body [data-testid="stAlert"] {{ opacity: 1 !important; }}
 body [data-testid="stAlert"] p, body [data-testid="stAlert"] span,
 body [data-testid="stAlert"] li, body [data-testid="stAlert"] strong,
 body [data-testid="stAlert"] div {{
-    color: {C['navy']} !important; font-size: 14px !important; line-height: 1.6 !important;
+    color: {C['navy']} !important; font-size: 20px !important; line-height: 1.6 !important;
 }}
 
 body .stTextInput input {{
     border-radius: 24px !important; border: 1px solid {C['border']} !important;
     padding: 8px 20px !important; background: {C['white']} !important;
-    font-size: 14px !important;
+    font-size: 20px !important;
 }}
-body .stTextInput label {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 14px !important; }}
+body .stTextInput label {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 20px !important; }}
 
 .stSlider [data-baseweb="slider"] [role="slider"] {{
     background-color: {C['teal']} !important; border-color: {C['teal']} !important;
@@ -262,9 +282,9 @@ body [data-testid="stMetric"] {{
     min-height: 130px !important;
     display: flex !important; flex-direction: column !important; justify-content: space-between !important;
 }}
-body [data-testid="stMetricLabel"] {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 13px !important; }}
-body [data-testid="stMetricValue"] {{ color: {C['navy']} !important; font-size: 30px !important; font-weight: 800 !important; }}
-body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
+body [data-testid="stMetricLabel"] {{ color: {C['navy']} !important; font-weight: 700 !important; font-size: 19px !important; }}
+body [data-testid="stMetricValue"] {{ color: {C['navy']} !important; font-size: 35px !important; font-weight: 800 !important; }}
+body [data-testid="stMetricDelta"] {{ font-size: 17px !important; }}
 
 .nav-bar {{
     position: fixed; top: 0; left: calc(21rem - 16px); right: 0;
@@ -276,7 +296,7 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 .nav-bar a {{ text-decoration: none !important; }}
 .nav-home-btn {{
     color: rgba(255,255,255,0.6); padding: 6px 18px; border-radius: 6px;
-    font-weight: 700; font-size: 14px; white-space: nowrap;
+    font-weight: 700; font-size: 20px; white-space: nowrap;
     cursor: pointer; transition: background 0.15s, color 0.15s; display: inline-block;
     background: rgba(255,255,255,0.12);
 }}
@@ -299,7 +319,7 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 }}
 .nav-ch.active::before {{ background: {C['teal']}; box-shadow: 0 0 0 3px rgba(0,167,157,0.3); }}
 .nav-ch-link {{
-    display: block; color: rgba(255,255,255,0.55) !important; font-size: 14px;
+    display: block; color: rgba(255,255,255,0.55) !important; font-size: 20px;
     padding: 5px 14px; border-radius: 6px; white-space: nowrap; transition: all 0.15s;
 }}
 .nav-ch-link:hover {{ color: white !important; background: rgba(255,255,255,0.1); }}
@@ -311,14 +331,14 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
     border-radius: 12px; padding: 20px 24px 18px;
 }}
 .kpi-label {{
-    color: {C['navy']}; font-weight: 700; font-size: 13px;
+    color: {C['navy']}; font-weight: 700; font-size: 19px;
     letter-spacing: 0.06em; text-transform: uppercase;
     display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
 }}
 .kpi-help {{
     display: inline-flex; align-items: center; justify-content: center;
     width: 15px; height: 15px; background: {C['border']}; border-radius: 50%;
-    font-size: 9px; color: {C['muted']}; font-weight: 700;
+    font-size: 14px; color: {C['muted']}; font-weight: 700;
     position: relative; cursor: help;
 }}
 .kpi-help::after {{
@@ -339,9 +359,18 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 .kpi-value {{ color: {C['navy']}; font-size: 2.4rem; font-weight: 800; line-height: 1; }}
 .kpi-suffix {{ font-size: 1rem; color: {C['muted']}; font-weight: 500; }}
 
-.sec-h1 {{ color: {C['navy']}; font-size: 28px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.3px; }}
-.sec-p {{ color: #3D4F63; font-size: 15px; margin-bottom: 20px; line-height: 1.6; max-width: 900px; }}
-.sub-h {{ color: {C['navy']}; font-size: 18px; font-weight: 700; margin: 24px 0 8px; }}
+.sec-h1 {{ color: {C['navy']}; font-size: 33px; font-weight: 900; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.3px; }}
+.sec-p {{ color: #3D4F63; font-size: 21px; margin-bottom: 20px; line-height: 1.6; max-width: 900px; }}
+.sub-h {{ color: {C['navy']}; font-size: 23px; font-weight: 700; margin: 24px 0 8px; }}
+
+/* Streamlit markdown headings — force navy + tighter spacing */
+.stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {{
+    color: {C['navy']} !important;
+    font-weight: 800 !important;
+}}
+.stMarkdown h3 {{ font-size: 24px !important; margin-top: 10px !important; margin-bottom: 8px !important; }}
+.stMarkdown h4 {{ font-size: 20px !important; margin-top: 8px !important; margin-bottom: 6px !important; }}
+.stMarkdown hr {{ margin: 10px 0 12px !important; border-color: {C['border']} !important; }}
 
 .hero-wrap {{
     border-radius: 16px; overflow: hidden; margin-bottom: 28px;
@@ -361,7 +390,7 @@ body [data-testid="stMetricDelta"] {{ font-size: 12px !important; }}
 .nb-card {{
     background: {C['white']}; border: 1.5px solid {C['teal']};
     border-radius: 10px; padding: 14px 20px; margin-bottom: 16px;
-    color: {C['navy']}; font-size: 14px;
+    color: {C['navy']}; font-size: 20px;
 }}
 
 .whatif-box {{
@@ -388,16 +417,48 @@ li[role="option"][aria-selected="true"] span[data-baseweb="checkbox"] > div {{
 }}
 </style>"""
 
+st.markdown(
+    '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">',
+    unsafe_allow_html=True,
+)
 st.markdown(CSS, unsafe_allow_html=True)
+
+# Clear any stale Streamlit sidebar-collapsed state from localStorage so the
+# initial_sidebar_state="expanded" actually takes effect each load.
+st.components.v1.html(
+    """
+    <script>
+    (function() {
+        try {
+            var keys = Object.keys(window.parent.localStorage);
+            keys.forEach(function(k) {
+                if (k.toLowerCase().indexOf('sidebar') !== -1) {
+                    window.parent.localStorage.removeItem(k);
+                }
+            });
+        } catch (e) {}
+        // If a collapsed-control button is present, click it to open sidebar
+        setTimeout(function() {
+            try {
+                var doc = window.parent.document;
+                var btn = doc.querySelector('[data-testid="stSidebarCollapsedControl"] button');
+                if (btn) btn.click();
+            } catch (e) {}
+        }, 300);
+    })();
+    </script>
+    """,
+    height=0,
+)
 
 # ── Navigation bar ─────────────────────────────────────────────────────────────
 page = st.query_params.get("page", "home")
 
 NAV_CHAPTERS = [
-    ("Chapter 1: The Map",         "map"),
-    ("Chapter 2: The Correlation", "correlation"),
-    ("Chapter 3: The Reveal",      "reveal"),
-    ("Chapter 4: Mandate Effect",  "mandate"),
+    ("Chapter 1: The Gap",      "map"),
+    ("Chapter 2: The Cause",    "correlation"),
+    ("Chapter 3: The Victims",  "reveal"),
+    ("Chapter 4: The Verdict",  "mandate"),
 ]
 ch_html = "".join(
     f'<div class="nav-ch {"active" if page == k else ""}">'
@@ -460,52 +521,36 @@ with st.sidebar:
 _states = state_sel if state_sel else states
 _mmm    = mmm_sel   if mmm_sel   else mmm_opts
 
-# master_filt: all years, state+MMM filtered — passed to each tab
-master_filt = master[
-    (master['state'].isin(_states)) &
-    (master['mmm_code'].isin(_mmm))
-].copy()
+# SA3-level "current" mmm_code (latest year) — used for filtering so that an SA3
+# whose mmm_code drifted across years is treated by its most-recent classification.
+# Keeps ALL years of an SA3 together if its latest mmm matches the filter.
+_sa3_current_mmm = (
+    master.dropna(subset=['mmm_code'])
+    .sort_values('year')
+    .drop_duplicates('sa3_code', keep='last')
+    [['sa3_code', 'mmm_code']]
+    .rename(columns={'mmm_code': '_current_mmm'})
+)
+master_filt = (
+    master.merge(_sa3_current_mmm, on='sa3_code', how='left')
+)
+master_filt = master_filt[
+    (master_filt['state'].isin(_states)) &
+    (master_filt['_current_mmm'].isin(_mmm))
+].drop(columns='_current_mmm').copy()
 
-# KPI uses latest year only
+# Whether the sidebar filter is narrower than the full master universe.
+# Used by tabs whose hero metric should remain the national figure when the
+# user has not actively narrowed the scope.
+filter_active = (set(_states) != set(states)) or (set(_mmm) != set(mmm_opts))
+
+# Latest-year slice (used by reveal tab's n_deficit count)
 _latest = master_filt[master_filt['year'] == master_filt['year'].max()]
-
-# ── KPI values (computed once, shared across pages) ────────────────────────────
-n_sa3       = _latest['sa3_code'].nunique()
-n_deficit   = int((_latest.drop_duplicates('sa3_name')['waitlist_pressure'] > 1.0).sum()) if not _latest.empty else 0
-med_quality = round(float(_latest['quality_score'].median()), 2) if not _latest.empty else 0.0
-med_cgi     = round(float(_latest['care_gap_index'].median()), 2) if not _latest.empty else 0.0
-
-KPI_HTML = f"""
-<div class="kpi-grid">
-  <div class="kpi-card">
-    <div class="kpi-label">SA3 Regions
-      <span class="kpi-help" data-tooltip="SA3 regions matching the current filter selection">?</span>
-    </div>
-    <div class="kpi-value">{n_sa3}</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">In Deficit
-      <span class="kpi-help" data-tooltip="Regions where high-needs HCP demand exceeds residential beds (pressure &gt; 1.0)">?</span>
-    </div>
-    <div class="kpi-value">{n_deficit}</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">Median Quality Score
-      <span class="kpi-help" data-tooltip="Mean of 4 ACQSC star-rating sub-dimensions">?</span>
-    </div>
-    <div class="kpi-value">{med_quality}<span class="kpi-suffix"> /5</span></div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">Median Care Gap Index
-      <span class="kpi-help" data-tooltip="access_rate / quality_score — higher = more underserved">?</span>
-    </div>
-    <div class="kpi-value">{med_cgi}<span class="kpi-suffix"> /1</span></div>
-  </div>
-</div>"""
+n_deficit = int((_latest.drop_duplicates('sa3_name')['waitlist_pressure'] > 1.0).sum()) if not _latest.empty else 0
 
 # ── Page routing ───────────────────────────────────────────────────────────────
 if page == "home":
-    pg_home.render(hero_b64, KPI_HTML, master_filt, gdf, supply, population, ratings, service_users)
+    pg_home.render(hero_b64, master_filt, gdf, supply, population, ratings, service_users)
 
 elif page == "fullmap":
     pg_fullmap.render(master_filt, gdf, supply, population, service_users=service_users, ratings=ratings)
@@ -517,12 +562,10 @@ elif page == "correlation":
     pg_corr.render(master_filt, ratings, funding, supply)
 
 elif page == "reveal":
-    pg_reveal.render(master_filt, supply, n_deficit, acpr_res, acpr_hc, service_users)
+    pg_reveal.render(master_filt, supply, n_deficit, service_users, filter_active=filter_active)
 
 elif page == "mandate":
-    pg_mandate.render(ratings, master_filt)
-
-
+    pg_mandate.render(ratings, master_filt, filter_active=filter_active)
 
 else:
-    pg_home.render(hero_b64, KPI_HTML, master_filt, gdf, supply, population, ratings, service_users)
+    pg_home.render(hero_b64, master_filt, gdf, supply, population, ratings, service_users)

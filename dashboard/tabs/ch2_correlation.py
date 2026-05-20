@@ -26,9 +26,9 @@ def _beds_by_org_for_year(supply: pd.DataFrame, year: int) -> dict:
 def render(df, ratings, funding, supply) -> None:
     st.markdown(
         f'<div style="display:inline-block;background:{C["teal"]};color:white;'
-        f'padding:5px 14px;border-radius:14px;font-size:11px;font-weight:700;'
+        f'padding:5px 14px;border-radius:14px;font-size:17px;font-weight:700;'
         f'letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px">'
-        f'Part A · The diagnosis</div>',
+        f'The Cause</div>',
         unsafe_allow_html=True,
     )
 
@@ -37,6 +37,24 @@ def render(df, ratings, funding, supply) -> None:
     # Using a single-snapshot mean conflates the post-mandate level shift with
     # the structural ownership gap that has been stable for 3 years.
     ratings_known = ratings[ratings['org_type'] != 'unknown']
+
+    # ── National anchor frames (for Tab R paradox warning — stays national) ─
+    _sub_dims_nat = ['residents_exp', 'staffing', 'compliance', 'quality_measures']
+    sub_means_nat = ratings_known.groupby('org_type')[_sub_dims_nat].mean()
+    _latest_fund_yr_nat = int(funding['year'].max())
+    fund_per_fac_nat = (
+        funding[(funding['year'] == _latest_fund_yr_nat) & (funding['funding'] > 0)]
+        .groupby('org_type')['funding'].mean()
+        .reset_index()
+    )
+    fund_per_fac_nat['funding_m'] = fund_per_fac_nat['funding'] / 1e6
+
+    # ── Apply global filter via SA3 membership from master_filt ────────────
+    _allowed_sa3 = set(df['sa3_code'].dropna().unique())
+    if _allowed_sa3:
+        ratings_known = ratings_known[ratings_known['sa3_code'].isin(_allowed_sa3)].copy()
+        funding = funding[funding['sa3_code'].isin(_allowed_sa3)].copy()
+        supply = supply[supply['sa3_code'].isin(_allowed_sa3)].copy()
 
     org_q = (
         ratings_known.groupby('org_type')['quality_score']
@@ -101,7 +119,7 @@ def render(df, ratings, funding, supply) -> None:
     tab_q, tab_f, tab_r = st.tabs([
         "📊 Quality",
         "💰 Funding",
-        "⚖️ Quality vs Funding",
+        "⚖️ Together",
     ])
 
     # ════════════════════════════════════════════════════════════════════════
@@ -131,11 +149,11 @@ def render(df, ratings, funding, supply) -> None:
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Ownership Gap
-      <span class="kpi-help" data-tooltip="Government minus for-profit, stable across {n_snapshots} quarterly snapshots">?</span>
+      <span class="kpi-help" data-tooltip="Government minus for-profit, averaged across {n_snapshots} quarterly snapshots">?</span>
     </div>
     <div class="kpi-value">{ownership_gap:.2f}<span class="kpi-suffix"> pts</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
-      Stable {n_snapshots}Q · {span_label}
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
+      {n_snapshots} snapshots · {span_label}
     </div>
   </div>
 </div>
@@ -156,7 +174,7 @@ def render(df, ratings, funding, supply) -> None:
             labels={'sub_label': '', 'score': 'Avg score (1–5)', 'org_type': 'Org type'},
         )
         fig_sub.update_traces(
-            texttemplate='%{text:.2f}', textposition='outside', textfont_size=10,
+            texttemplate='%{text:.2f}', textposition='outside', textfont_size=13,
         )
         fig_sub.update_layout(
             yaxis_range=[0, 5],
@@ -178,6 +196,15 @@ def render(df, ratings, funding, supply) -> None:
             f"are nearly identical ({gov_qm_t1:.2f} vs {fp_qm_t1:.2f}) — for-profit "
             f"is buying less staff time, not producing worse clinical outcomes."
         )
+
+        # Small-N guard — warn if any org type has < 10 facilities after filter
+        _low_n = [(o, n) for o, n in facility_counts.items() if n < 10]
+        if _low_n:
+            _low_str = ", ".join(f"{org_label_map.get(o, o)} (N={n})" for o, n in _low_n)
+            st.caption(
+                f"⚠️ *Small sample after filter — {_low_str}. "
+                f"Means may be unstable; broaden the State/Remoteness filter for a steadier read.*"
+            )
 
     # ════════════════════════════════════════════════════════════════════════
     # TAB 2 — FUNDING: per-X bar (toggle) + pie share by year + KPI metrics
@@ -231,7 +258,7 @@ def render(df, ratings, funding, supply) -> None:
       <span class="kpi-help" data-tooltip="Sum of all government funding across providers in {latest_year}">?</span>
     </div>
     <div class="kpi-value">${total_latest_b:.1f}<span class="kpi-suffix"> B</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       {total_growth_pct:+.0f}% vs {base_year}
     </div>
   </div>
@@ -240,7 +267,7 @@ def render(df, ratings, funding, supply) -> None:
       <span class="kpi-help" data-tooltip="For-profit funding per facility ÷ Government per facility, {latest_fund_yr}">?</span>
     </div>
     <div class="kpi-value">{fund_ratio_fp_gov:.1f}<span class="kpi-suffix"> ×</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       For-profit / Government per facility
     </div>
   </div>
@@ -249,7 +276,7 @@ def render(df, ratings, funding, supply) -> None:
       <span class="kpi-help" data-tooltip="Government funding flowing to for-profit providers in {latest_year}">?</span>
     </div>
     <div class="kpi-value">${fp_funding_latest_b:.1f}<span class="kpi-suffix"> B</span></div>
-    <div style="color:#6B7C93;font-size:11px;margin-top:4px;font-weight:500">
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
       {fp_funding_growth_pct:+.0f}% vs {base_year}
     </div>
   </div>
@@ -312,7 +339,7 @@ def render(df, ratings, funding, supply) -> None:
                 labels={'value': bar_x_label, 'org_label': ''},
             )
             fig_fund_bar.update_traces(
-                texttemplate=bar_text_fmt, textposition='outside', textfont_size=12,
+                texttemplate=bar_text_fmt, textposition='outside', textfont_size=15,
             )
             fig_fund_bar.update_layout(showlegend=False)
             theme(fig_fund_bar, height=360)
@@ -349,7 +376,7 @@ def render(df, ratings, funding, supply) -> None:
             f"💰 In {latest_fund_yr}, for-profit receives **{ratio:.1f}× more public funding "
             f"per {bar_title_kind}** "
             f"(${fp_val:.2f}{bar_value_unit} vs ${gov_val:.2f}{bar_value_unit}). "
-            f"Sector total grew **{total_growth_pct:+.0f}%** since {base_year} "
+            f"Total grew **{total_growth_pct:+.0f}%** since {base_year} "
             f"(${total_base_b:.1f}B → ${total_latest_b:.1f}B), with for-profit's share "
             f"rising **{fp_share_delta:+.0f} pts** ({fp_share_base:.0f}% → {fp_share_latest:.0f}%). "
             f"_Per-bed assumes bed counts split proportionally to facility counts within "
@@ -358,7 +385,7 @@ def render(df, ratings, funding, supply) -> None:
             f"💰 In {latest_fund_yr}, for-profit receives **{ratio:.1f}× more public funding "
             f"per facility** "
             f"(${fp_val:.2f}M vs ${gov_val:.2f}M). "
-            f"Sector total grew **{total_growth_pct:+.0f}%** since {base_year} "
+            f"Total grew **{total_growth_pct:+.0f}%** since {base_year} "
             f"(${total_base_b:.1f}B → ${total_latest_b:.1f}B), with for-profit's share "
             f"rising **{fp_share_delta:+.0f} pts** ({fp_share_base:.0f}% → {fp_share_latest:.0f}%)."
         )
@@ -367,16 +394,17 @@ def render(df, ratings, funding, supply) -> None:
     # TAB 3 — QUALITY vs FUNDING: the paradox + SA3-level scatter
     # ════════════════════════════════════════════════════════════════════════
     with tab_r:
-        # Paradox callout — combines funding + sub-rating numbers
-        fund_lookup = fund_per_fac.set_index('org_type')['funding_m'].to_dict()
+        # Paradox callout — NATIONAL anchor, unchanged by the sidebar filter.
+        st.caption("📍 *National benchmark — the paradox figures below stay fixed regardless of the sidebar filter. The SA3 scatter further down respects the filter.*")
+        fund_lookup = fund_per_fac_nat.set_index('org_type')['funding_m'].to_dict()
         fp_fund = fund_lookup.get('profit', float('nan'))
         gov_fund = fund_lookup.get('government', float('nan'))
         fund_ratio = (fp_fund / gov_fund) if gov_fund else float('nan')
-        fp_staff = float(sub_means.loc['profit', 'staffing']) if 'profit' in sub_means.index else float('nan')
-        gov_staff = float(sub_means.loc['government', 'staffing']) if 'government' in sub_means.index else float('nan')
+        fp_staff = float(sub_means_nat.loc['profit', 'staffing']) if 'profit' in sub_means_nat.index else float('nan')
+        gov_staff = float(sub_means_nat.loc['government', 'staffing']) if 'government' in sub_means_nat.index else float('nan')
         staff_gap = gov_staff - fp_staff
-        fp_qm = float(sub_means.loc['profit', 'quality_measures']) if 'profit' in sub_means.index else float('nan')
-        gov_qm = float(sub_means.loc['government', 'quality_measures']) if 'government' in sub_means.index else float('nan')
+        fp_qm = float(sub_means_nat.loc['profit', 'quality_measures']) if 'profit' in sub_means_nat.index else float('nan')
+        gov_qm = float(sub_means_nat.loc['government', 'quality_measures']) if 'government' in sub_means_nat.index else float('nan')
 
         st.warning(
             f"⚖️ **The for-profit paradox.** For-profit receives **{fund_ratio:.1f}× "
@@ -455,7 +483,7 @@ def render(df, ratings, funding, supply) -> None:
                 f"🔍 Across **{len(sc)} SA3s** in {latest_fund_yr}, the SA3-level "
                 f"correlation between funding-per-{x_kind_in_title} and quality is "
                 f"**r = {corr:+.2f}**. "
-                f"National average: **${avg_x:,.2f}{x_unit_in_callout}**. "
+                f"Average: **${avg_x:,.2f}{x_unit_in_callout}**. "
                 f"More dollars does **not** translate cleanly to higher star ratings — "
                 f"ownership and management matter more than absolute spend."
             )
@@ -469,5 +497,5 @@ def render(df, ratings, funding, supply) -> None:
         "geography or funding alone — and the gap is structural, not closing on its own. "
         "**So can policy fix it?** Chapter 4 tests whether the October 2023 staffing "
         "mandate moved the ownership gap. "
-        "→ [Chapter 4: Mandate Effect](?page=mandate)"
+        "→ [Chapter 4: The Verdict](?page=mandate)"
     )
