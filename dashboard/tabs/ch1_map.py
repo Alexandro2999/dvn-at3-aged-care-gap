@@ -149,6 +149,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             fig.update_layout(
                 margin=dict(l=0, r=16, t=64, b=16),
                 bargap=0.28,
+                title_text="",
             )
             # Pad each x-axis a bit so the outside labels don't get clipped
             for col_idx in range(1, 4):
