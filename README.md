@@ -1,32 +1,332 @@
-# DVN AT3 — Aged Care Quality & Access Gap (Australia)
+# DVN AT3 — Australia's Aged Care Gap
 
-A data journalism dashboard investigating where Australians aged 65+ face the largest gap between aged-care demand and quality-adjusted supply, joined at the SA3 level across three official sources.
+A data journalism dashboard investigating which Australian SA3 regions face the largest gap between aged-care demand and quality-adjusted supply.
 
-## Core question
-Which SA3 regions consistently combine high care demand (65+ population) with low Star-Rating-quality-adjusted bed supply, and what does that imply for families choosing care, health-system planners, and aged-care market entrants?
+**Core question:** Which communities combine high 65+ care demand with low Star-Rating-quality-adjusted bed supply — and why?
 
-## Datasets
-- ACQSC Aged Care Star Ratings (Feb 2025)
-- People Using Aged Care — SA3 (Feb 2026)
-- ABS Regional Population — 2024 ERP
+**Narrative arc:** The Detective — national overview → state / remoteness comparison → SA3-level reveal.
 
-Joined on `sa3_code` across 358 SA3 regions. Derived metrics: Access Rate, Composite Quality Score, Care Gap Index.
+**Course:** MDSI 36103 Data Visual Narrative — Autumn 2026 — UTS
 
-## Narrative arc
-The Detective — start broad (national snapshot) → zoom in (state, MMM remoteness) → reveal the unexpected at the SA3 level.
-
-## Dashboard
-Streamlit + Plotly, four tabs: National Snapshot, The Trend, The Correlation, The Reveal.
-
-## Dev commands
-```
-pip install -r requirements.txt
-streamlit run dashboard/app.py
-jupyter notebook notebooks/clean_pipeline/
-```
-
-## For Claude users
-Project context, rules, and sub-agent profiles live in `.claude/`. Start by reading `CLAUDE.md` at the repo root.
+---
 
 ## Team
-MDSI 36103 Data Visual Narrative — Spring 2026 — Group of 7 (Andy, Alexandro, Fajar, Lavil, Rendra, Clarice, Dhiraj).
+
+| Name | Role / Key contributions |
+|---|---|
+| **Alexandro Sianipar** | Repo init & folder scaffold; architect notebooks (`01_eda`, `02_metrics`, `master_sa3`); Ch3 notebook draft; Ch1 chart label fixes; home-page legend clarity |
+| **Andy Pham (Quan)** | Clean pipeline (all 7 notebooks); story/insight assets; Chapter 4 mandate analysis; data quality fixes; supply-collapse and waitlist-divergence visuals (Ch1, Ch3); PRs/CI |
+| **Fajar (Facholhidayat)** | Chapter 2 analysis notebook; map rendering & GeoJSON deployment; dashboard cosmetics; Ch1 & Ch2 visualisation refinements |
+| **Rendra Hutama** | Basic EDA notebook; Streamlit dashboard design; dashboard iteration from Andy's presentation |
+| **Lavil** | Analysis and insights (Ch2–Ch3 scope) |
+| **Clarice** | Analysis and insights |
+| **Dhiraj** | Analysis and insights |
+
+---
+
+## Directory Structure
+
+```
+dvn-at3-aged-care-gap/
+│
+├── data/
+│   ├── raw/                              ← source files — never edit
+│   │   ├── star_ratings/                 ← 12 quarterly XLSX snapshots (May 2023 → Feb 2026)
+│   │   ├── service_list/                 ← 7 annual service-list snapshots (2019–2025)
+│   │   ├── admission/                    ← CURF admission records (homecare + residential)
+│   │   ├── service_users_CURF/           ← individual-level CURF service-user records
+│   │   ├── service_users_snapshot_SA3/   ← GEN aggregated counts by SA3 (2023–2025)
+│   │   ├── abs_population/               ← ABS SA3 population (total_pop, pop_65_plus)
+│   │   └── abs_geography/                ← SA3 shapefile + simplified GeoJSON for choropleth
+│   │
+│   └── clean/                            ← pipeline outputs — never edit manually
+│       ├── master_sa3.csv                ← single dashboard source (SA3 × year, all metrics)
+│       ├── star_ratings_by_facility.csv
+│       ├── service_supply_by_sa3.csv
+│       ├── service_users_by_sa3.csv
+│       ├── service_funding_by_facility.csv
+│       ├── abs_population_by_sa3.csv
+│       ├── residential_users_by_acpr.csv
+│       ├── home_care_users_by_acpr.csv
+│       └── ...
+│
+├── notebooks/
+│   ├── clean_pipeline/                   ← run 01 → 07 in order to rebuild data/clean/
+│   │   ├── 01_treat_star_ratings.ipynb
+│   │   ├── 02_treat_service_list.ipynb
+│   │   ├── 03_treat_service_users_snapshots.ipynb
+│   │   ├── 04_treat_admissions_homecare.ipynb
+│   │   ├── 05_treat_residential.ipynb
+│   │   ├── 06_treat_service_funding.ipynb
+│   │   └── 07_treat_abs_population.ipynb
+│   │
+│   ├── architect/                        ← EDA and master_sa3 builder
+│   │   ├── 01_eda.ipynb                  ← national overview, quality over time, for-profit gap
+│   │   └── 02_metrics.ipynb              ← joins all clean CSVs → master_sa3.csv
+│   │
+│   ├── artist/                           ← UI/UX design assets
+│   │   ├── DVN AT3 Design.pdf            ← full design spec
+│   │   ├── Color Pallete.png             ← colour palette reference
+│   │   ├── Landing Page.png              ← landing page wireframe
+│   │   ├── Chapter 1_ The Map.png        ← chapter wireframes (Ch1–Ch4)
+│   │   ├── Chapter 2_ The Correlation.png
+│   │   ├── Chapter 3_ The Reveal.png
+│   │   ├── Chapter 4_ Mandate Effect.png
+│   │   └── assets/                       ← production assets used by the dashboard
+│   │       ├── ico-dashboard.png         ← sidebar icon
+│   │       └── img-landing-bg.jpg        ← Home hero background image
+│   │
+│   └── analyst/                          ← one notebook per chapter
+│       ├── 01_chapter_the_map.ipynb
+│       ├── 02_chapter_the_correlation.ipynb
+│       ├── 03_chapter_the_reveal.ipynb
+│       ├── 04_chapter_mandate_effect.ipynb
+│       ├── eda_basic_additional.ipynb
+│       └── eda_revised.ipynb
+│
+├── dashboard/                            ← Streamlit app
+│   ├── app.py                            ← entry point — loads data, routing, global CSS/nav
+│   └── tabs/
+│       ├── home.py                       ← Home page
+│       ├── ch1_map.py                    ← Chapter 1: The Gap
+│       ├── ch2_correlation.py            ← Chapter 2: The Cause
+│       ├── ch3_reveal.py                 ← Chapter 3: The Victims
+│       ├── ch4_mandate.py                ← Chapter 4: The Verdict
+│       ├── fullmap.py                    ← interactive choropleth (embedded in Home + Ch1)
+│       └── utils.py                      ← shared constants, colour palettes, theme helper
+│
+├── assets/                               ← chapter insight markdown files
+│   ├── chapter_01_the_map.md
+│   ├── chapter_02_the_correlation.md
+│   ├── chapter_03_the_reveal.md
+│   └── chapter_04_mandate_effect.md
+│
+├── slides_deck/                          ← Part 2 pitch deliverable
+│   ├── Australias-Aged-Care-Gap.pptx     ← final deck
+│   ├── pitch_master.md                   ← scripts, 52/52 data audit, Q&A, dashboard checklist
+│   ├── slide_storyboard.html
+│   └── visual_for_slides.ipynb
+│
+├── requirements.txt
+├── CLAUDE.md                             ← project context for Claude Code
+└── README.md
+```
+
+---
+
+## How to Run the Dashboard
+
+```bash
+# 1. Install dependencies (use a virtual environment)
+pip install -r requirements.txt
+
+# 2. Run from inside the dashboard/ directory
+cd dashboard
+streamlit run app.py
+```
+
+The app opens at `http://localhost:8501`. The sidebar provides global State / Remoteness (MMM) filters that propagate to all chapters.
+
+> **Note:** `sa3_simplified.geojson` is fetched automatically from GitHub on first run if it is not present locally. Subsequent runs use the cached file.
+
+### Rebuild clean data (optional)
+
+```bash
+jupyter notebook notebooks/clean_pipeline/
+# Run notebooks 01 → 07 in order
+```
+
+---
+
+## Core Metrics
+
+| Metric | Formula | Grain |
+|---|---|---|
+| `quality_score` | mean(residents_exp, staffing, compliance, quality_measures) | facility × quarter |
+| `access_rate` | total_residential / pop_65_plus × 100 | SA3 × year |
+| `care_gap_index` | access_rate / quality_score | SA3 × year — headline metric |
+| `hcp_high_needs` | hcp_level3 + hcp_level4 | SA3 × year |
+| `waitlist_pressure` | hcp_high_needs / residential_places | SA3 × year |
+| `beds_per_1000_elderly` | residential_places / pop_65_plus × 1000 | SA3 × year |
+
+---
+
+## Dashboard Content — Page by Page
+
+### Home (`?page=home`)
+
+Hero banner with project tagline and 2025 outlook note.
+
+**Interactive Map tab** — full-page choropleth (see fullmap below) with metric selector and 2025 forecast toggle.
+
+**Find My Area tab** — SA3 search box:
+- Crisis-zone warning if `waitlist_pressure > 1.0`
+- Three KPI cards: Care Gap Index, Quality Score, Access Rate (each vs national and state average)
+- Mini trend line charts for all three metrics (2023–2025)
+- Top-5 facilities table by quality score, filterable by ownership type (For Profit / Not for Profit / Government)
+
+---
+
+### Chapter 1 — The Gap (`?page=map`)
+*"Where do the patterns live?"*
+
+**Snapshot tab**
+- Year toggle (2023 / 2024)
+- Three KPI cards: Avg Care Gap Index, Avg Quality Score, Avg Residential Access
+- Insight callout: top-10 worst SA3s by care gap (highlights if all are MM1 major-city)
+- View toggle — By State or By Remoteness (MMM):
+  - Three side-by-side horizontal bar charts: Care Gap Index · Quality Score · Access Rate
+- SA3 Rankings section: configurable Top-N slider, metric selector, Worst/Best direction — horizontal bar chart
+
+**Trend tab**
+- View toggle — By State or By MMM
+- Two line charts showing % change from 2019: Beds per 1,000 elderly and Number of Facilities
+- Auto-generated callout: which states/bands lost the most beds, national decline %
+
+---
+
+### Chapter 2 — The Cause (`?page=correlation`)
+*"Who runs the best facilities?"*
+
+Four KPI cards: Government / Non-Profit / For-Profit average quality scores, Ownership Gap (pts).
+
+**Quality tab**
+- Grouped bar chart: sub-rating breakdown (Residents Exp., Staffing, Compliance, Quality Measures) by ownership type across all snapshots
+- Callout: staffing drives the full ownership gap; clinical outcomes nearly identical across ownership
+
+**Funding tab**
+- KPI cards: Total Funding latest year, Funding Ratio (for-profit ÷ government per facility), For-Profit Funding total
+- Toggle: Per facility ($M) or Per bed ($k)
+- Horizontal bar chart — funding per facility/bed by ownership
+- Donut pie — funding share by ownership, year selector
+- Callout: for-profit receives more public funding per unit yet delivers lower staffing ratings
+
+**Together tab**
+- National benchmark warning: funding ratio vs staffing gap vs identical clinical outcomes
+- Toggle: scatter X-axis as funding per bed ($k) or per facility ($M)
+- SA3-level scatter: funding vs quality score, bubble size = residential places, colour = private-facility share %
+- Callout: correlation coefficient and average funding; ownership matters more than spend
+
+---
+
+### Chapter 3 — The Victims (`?page=reveal`)
+*"Which communities are being left behind?"*
+
+Headline: L4 (very-high needs) HCP cohort growth warning.
+
+**Crisis zones over time**
+- KPI cards: count of SA3 crisis zones (waitlist_pressure > 1.0) per year with net change delta
+- Entry/exit callout: how many SA3s entered and resolved deficit year-on-year
+
+**Which SA3s? (interactive drill)**
+- Year toggle, Worst/Best direction, Top-N slider
+- Horizontal bar chart of SA3s by Waitlist Pressure Index (red = top quartile)
+- Click any bar → HCP-level donut (L1–L4 mix) and total home-care user count update for that SA3
+
+**Are beds flowing to where demand is?**
+- Line chart: % change in residential beds from 2019, Crisis Zones vs Rest of Australia
+- Callout: new beds flow toward regions already adequately supplied — misallocation, not shortage
+
+---
+
+### Chapter 4 — The Verdict (`?page=mandate`)
+*"Did the Oct 2023 staffing mandate work?"*
+
+Headline para: national quality delta pre/post mandate, staffing sub-rating jump, flat clinical outcomes.
+Ownership-gap recap linking back to Chapter 2.
+
+**Timeline tab**
+- KPI cards: Quality Δ post-mandate, Staffing Δ, Quality Measures Δ, Compliance % (latest)
+- Line chart: national average quality score over time with Oct 2023 mandate vline
+- Grouped bar: sub-rating before vs after mandate (Residents Exp., Staffing, Compliance, Quality Measures)
+- Callout: mandate fixed inputs, not clinical outcomes
+
+**By Owner tab**
+- KPI cards: Government Compliance %, For-Profit Compliance %, Compliance Gap (pts)
+- Line chart: quality by ownership over time with mandate vline
+- Line chart: % of facilities fully compliant with staffing-minutes mandate by ownership
+- Slope chart: state quality pre vs post mandate (top mover highlighted)
+- Callout: same federal rule, opposite compliance outcomes by ownership type
+
+**What-if tab**
+- Slider: hypothetical RN-minutes target (0–250 min/day, current mandate = 44)
+- KPI cards: facilities compliant, facilities below target, sector median actual
+- Histogram: distribution of facility RN minutes with threshold vline and mandate reference
+- Pass/fail callout vs 65% policy target
+
+---
+
+## Notebook Details — Roles & Content
+
+### `notebooks/clean_pipeline/`
+
+Run in order (01 → 07) to regenerate all `data/clean/` files.
+
+| Notebook | Output | Description |
+|---|---|---|
+| `01_treat_star_ratings` | `star_ratings_by_facility.csv` | Combines 12 quarterly XLSX Star Rating snapshots; enriches with SA3 codes via service list join |
+| `02_treat_service_list` | `service_supply_by_sa3.csv` | Counts facilities and licensed places per SA3 × year (2019–2025); org-type breakdown |
+| `03_treat_service_users_snapshots` | `service_users_by_sa3.csv` | Counts people using aged care per SA3 × year; HCP levels L1–L4; demand-side data |
+| `04_treat_admissions_homecare` | `homecare_admissions_by_acpr.csv` | Home care first/repeat admissions by ACPR × year from CURF admission records |
+| `05_treat_residential` | `residential_admissions_by_acpr.csv`, `residential_users_by_acpr.csv` | Residential care admissions and snapshot users from CURF data |
+| `06_treat_service_funding` | `service_funding_by_facility.csv` | Australian Government funding per facility × year from service list |
+| `07_treat_abs_population` | `abs_population_by_sa3.csv` | ABS SA3 population by year; derives `total_pop` and `pop_65_plus` from 5-year age bands |
+
+**Primary contributor:** Andy Pham (Quan) — full pipeline build and maintenance; Alexandro Sianipar — Ch1/Ch3 data fixes.
+
+---
+
+### `notebooks/architect/`
+
+| Notebook | Output | Description |
+|---|---|---|
+| `01_eda.ipynb` | — | National EDA: quality over time, for-profit gap, remote penalty, supply decline, HCP waitlist pressure |
+| `02_metrics.ipynb` | `master_sa3.csv` | Joins all five SA3-level clean files; computes 8 derived metrics (Care Gap Index, Access Rate, Waitlist Pressure, etc.) |
+
+**Primary contributor:** Alexandro Sianipar and Fajar Hidayat
+
+---
+
+### `notebooks/artist/`
+
+UI/UX design assets — no code, but feeds the dashboard's visual identity.
+
+| File | Description |
+|---|---|
+| `DVN AT3 Design.pdf` | Full design specification: layout, colour system, typography |
+| `Color Pallete.png` | Colour palette reference (navy, teal, gold, cream, care-gap red) |
+| `Landing Page.png` | Home page wireframe |
+| `Chapter 1–4 *.png` | Per-chapter layout wireframes |
+| `assets/ico-dashboard.png` | Sidebar icon loaded by `app.py` |
+| `assets/img-landing-bg.jpg` | Hero background image on the Home page |
+
+**Primary contributor:** Rendra Budi Hutama
+
+---
+
+### `notebooks/analyst/`
+
+| Notebook | Chapter | Description |
+|---|---|---|
+| `01_chapter_the_map.ipynb` | Ch 1 — The Gap | National care gap distribution; top-20 worst SA3s; state and MMM pattern charts |
+| `02_chapter_the_correlation.ipynb` | Ch 2 — The Cause | Ownership quality gap; sub-rating breakdown; for-profit vs government scatter analysis |
+| `03_chapter_the_reveal.ipynb` | Ch 3 — The Victims | Waitlist pressure SA3 ranking; HCP-level mix; crisis-zone vs rest-of-Australia bed supply |
+| `04_chapter_mandate_effect.ipynb` | Ch 4 — The Verdict | Oct 2023 mandate effect; pre/post quality deltas; compliance by ownership |
+| `eda_basic_additional.ipynb` | — | Supplementary exploratory analysis |
+| `eda_revised.ipynb` | — | Revised EDA confirming all chapter numbers against source data |
+
+**Contributors:** Andy Pham (Quan) — Ch1 supply visuals, Ch3 waitlist divergence, Ch4 mandate; Fajar (Facholhidayat) — Ch2 analysis; Alexandro Sianipar — Ch3 draft, eda_revised; Rendra Budi Hutama — eda_basic_additional.
+---
+
+## Datasets
+
+| Source | Files | Coverage |
+|---|---|---|
+| ACQSC Aged Care Star Ratings | `data/raw/star_ratings/` | 12 quarterly snapshots, May 2023 – Feb 2026 |
+| ACQSC Service List | `data/raw/service_list/` | 7 annual snapshots, 2019–2025 |
+| AIHW People Using Aged Care (SA3) | `data/raw/service_users_snapshot_SA3/` | 2023–2025 |
+| AIHW CURF Admission Records | `data/raw/admission/`, `data/raw/service_users_CURF/` | 2018–2024 |
+| ABS Regional Population | `data/raw/abs_population/` | SA3 level, 2001–2024 |
+| ABS SA3 Geography | `data/raw/abs_geography/` | Shapefile + simplified GeoJSON |
+
+Joined on `sa3_code` across 358 SA3 regions.
