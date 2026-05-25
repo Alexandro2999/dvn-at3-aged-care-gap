@@ -7,6 +7,10 @@ data/raw/abs_geography/*.cpg
 data/raw/abs_geography/*.qmd
 # sa3_simplified.geojson is tracked — needed for Streamlit deployment
 
+# OS / editor noise
+.DS_Store
+*.code-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
