@@ -234,7 +234,7 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
         )
         st.markdown(
             f"""
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 12px">
+<div class="kpi-row-3">
   <div class="kpi-card">
     <div class="kpi-label">Government Compliance
       <span class="kpi-help" data-tooltip="% of govt-run facilities fully compliant, latest snapshot">?</span>

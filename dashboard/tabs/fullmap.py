@@ -1,3 +1,17 @@
+"""Standalone interactive SA3 choropleth — embedded in Home and Ch1.
+
+Renders a full-screen Australia map with:
+    - Metric toggle (Care Gap Index, Access Rate, Quality Score, Beds/1k,
+      Waitlist Pressure) via a radio that separates projected vs real metrics
+    - Year toggle 2023→2025; the 📈 marker indicates 2025 forecast values
+    - SA3 hover card with state, MMM band, and the active metric
+    - Session-state-driven re-render guard so the map renders on first load
+      (Streamlit map widgets normally need a first interaction to paint)
+
+2025 values are computed via `build_master_2025` against the selected
+scenario growth rate; pre-2025 years are always real data.
+"""
+
 import pandas as pd
 import streamlit as st
 import plotly.express as px
@@ -228,7 +242,7 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
                 "\n"
                 "**🔮 Projected** (estimated, because ABS hasn't released 2025 population yet)\n"
                 "- **Population aged 65+** — 2024 figures grown forward using each state's "
-                "2019–2024 trend\n"
+                "2023→2024 trend\n"
                 "- **Access Rate · Care Gap · Beds per 1,000** — recomputed using the projected "
                 "65+ population\n"
                 "\n"

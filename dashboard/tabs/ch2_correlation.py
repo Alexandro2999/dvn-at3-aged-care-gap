@@ -1,3 +1,17 @@
+"""Chapter 2 — The Cause: why quality varies across providers and dollars.
+
+Advanced feature implemented here:
+    Context-aware filtering. The sidebar State + MMM selection narrows the
+    SA3 universe upstream in `app.py`; this chapter then recomputes the
+    quality-by-ownership gap, funding-per-bed distribution, and the
+    quality-vs-funding scatter on the fly so the narrative callouts
+    (gap size, funding median, R²) rewrite to match the active scope.
+
+Structured as three sub-tabs — Quality (ownership gap), Funding (per-bed
+distribution by ownership), and Together (quality vs funding scatter with
+OLS trendline).
+"""
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -130,7 +144,7 @@ def render(df, ratings, funding, supply) -> None:
     with tab_q:
         st.markdown(
             f"""
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 12px">
+<div class="kpi-row-3">
   <div class="kpi-card">
     <div class="kpi-label">Government Avg
       <span class="kpi-help" data-tooltip="Mean quality score for government-run facilities">?</span>
@@ -252,7 +266,7 @@ def render(df, ratings, funding, supply) -> None:
         # ── KPI cards (3-column funding row) ─────────────────────────────────
         st.markdown(
             f"""
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 12px">
+<div class="kpi-row-3">
   <div class="kpi-card">
     <div class="kpi-label">Total Funding {latest_year}
       <span class="kpi-help" data-tooltip="Sum of all government funding across providers in {latest_year}">?</span>

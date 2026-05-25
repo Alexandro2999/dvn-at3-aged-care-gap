@@ -13,7 +13,7 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from tabs.utils import C, MMM_COLOURS, SCENARIO_GROWTH_RATES, chapter_breadcrumb, chapter_closer, theme, data_caption
+from tabs.utils import C, MMM_COLOURS, SCENARIO_GROWTH_RATES, chapter_breadcrumb, chapter_closer, project_pop_65_2025, theme, data_caption
 from tabs import fullmap as pg_fullmap
 from tabs.fullmap import _project_df_to_2025
 
@@ -186,7 +186,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             fig.update_yaxes(categoryorder='array', categoryarray=y_categories)
 
             st.plotly_chart(fig, use_container_width=True, key="a_bar_combined")
-            st.markdown(data_caption("ABS Population SA3 2019–2024 · ACQSC Star Ratings (Feb 2026) · AIHW GEN residential"), unsafe_allow_html=True)
+            st.markdown(data_caption("ABS Population SA3 2023–2024 · ACQSC Star Ratings (Feb 2026) · AIHW GEN residential"), unsafe_allow_html=True)
 
             mmm_q = (
                 df_yr.dropna(subset=['mmm_code', 'quality_score'])
@@ -281,14 +281,39 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
     # ════════════════════════════════════════════════════════════════════════════
     with tab_b:
         st.caption("📍 *National context — these trends show all states and remoteness bands regardless of the sidebar filter.*")
-        st.info(
-            "Beds per 1,000 elderly **fell in every state** while the total number of facilities "
-            "consolidated year on year. Supply is shrinking as the elderly population grows."
+
+        # ── Build state-level supply (2023–2025) ─────────────────────────────
+        # n_facilities is REAL data for all 3 years (no pop dependency).
+        # beds_per_1k = residential_places / pop_65_plus × 1000 — ABS pop only
+        # goes to 2024, so we project pop_65 forward to 2025 using the sidebar
+        # scenario so the line reaches 2025 (forecast for the 2024→2025 segment).
+        DASH_MIN_YEAR = 2023
+        _scenario = st.session_state.get('fm_scenario', list(SCENARIO_GROWTH_RATES.keys())[0])
+        _pop_2025_wide = project_pop_65_2025(population, _scenario)
+        _pop_2025 = _pop_2025_wide[['sa3_code', 'state', 'pop_65_plus_2025']].rename(
+            columns={'pop_65_plus_2025': 'pop_65_plus'}
+        )
+        _pop_2025['year'] = 2025
+        _population_full = pd.concat(
+            [population[['sa3_code', 'year', 'pop_65_plus', 'state']], _pop_2025],
+            ignore_index=True,
         )
 
-        # ── Build state-level supply (2019–2025) ──────────────────────────────
+        # Facilities frame — pure supply, no pop dependency (real 2023→2025)
+        # supply.csv has no 'state' column — pull it from the master df (sa3→state map).
+        _sa3_state = (
+            df[['sa3_code', 'state']].dropna()
+            .drop_duplicates('sa3_code')
+        )
+        state_facilities = (
+            supply.merge(_sa3_state, on='sa3_code', how='inner')
+            .groupby(['state', 'year'], as_index=False)
+            .agg(n_facilities=('n_facilities', 'sum'))
+        )
+
+        # Beds-per-1k frame — needs pop (projected for 2025)
         state_supply = supply.merge(
-            population[['sa3_code', 'year', 'pop_65_plus', 'state']],
+            _population_full[['sa3_code', 'year', 'pop_65_plus', 'state']],
             on=['sa3_code', 'year'], how='inner',
         )
         state_supply = (
@@ -296,23 +321,50 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             .agg(
                 residential_places=('residential_places', 'sum'),
                 pop_65_plus=('pop_65_plus', 'sum'),
-                n_facilities=('n_facilities', 'sum'),
             )
         )
         state_supply = state_supply[state_supply['pop_65_plus'] > 0].copy()
         state_supply['beds_per_1k'] = (
             state_supply['residential_places'] / state_supply['pop_65_plus'] * 1000
         )
+        # Merge real facility counts back so both charts share the same frame
+        state_supply = state_supply.merge(state_facilities, on=['state', 'year'], how='left')
 
-        # ── Build MMM-level supply ─────────────────────────────────────────────
-        # mmm_code is treated as static per SA3 — join without year constraint
-        # so all supply years (2019–2025) are included, not just df years (2023–2024)
+        # ── Data-driven intro callout ─────────────────────────────────────────
+        # Compute worst-mover state for each metric so the intro references the
+        # exact states the reader sees on the charts below.
+        _yr_base, _yr_end = 2023, int(state_supply['year'].max())
+        _piv_beds = state_supply.pivot(index='state', columns='year', values='beds_per_1k')
+        _piv_fac  = state_supply.pivot(index='state', columns='year', values='n_facilities')
+        if _yr_base in _piv_beds.columns and _yr_end in _piv_beds.columns:
+            _beds_pct = ((_piv_beds[_yr_end] - _piv_beds[_yr_base]) / _piv_beds[_yr_base] * 100).dropna()
+            _fac_pct  = ((_piv_fac[_yr_end]  - _piv_fac[_yr_base])  / _piv_fac[_yr_base]  * 100).dropna()
+            _beds_worst = _beds_pct.idxmin()
+            _fac_worst  = _fac_pct.idxmin()
+            _fac_best   = _fac_pct.idxmax()
+            _n_fac_up   = int((_fac_pct > 0).sum())
+            _n_fac_dn   = int((_fac_pct < 0).sum())
+            st.info(
+                f"📉 **Beds per 1,000 elderly fell in every state** from {_yr_base} → {_yr_end} "
+                f"(worst: **{_beds_worst} {_beds_pct[_beds_worst]:+.1f}%**). "
+                f"**Facility counts** moved in different directions — "
+                f"**{_n_fac_up}** states added providers (led by **{_fac_best} {_fac_pct[_fac_best]:+.1f}%**) "
+                f"while **{_n_fac_dn}** lost them (worst: **{_fac_worst} {_fac_pct[_fac_worst]:+.1f}%**). "
+                f"Supply is shrinking *relative to the 65+ population*, not in raw facility count."
+            )
+
+        # ── Build MMM-level supply (2023–2025) ────────────────────────────────
         sa3_mmm = (
             df[['sa3_code', 'mmm_code']].dropna()
             .drop_duplicates('sa3_code', keep='last')
         )
+        # MMM facilities — pure supply, no pop dependency
+        mmm_fac_src = supply.merge(sa3_mmm, on='sa3_code', how='inner')
+        mmm_fac = mmm_fac_src.groupby(['mmm_code', 'year'], as_index=False)['n_facilities'].sum()
+
+        # MMM beds-per-1k — needs pop (projected for 2025)
         mmm_supply_src = supply.merge(
-            population[['sa3_code', 'year', 'pop_65_plus']],
+            _population_full[['sa3_code', 'year', 'pop_65_plus']],
             on=['sa3_code', 'year'], how='inner',
         ).merge(sa3_mmm, on='sa3_code', how='inner')
         mmm_supply_src = mmm_supply_src[mmm_supply_src['pop_65_plus'] > 0].copy()
@@ -320,7 +372,6 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             mmm_supply_src['residential_places'] / mmm_supply_src['pop_65_plus'] * 1000
         )
         mmm_beds = mmm_supply_src.groupby(['mmm_code', 'year'], as_index=False)['beds_per_1k'].mean()
-        mmm_fac  = mmm_supply_src.groupby(['mmm_code', 'year'], as_index=False)['n_facilities'].sum()
 
         # ── View toggle (default State — matches the warning callout below) ──
         view_b = st.radio(
@@ -330,7 +381,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
 
         ch1, ch2 = st.columns(2)
 
-        def _index_to_base(df_long, grp_col, val_col, base_year=2019):
+        def _index_to_base(df_long, grp_col, val_col, base_year=DASH_MIN_YEAR):
             """Return a copy with val_col re-expressed as % change from base_year (base = 0%)."""
             base = (
                 df_long[df_long['year'] == base_year][[grp_col, val_col]]
@@ -340,32 +391,44 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             out[val_col] = (out[val_col] - out['_base']) / out['_base'] * 100
             return out.drop(columns='_base')
 
+        def _force_year_ticks(fig, years):
+            """Force integer year ticks — Plotly auto-inserts '2023.5' style
+            half-ticks when there are only 2–3 data points."""
+            yrs = sorted(int(y) for y in years)
+            fig.update_xaxes(
+                tickmode='array', tickvals=yrs,
+                ticktext=[str(y) for y in yrs],
+            )
+
         if view_b == "By State":
             beds_idx = _index_to_base(state_supply, 'state', 'beds_per_1k')
             fac_idx  = _index_to_base(state_supply, 'state', 'n_facilities')
+            _yrs = beds_idx['year'].unique()
 
             with ch1:
                 fig_beds = px.line(
                     beds_idx.sort_values('year'),
                     x='year', y='beds_per_1k', color='state', markers=True,
-                    title='Beds per 1,000 elderly — % change from 2019 by State',
-                    labels={'beds_per_1k': '% change vs 2019', 'year': '', 'state': ''},
+                    title='Beds per 1,000 elderly — % change from 2023 by State<br><sup>📈 2025 uses projected pop_65 (Baseline scenario)</sup>',
+                    labels={'beds_per_1k': '% change vs 2023', 'year': '', 'state': ''},
                 )
                 fig_beds.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                _force_year_ticks(fig_beds, _yrs)
                 theme(fig_beds, height=380)
                 st.plotly_chart(fig_beds, use_container_width=True, key="b_beds_state")
-                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025 · ABS Population SA3"), unsafe_allow_html=True)
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2023–2025 · ABS Population SA3"), unsafe_allow_html=True)
             with ch2:
                 fig_fac = px.line(
                     fac_idx.sort_values('year'),
                     x='year', y='n_facilities', color='state', markers=True,
-                    title='Number of Facilities — % change from 2019 by State',
-                    labels={'n_facilities': '% change vs 2019', 'year': '', 'state': ''},
+                    title='Number of Facilities — % change from 2023 by State',
+                    labels={'n_facilities': '% change vs 2023', 'year': '', 'state': ''},
                 )
                 fig_fac.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                _force_year_ticks(fig_fac, _yrs)
                 theme(fig_fac, height=380)
                 st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_state")
-                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025"), unsafe_allow_html=True)
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2023–2025"), unsafe_allow_html=True)
         else:
             mmm_beds_idx = _index_to_base(mmm_beds, 'mmm_code', 'beds_per_1k')
             mmm_fac_idx  = _index_to_base(mmm_fac,  'mmm_code', 'n_facilities')
@@ -376,51 +439,36 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                     _df['mmm_code'].map(MMM_LABELS),
                     categories=label_order, ordered=True,
                 )
+            _yrs = mmm_beds_idx['year'].unique()
 
             with ch1:
                 fig_beds = px.line(
                     mmm_beds_idx.sort_values(['mmm_label', 'year']),
                     x='year', y='beds_per_1k', color='mmm_label',
                     color_discrete_map=label_colours, markers=True,
-                    title='Beds per 1,000 elderly — % change from 2019 by Remoteness',
-                    labels={'beds_per_1k': '% change vs 2019', 'year': '', 'mmm_label': ''},
+                    title='Beds per 1,000 elderly — % change from 2023 by Remoteness<br><sup>📈 2025 uses projected pop_65 (Baseline scenario)</sup>',
+                    labels={'beds_per_1k': '% change vs 2023', 'year': '', 'mmm_label': ''},
                 )
                 fig_beds.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                _force_year_ticks(fig_beds, _yrs)
                 theme(fig_beds, height=380)
                 st.plotly_chart(fig_beds, use_container_width=True, key="b_beds_mmm")
-                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025 · ABS MMM remoteness"), unsafe_allow_html=True)
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2023–2025 · ABS MMM remoteness"), unsafe_allow_html=True)
             with ch2:
                 fig_fac = px.line(
                     mmm_fac_idx.sort_values(['mmm_label', 'year']),
                     x='year', y='n_facilities', color='mmm_label',
                     color_discrete_map=label_colours, markers=True,
-                    title='Number of Facilities — % change from 2019 by Remoteness',
-                    labels={'n_facilities': '% change vs 2019', 'year': '', 'mmm_label': ''},
+                    title='Number of Facilities — % change from 2023 by Remoteness',
+                    labels={'n_facilities': '% change vs 2023', 'year': '', 'mmm_label': ''},
                 )
                 fig_fac.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
+                _force_year_ticks(fig_fac, _yrs)
                 theme(fig_fac, height=380)
                 st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_mmm")
-                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025 · ABS MMM remoteness"), unsafe_allow_html=True)
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2023–2025 · ABS MMM remoteness"), unsafe_allow_html=True)
 
-        sup_grp = supply.groupby('year').agg(
-            n_fac=('n_residential', 'sum'),
-            n_bed=('residential_places', 'sum'),
-        )
-        sup_y0, sup_y1 = int(sup_grp.index.min()), int(sup_grp.index.max())
-        fac_delta = int(sup_grp.loc[sup_y1, 'n_fac'] - sup_grp.loc[sup_y0, 'n_fac'])
-        bed_delta = int(sup_grp.loc[sup_y1, 'n_bed'] - sup_grp.loc[sup_y0, 'n_bed'])
-
-        ss_piv = state_supply.pivot(index='state', columns='year', values='beds_per_1k')
-        ss_y0, ss_y1 = int(ss_piv.columns.min()), int(ss_piv.columns.max())
-        ss_piv['delta'] = ss_piv[ss_y1] - ss_piv[ss_y0]
-        n_lost = int((ss_piv['delta'] < 0).sum())
-        n_states = len(ss_piv)
-        worst2 = ss_piv['delta'].nsmallest(2)
-        coverage_lead = (
-            "Every state" if n_lost == n_states
-            else f"{n_lost} of {n_states} states/territories"
-        )
-
+        # National beds-per-1k delta — used by the chapter_closer takeaways
         nat_grp = state_supply.groupby('year').agg(
             rp=('residential_places', 'sum'),
             pp=('pop_65_plus', 'sum'),
@@ -428,17 +476,6 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
         nat_grp['b1k'] = nat_grp['rp'] / nat_grp['pp'] * 1000
         nat_y0, nat_y1 = int(nat_grp.index.min()), int(nat_grp.index.max())
         nat_pct = (nat_grp.loc[nat_y0, 'b1k'] - nat_grp.loc[nat_y1, 'b1k']) / nat_grp.loc[nat_y0, 'b1k'] * 100
-
-        st.warning(
-            f"**Supply consolidation:** {sup_y0}→{sup_y1} saw "
-            f"**{fac_delta:+d} facilities** but **{bed_delta:+,} beds** nationally. "
-            f"{coverage_lead} lost beds per 1,000 elderly — "
-            f"{worst2.index[0]} and {worst2.index[1]} fell the most "
-            f"({worst2.iloc[0]:.1f} and {worst2.iloc[1]:.1f}). "
-            f"Beds per 1,000 elderly dropped from **{nat_grp.loc[nat_y0, 'b1k']:.1f}** ({nat_y0}) to "
-            f"**{nat_grp.loc[nat_y1, 'b1k']:.1f}** ({nat_y1}), a **{nat_pct:.1f}% decline** "
-            f"over {nat_y1 - nat_y0} years (denominator: pop 65+)."
-        )
 
     # ── Chapter closer: takeaways + next chapter CTA ──────────────────────────
     st.markdown(

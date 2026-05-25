@@ -1,7 +1,7 @@
 """Chapter 3 — The Victims: who pays when access falls behind demand.
 
 Advanced feature implemented here:
-    Click-drill interactivity (lines ~281–343)
+    Click-drill interactivity in the SA3 drilldown section.
     Clicking any bar in the waitlist-pressure chart fires Plotly's
     `on_select='rerun'` event; the selected SA3 then drives the HCP
     level-mix donut beside it. Enables a "click to investigate" pattern
@@ -83,19 +83,27 @@ def _hcp_donut(row_like, *, title, height=320):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Section: Crisis zones MERGED — counter cards + bar+drill + crisis-vs-rest line
+# Section: Crisis zones — national context → SA3 drilldown → bed flow
 # ─────────────────────────────────────────────────────────────────────────────
 def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, deficit_sets, filter_active=False):
     if not deficit_yrs:
         st.info("Deficit-zone data not available.")
         return
 
-    # ── Headline insight: L4 (very-high needs) cohort growth ────────────────
+    # Shared compute used by both sub-tabs
     nat = (
         service_users.groupby('year')[HCP_COLS]
         .sum().reset_index().sort_values('year')
     )
     nat_yrs = sorted(int(y) for y in nat['year'].unique())
+    su_yrs = set(int(y) for y in service_users['year'].dropna().unique())
+    sp_yrs = set(int(y) for y in supply['year'].dropna().unique())
+    yrs_available = sorted(y for y in (su_yrs & sp_yrs) if y >= 2023)
+    if not yrs_available:
+        st.info("No overlapping years between service_users and supply.")
+        return
+
+    # ── Section 1: National demand context (L4 growth + crisis counts) ──────
     if len(nat_yrs) >= 2:
         y0, y_end = nat_yrs[0], nat_yrs[-1]
         r0 = nat[nat['year'] == y0].iloc[0]
@@ -115,14 +123,6 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
             f"the system is getting heavier-needs, not lighter."
         )
 
-    su_yrs = set(int(y) for y in service_users['year'].dropna().unique())
-    sp_yrs = set(int(y) for y in supply['year'].dropna().unique())
-    yrs_available = sorted(y for y in (su_yrs & sp_yrs) if y >= 2023)
-    if not yrs_available:
-        st.info("No overlapping years between service_users and supply.")
-        return
-
-    # ── KPI cards row: crisis count per year ────────────────────────────────
     st.markdown(
         '<div class="sub-h">Crisis zones over time — where home-care demand outpaces beds</div>',
         unsafe_allow_html=True,
@@ -174,14 +174,13 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
             f"communities in a single year."
         )
 
-    # ── Sub-section: Which SA3s? Bar + drill side-by-side ──────────────────
+    # ── Section 2: SA3 drilldown — Top-N bar + click-driven HCP donut ───────
     st.markdown("---")
     st.markdown(
         '<div class="sub-h">Which SA3s? Click any bar to drill into HCP mix</div>',
         unsafe_allow_html=True,
     )
 
-    # Controls — placed right before the bar+drill they control
     c_year, c_dir, c_n = st.columns([1.5, 1, 1])
     with c_year:
         year_sel = st.radio(
@@ -321,7 +320,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
                     'hcp_level4': cd[6],
                 }
 
-        nat = (
+        nat_yr = (
             service_users[service_users['year'] == year_sel]
             .groupby('year')[HCP_COLS].sum().reset_index()
         )
@@ -330,8 +329,8 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
             row_for_donut = selected_row
             sub_label = selected_label
         else:
-            if not nat.empty:
-                nat_row = nat.iloc[0]
+            if not nat_yr.empty:
+                nat_row = nat_yr.iloc[0]
                 row_for_donut = {c: int(nat_row[c]) for c in HCP_COLS}
             else:
                 row_for_donut = {c: 0 for c in HCP_COLS}
@@ -362,7 +361,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
             total = sum(row_for_donut[c] for c in HCP_COLS)
             st.metric('Total home-care users', f'{int(total):,d}')
 
-    # ── Sub-section: Crisis Zones vs Rest of Australia line chart ───────────
+    # ── Section 3: Crisis Zones vs Rest of Australia line chart ─────────────
     def_year = deficit_yrs[-1]
     crisis_codes = deficit_sets[def_year]
     if not crisis_codes:
@@ -376,8 +375,8 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
     st.markdown(
         '<p style="color:#4A5A6E;font-size:20px;margin:0 0 12px;line-height:1.6">'
         'Hold the crisis-zone set fixed at the latest waitlist-pressure snapshot, '
-        'then trace residential-bed supply from 2019 onward for those SA3s vs '
-        'everyone else.</p>',
+        'then trace residential-bed supply across the 2023–2025 window for those '
+        'SA3s vs everyone else.</p>',
         unsafe_allow_html=True,
     )
 
@@ -410,9 +409,14 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
     )
     fig_crisis.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
     fig_crisis.update_layout(legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1))
+    _crisis_yrs = sorted(int(y) for y in sup_agg['year'].unique())
+    fig_crisis.update_xaxes(
+        tickmode='array', tickvals=_crisis_yrs,
+        ticktext=[str(y) for y in _crisis_yrs],
+    )
     theme(fig_crisis, height=380)
     st.plotly_chart(fig_crisis, use_container_width=True)
-    st.markdown(data_caption("AIHW GEN residential places by SA3, 2019–2024 · crisis = waitlist pressure > 1.0"), unsafe_allow_html=True)
+    st.markdown(data_caption("AIHW GEN residential places by SA3, 2023–2025 · crisis = waitlist pressure > 1.0"), unsafe_allow_html=True)
 
     def _row(group, year):
         sel = sup_agg[(sup_agg['group'] == group) & (sup_agg['year'] == year)]
@@ -439,7 +443,6 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
     )
 
     # ── Chapter closer: takeaways + next chapter CTA ──────────────────────────
-    # Numbers reuse upstream variables: nat L4 growth, latest deficit count, worst SA3
     _latest_def_n = len(deficit_sets[deficit_yrs[-1]])
     st.markdown(
         chapter_closer(3, [

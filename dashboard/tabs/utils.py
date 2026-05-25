@@ -48,17 +48,18 @@ SCENARIO_GROWTH_RATES = {
 
 
 def state_cagr_2019_2024(population: pd.DataFrame) -> dict:
-    """Per-state compound annual growth rate of pop_65_plus from 2019 to 2024.
+    """Per-state 1-year pop_65_plus growth from 2023 to 2024.
     Used as the Baseline scenario for projecting 2025.
-    Fallback rate 0.024 (~ABS national trend) if either endpoint missing."""
+    Fallback rate 0.024 (~ABS national trend) if either endpoint missing.
+    Name kept for backward-compatibility; semantically now '2023→2024'."""
     agg = population.groupby(['state', 'year'])['pop_65_plus'].sum().reset_index()
     rates = {}
     for state in agg['state'].dropna().unique():
         s = agg[agg['state'] == state]
-        start = s[s['year'] == 2019]['pop_65_plus'].sum()
+        start = s[s['year'] == 2023]['pop_65_plus'].sum()
         end   = s[s['year'] == 2024]['pop_65_plus'].sum()
         if start > 0 and end > 0:
-            rates[state] = (end / start) ** (1 / 5) - 1
+            rates[state] = (end / start) - 1
         else:
             rates[state] = 0.024
     return rates
@@ -277,5 +278,5 @@ def data_caption(sources: str | None = None) -> str:
     """
     if sources is None:
         sources = ("ACQSC Star Ratings (Feb 2026 snapshot) · "
-                   "ABS Population SA3 2019–2024 · AIHW GEN (residential & home care)")
+                   "ABS Population SA3 2023–2024 · AIHW GEN (residential & home care)")
     return f'<p class="data-caption">📊 Source: {sources}.</p>'

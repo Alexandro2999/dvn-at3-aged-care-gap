@@ -1,3 +1,13 @@
+"""Home landing page — hero, KPI scoreboard, embedded map, and Find My Area.
+
+Renders the dashboard entry point: a hero strip with the headline framing,
+a 4-card KPI scoreboard with sparklines (Crisis Zones, Mandate Quality Δ,
+Govt vs For-Profit Gap, Beds per 1k movement) that jump to the relevant
+chapter, then a two sub-tab section combining the interactive choropleth
+(delegated to `tabs.fullmap`) with a Find My Area search that returns
+trend charts including the 2025 projected data point.
+"""
+
 import streamlit as st
 import plotly.graph_objects as go
 
@@ -93,7 +103,7 @@ def _render_find_my_area(df, ratings, supply=None, population=None, service_user
                     "**✅ Real** — Quality Score (from Feb 2026 ratings).\n"
                     "\n"
                     "**🔮 Projected** — 65+ population, Access Rate, Care Gap, Beds per 1,000.\n"
-                    "We grow 2024 ABS population forward using each state's 2019–2024 trend, "
+                    "We grow 2024 ABS population forward using each state's 2023→2024 trend, "
                     "then recompute the rate metrics.\n"
                     "\n"
                     "Change the **sidebar scenario** to test growth: *Baseline* (ABS trend), "
@@ -356,9 +366,10 @@ def _compute_hero_kpis(supply, population, ratings, service_users):
     org_means = known.groupby('org_type')['quality_score'].mean()
     quality_gap = float(org_means.get('government', 0) - org_means.get('profit', 0))
 
-    # 4. Beds per 1,000 elderly — % change 2019 → latest
-    sp_pop_yrs = sorted(sp_yrs & set(int(y) for y in population['year'].dropna().unique()))
-    base_yr = 2019 if 2019 in sp_pop_yrs else (sp_pop_yrs[0] if sp_pop_yrs else None)
+    # 4. Beds per 1,000 elderly — % change 2023 → latest (3-year presentation window)
+    sp_pop_yrs_all = sorted(sp_yrs & set(int(y) for y in population['year'].dropna().unique()))
+    sp_pop_yrs = [y for y in sp_pop_yrs_all if y >= 2023]
+    base_yr = 2023 if 2023 in sp_pop_yrs else (sp_pop_yrs[0] if sp_pop_yrs else None)
     end_yr  = sp_pop_yrs[-1] if sp_pop_yrs else None
 
     def _beds_per_1k(yr):
@@ -449,10 +460,10 @@ def render(hero_b64: str, df, gdf, supply, population, ratings, service_users) -
         f'margin:0 auto;font-weight:700;letter-spacing:0.01em">'
         f'<span style="color:#FFD27A">{_hero_kpis["crisis_n"]}</span> communities in crisis · '
         f'<span style="color:#FFD27A">1</span> federal mandate · '
-        f'<span style="color:#FFD27A">{_hero_kpis["beds_end_yr"] - _hero_kpis["beds_base_yr"]}</span> years of decline.'
+        f'<span style="color:#FFD27A">3</span> years of evidence.'
         f'</div>'
         f'<div style="color:white;font-size:0.95rem;opacity:0.78;margin-top:8px">'
-        f'A live data view of quality, access, supply and demand across Australia.'
+        f'A 2023→2025 data view of quality, access, supply and demand across Australia.'
         f'</div>'
         f'</div></div>',
         unsafe_allow_html=True,
@@ -502,7 +513,7 @@ def render(hero_b64: str, df, gdf, supply, population, ratings, service_users) -
     _sp_beds    = _sparkline_svg(_kpis['beds_trend'],       color=C['red'])
     st.markdown(
         f"""
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 18px">
+<div class="kpi-scoreboard">
   <div class="kpi-card">
     <div style="{_label_style}">🚨 Crisis Zones · {_kpis['latest_yr']}
       <span class="kpi-help" data-tooltip="SA3 regions where high-needs home-care users exceed available residential beds (waitlist pressure &gt; 1.0)">?</span>
@@ -567,6 +578,6 @@ def render(hero_b64: str, df, gdf, supply, population, ratings, service_users) -
                              service_users=service_users)
 
     st.markdown(
-        '<p class="data-caption">Data compiled from Aged Care Official Website &amp; ABS 2019–2026</p>',
+        '<p class="data-caption">Data compiled from Aged Care Official Website &amp; ABS · presentation scope 2023–2025</p>',
         unsafe_allow_html=True,
     )
