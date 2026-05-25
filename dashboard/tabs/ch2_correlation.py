@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from tabs.utils import C, ORG_COLOURS, chapter_breadcrumb, chapter_closer, theme
+from tabs.utils import C, ORG_COLOURS, chapter_breadcrumb, chapter_closer, theme, data_caption
 
 
 _ORG_ORDER = ['profit', 'not_for_profit', 'government']
@@ -181,6 +181,7 @@ def render(df, ratings, funding, supply) -> None:
         )
         theme(fig_sub, height=360)
         st.plotly_chart(fig_sub, use_container_width=True)
+        st.markdown(data_caption("ACQSC Star Ratings, May 2023–Feb 2026 · 12 quarterly snapshots"), unsafe_allow_html=True)
 
         fp_staff_t1 = float(sub_means.loc['profit', 'staffing']) if 'profit' in sub_means.index else float('nan')
         gov_staff_t1 = float(sub_means.loc['government', 'staffing']) if 'government' in sub_means.index else float('nan')
@@ -339,6 +340,7 @@ def render(df, ratings, funding, supply) -> None:
             fig_fund_bar.update_layout(showlegend=False)
             theme(fig_fund_bar, height=360)
             st.plotly_chart(fig_fund_bar, use_container_width=True)
+            st.markdown(data_caption("AIHW GEN Service Funding by Facility, latest annual snapshot"), unsafe_allow_html=True)
         with c_bar_r:
             st.markdown(
                 f'<div style="background:#FFF7E6;border-left:4px solid #E67E22;'
@@ -460,6 +462,7 @@ def render(df, ratings, funding, supply) -> None:
             fig_fb.update_layout(coloraxis_colorbar=dict(title='Private %', ticksuffix='%'))
             theme(fig_fb, height=420)
             st.plotly_chart(fig_fb, use_container_width=True)
+            st.markdown(data_caption("ACQSC Star Ratings + AIHW Service List · joined at SA3 × year"), unsafe_allow_html=True)
 
             corr = sc[['x_value', 'quality_score']].corr().iloc[0, 1]
             avg_x = sc['x_value'].mean()
@@ -471,7 +474,11 @@ def render(df, ratings, funding, supply) -> None:
                 f"ownership and management matter more than absolute spend.*"
             )
         else:
-            st.info("No funding+supply overlap for the latest year.")
+            st.warning(
+                "**No funding + supply overlap for the latest year matches your sidebar filter.** "
+                "Try expanding the State or Remoteness selection in the left panel — "
+                "or clear the filter to see the national picture."
+            )
 
     # ── Chapter closer: takeaways + next chapter CTA ─────────────────────────
     st.markdown(

@@ -2,6 +2,15 @@
 Australia's Aged Care Gap — DVN AT3 Dashboard
 Design system: blue-spectrum / teal / gold / cream / care-gap-red
 Navigation: query-param routing (?page=home|map|correlation|reveal|mandate|fullmap)
+
+Advanced features (per pitch S9):
+    1. Context-aware filtering — sidebar State + MMM choices flow into every
+       chapter; SA3 'current MMM' resolution preserves cross-year continuity.
+       Implementation: this file, lines ~548–577.
+    2. What-if slider — Chapter 4 staffing-minutes target. See tabs/ch4_mandate.py.
+    3. Click-drill — Chapter 3 waitlist bar → HCP level donut. See tabs/ch3_reveal.py.
+    4. Forecast scenario toggle — 2025 projection across Home/Ch1/fullmap with
+       sidebar-driven Baseline / Aggressive aging / Stagnation scenarios.
 """
 
 import streamlit as st
@@ -163,14 +172,14 @@ header [data-testid="stMainMenu"],
 .stDeployButton,
 div[data-testid="stToolbar"] {{ display: none !important; }}
 
-html, body {{ font-size: 22px !important; }}
+html, body {{ font-size: 18px !important; }}
 /* Subtle paper-grain texture overlay on cream background — gives the page an editorial, printed-report feel without distracting from charts. */
 .stApp, section[data-testid="stAppViewContainer"] {{
     background:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.067 0 0 0 0 0.063 0 0 0 0 0.055 0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
         {C['bg']};
     background-blend-mode: multiply;
-    font-size: 21px;
+    font-size: 18px;
 }}
 
 .main .block-container {{
@@ -504,8 +513,10 @@ st.markdown(
 with st.sidebar:
     if ico_b64:
         st.markdown(
-            f'<a href="?page=home" target="_self" style="display:inline-block;margin-bottom:12px">'
+            f'<a href="?page=home" target="_self" aria-label="Return to dashboard home"'
+            f' style="display:inline-block;margin-bottom:12px">'
             f'<img src="data:image/png;base64,{ico_b64}" width="52"'
+            f' alt="Australia\'s Aged Care Gap dashboard logo"'
             f' style="display:block;cursor:pointer;'
             f'filter:brightness(0) saturate(100%) invert(53%) sepia(68%) saturate(380%)'
             f' hue-rotate(136deg) brightness(90%);">'

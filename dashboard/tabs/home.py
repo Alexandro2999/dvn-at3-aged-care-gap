@@ -56,7 +56,7 @@ def _band_for_percentile(pct):
         return "Top 25% (better than most)", "#2BA39B"
     if pct <= 0.75:
         return "Middle 50%", "#D9A53B"
-    return "Bottom 25% (worse than most)", "#D85A4E"
+    return "Bottom 25% (worse than most)", "#C44A38"
 
 
 def _render_find_my_area(df, ratings, supply=None, population=None, service_users=None):
@@ -69,7 +69,8 @@ def _render_find_my_area(df, ratings, supply=None, population=None, service_user
     # Project df to include 2025 row (idempotent if 2025 already present)
     if supply is not None and population is not None and service_users is not None:
         scenario = st.session_state.get('fm_scenario', list(SCENARIO_GROWTH_RATES.keys())[0])
-        df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
+        with st.spinner("Recomputing 2025 forecast..."):
+            df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
 
     # ── Year mode toggle (Real vs Forecast) ─────────────────────────────────
     available_years = sorted(int(y) for y in df['year'].dropna().unique())
@@ -87,6 +88,17 @@ def _render_find_my_area(df, ratings, supply=None, population=None, service_user
                 help=f"Real {real_year} = actual data. 📈 Forecast 2025 = "
                      f"Care Gap & Access projected from ABS trend (Quality is real).",
             )
+            with st.expander("📈 What's real vs projected in 2025?"):
+                st.markdown(
+                    "**✅ Real** — Quality Score (from Feb 2026 ratings).\n"
+                    "\n"
+                    "**🔮 Projected** — 65+ population, Access Rate, Care Gap, Beds per 1,000.\n"
+                    "We grow 2024 ABS population forward using each state's 2019–2024 trend, "
+                    "then recompute the rate metrics.\n"
+                    "\n"
+                    "Change the **sidebar scenario** to test growth: *Baseline* (ABS trend), "
+                    "*Aggressive aging* (+4%/yr), or *Stagnation* (0%)."
+                )
         is_forecast = year_mode.startswith("📈")
     else:
         c_search = st.container()
@@ -123,7 +135,7 @@ def _render_find_my_area(df, ratings, supply=None, population=None, service_user
     beds = row.get('residential_places')
     if wp is not None and wp == wp and wp > 1.0:  # not NaN and > 1
         st.markdown(
-            f'<div style="background:#FDECEA;border-left:5px solid #D85A4E;'
+            f'<div style="background:#FDECEA;border-left:5px solid #C44A38;'
             f'border-radius:8px;padding:12px 16px;margin:10px 0 16px;'
             f'color:{C["navy"]};font-size:20px;line-height:1.55">'
             f'⚠️ <b>Crisis zone</b> — this region has more high-needs home-care users '
@@ -426,7 +438,9 @@ def render(hero_b64: str, df, gdf, supply, population, ratings, service_users) -
     # Hero stat-led subtitle uses live national numbers (computed below for scoreboard)
     _hero_kpis = _compute_hero_kpis(supply, population, ratings, service_users)
     st.markdown(
-        f'<div class="hero-wrap" style="{hero_style};min-height:280px">'
+        f'<div class="hero-wrap" role="banner" '
+        f'aria-label="Australia\'s Aged Care Gap — national dashboard hero" '
+        f'style="{hero_style};min-height:280px">'
         f'<div class="hero-inner">'
         f'<div class="hero-h" style="font-size:2.0rem;margin-bottom:14px">'
         f'Australia\'s Aged-Care Gap'
@@ -441,6 +455,26 @@ def render(hero_b64: str, df, gdf, supply, population, ratings, service_users) -
         f'A live data view of quality, access, supply and demand across Australia.'
         f'</div>'
         f'</div></div>',
+        unsafe_allow_html=True,
+    )
+
+    # ── "Start here" CTA for first-time viewers ────────────────────────────
+    st.markdown(
+        f'<a href="?page=map" target="_self" style="text-decoration:none">'
+        f'<div style="background:{C["white"]};border:2px solid {C["teal"]};'
+        f'border-radius:12px;padding:16px 22px;margin:0 0 18px;'
+        f'display:flex;justify-content:space-between;align-items:center;'
+        f'transition:transform 0.15s ease, box-shadow 0.15s ease">'
+        f'<div>'
+        f'<div style="color:{C["muted"]};font-size:11px;letter-spacing:0.08em;'
+        f'text-transform:uppercase;font-weight:700">New here? Start the story</div>'
+        f'<div style="color:{C["navy"]};font-size:18px;font-weight:700;margin-top:4px">'
+        f'Chapter 1: The Gap → Where the worst regions are</div>'
+        f'</div>'
+        f'<div style="background:{C["teal"]};color:white;padding:10px 22px;'
+        f'border-radius:24px;font-weight:700;font-size:14px;white-space:nowrap">'
+        f'Start →</div>'
+        f'</div></a>',
         unsafe_allow_html=True,
     )
 

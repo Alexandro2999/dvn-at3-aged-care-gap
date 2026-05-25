@@ -1,8 +1,18 @@
+"""Chapter 4 — The Verdict: did the Oct 2023 staffing mandate work?
+
+Advanced feature implemented here:
+    What-if slider (lines ~300–365)
+    User drags an RN-minutes-per-resident-per-day threshold; the chart
+    recomputes the share of facilities that would clear that bar, and the
+    narrative callout updates against the regulator's 65% target.
+    Lets the viewer pressure-test policy levers against live ACQSC data.
+"""
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from tabs.utils import C, ORG_COLOURS, MANDATE, chapter_breadcrumb, chapter_closer, theme
+from tabs.utils import C, ORG_COLOURS, MANDATE, chapter_breadcrumb, chapter_closer, theme, data_caption
 
 
 def render(ratings, master_filt, filter_active: bool = False) -> None:
@@ -200,6 +210,7 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
         )
         theme(fig_time, height=320)
         st.plotly_chart(fig_time, use_container_width=True)
+        st.markdown(data_caption("ACQSC Star Ratings, May 2023–Feb 2026 · mandate effective 1 Oct 2023"), unsafe_allow_html=True)
 
         if not (pd.isna(q_delta_f) or pd.isna(qm_delta_f)):
             st.info(
@@ -273,6 +284,7 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
         )
         theme(fig_comp, height=320)
         st.plotly_chart(fig_comp, use_container_width=True)
+        st.markdown(data_caption("ACQSC Star Ratings · `fully_compliant` flag per facility-snapshot, by ownership type"), unsafe_allow_html=True)
 
         if not pd.isna(comp_gap):
             st.warning(
@@ -361,6 +373,7 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
             )
             theme(fig_hist, height=320)
             st.plotly_chart(fig_hist, use_container_width=True)
+            st.markdown(data_caption("ACQSC Star Ratings staffing minutes per resident per day, latest snapshot"), unsafe_allow_html=True)
 
             if pct_comply >= 65:
                 st.success(

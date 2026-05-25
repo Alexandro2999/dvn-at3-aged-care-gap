@@ -1,9 +1,19 @@
+"""Chapter 1 — The Gap: where the worst regions are.
+
+Advanced feature implemented here:
+    Forecast scenario toggle (Tab A, year radio with 📈 Forecast option)
+    User flips between real years and a 2025 projection that respects the
+    scenario picked in the sidebar (Baseline / Aggressive aging / Stagnation).
+    The shared `_project_df_to_2025` helper keeps Home, fullmap, and this
+    chapter aligned on the same forecast surface.
+"""
+
 import pandas as pd
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from tabs.utils import C, MMM_COLOURS, SCENARIO_GROWTH_RATES, chapter_breadcrumb, chapter_closer, theme
+from tabs.utils import C, MMM_COLOURS, SCENARIO_GROWTH_RATES, chapter_breadcrumb, chapter_closer, theme, data_caption
 from tabs import fullmap as pg_fullmap
 from tabs.fullmap import _project_df_to_2025
 
@@ -44,7 +54,8 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
         # as Home Find-My-Area so the scenario picker stays a single source of truth.
         if service_users is not None and supply is not None and population is not None:
             scenario = st.session_state.get('fm_scenario', list(SCENARIO_GROWTH_RATES.keys())[0])
-            df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
+            with st.spinner("Recomputing 2025 forecast..."):
+                df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
 
         _years = sorted(int(y) for y in df['year'].dropna().unique())
         _year_label = {y: (f"📈 Forecast {y}" if y == 2025 else str(y)) for y in _years}
@@ -59,7 +70,10 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
         df_yr = df[df['year'] == year_sel].copy()
 
         if df_yr.empty:
-            st.info("No data for current filter.")
+            st.warning(
+                "**No SA3s match your sidebar filter for this year.** "
+                "Try expanding State or Remoteness in the left panel."
+            )
         else:
             # ── KPI cards ──────────────────────────────────────────────────────
             k1, k2, k3 = st.columns(3)
@@ -172,6 +186,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             fig.update_yaxes(categoryorder='array', categoryarray=y_categories)
 
             st.plotly_chart(fig, use_container_width=True, key="a_bar_combined")
+            st.markdown(data_caption("ABS Population SA3 2019–2024 · ACQSC Star Ratings (Feb 2026) · AIHW GEN residential"), unsafe_allow_html=True)
 
             mmm_q = (
                 df_yr.dropna(subset=['mmm_code', 'quality_score'])
@@ -217,6 +232,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             # ── SA3 Rankings ───────────────────────────────────────────────────
             st.markdown("---")
             st.markdown("### 🏆 SA3 Rankings")
+            st.caption("⚠ Red bars = worst direction · ✓ Teal bars = best direction. Icons mean the same as colour — readable without seeing the hue.")
 
             rk1, rk2, rk3 = st.columns(3)
             with rk1:
@@ -239,19 +255,25 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 ranked = df_yr.nsmallest(n_top, col_name)[['sa3_name', 'state', col_name]].copy()
                 ranked = ranked.sort_values(col_name, ascending=False)
             ranked['label'] = ranked['sa3_name'] + ' (' + ranked['state'] + ')'
+            # Icon prefix on bar text so direction reads without colour.
+            icon = '⚠ ' if rank_dir == 'Worst' else '✓ '
+            ranked['text_with_icon'] = (
+                icon + ranked[col_name].map(lambda v: f"{v:{fmt_str.lstrip(':')}}" + suffix)
+            )
 
             fig_rank = px.bar(
                 ranked, x=col_name, y='label', orientation='h',
-                color_discrete_sequence=[bar_color], text=col_name,
+                color_discrete_sequence=[bar_color], text='text_with_icon',
                 title=f'Top {n_top} {rank_dir} — {rank_metric} ({year_sel})',
                 labels={col_name: rank_metric, 'label': ''},
             )
             fig_rank.update_traces(
-                texttemplate=f'%{{text{fmt_str}}}{suffix}', textposition='outside',
+                texttemplate='%{text}', textposition='outside',
                 textfont=dict(size=14),
             )
             theme(fig_rank, height=max(400, n_top * 48))
             st.plotly_chart(fig_rank, use_container_width=True, key="a_rank")
+            st.markdown(data_caption(), unsafe_allow_html=True)
 
 
     # ════════════════════════════════════════════════════════════════════════════
@@ -332,6 +354,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 fig_beds.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
                 theme(fig_beds, height=380)
                 st.plotly_chart(fig_beds, use_container_width=True, key="b_beds_state")
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025 · ABS Population SA3"), unsafe_allow_html=True)
             with ch2:
                 fig_fac = px.line(
                     fac_idx.sort_values('year'),
@@ -342,6 +365,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 fig_fac.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
                 theme(fig_fac, height=380)
                 st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_state")
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025"), unsafe_allow_html=True)
         else:
             mmm_beds_idx = _index_to_base(mmm_beds, 'mmm_code', 'beds_per_1k')
             mmm_fac_idx  = _index_to_base(mmm_fac,  'mmm_code', 'n_facilities')
@@ -364,6 +388,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 fig_beds.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
                 theme(fig_beds, height=380)
                 st.plotly_chart(fig_beds, use_container_width=True, key="b_beds_mmm")
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025 · ABS MMM remoteness"), unsafe_allow_html=True)
             with ch2:
                 fig_fac = px.line(
                     mmm_fac_idx.sort_values(['mmm_label', 'year']),
@@ -375,6 +400,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
                 fig_fac.add_hline(y=0, line_dash='dot', line_color=C['muted'], line_width=1)
                 theme(fig_fac, height=380)
                 st.plotly_chart(fig_fac, use_container_width=True, key="b_fac_mmm")
+                st.markdown(data_caption("AIHW GEN Aged Care Service List, 2019–2025 · ABS MMM remoteness"), unsafe_allow_html=True)
 
         sup_grp = supply.groupby('year').agg(
             n_fac=('n_residential', 'sum'),

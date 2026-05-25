@@ -1,9 +1,19 @@
+"""Chapter 3 — The Victims: who pays when access falls behind demand.
+
+Advanced feature implemented here:
+    Click-drill interactivity (lines ~281–343)
+    Clicking any bar in the waitlist-pressure chart fires Plotly's
+    `on_select='rerun'` event; the selected SA3 then drives the HCP
+    level-mix donut beside it. Enables a "click to investigate" pattern
+    without a separate dropdown.
+"""
+
 import pandas as pd
 # pyrefly: ignore [missing-import]
 import streamlit as st
 # pyrefly: ignore [missing-import]
 import plotly.express as px
-from tabs.utils import C, chapter_breadcrumb, chapter_closer, theme
+from tabs.utils import C, chapter_breadcrumb, chapter_closer, theme, data_caption
 
 HCP_COLS = ['hcp_level1', 'hcp_level2', 'hcp_level3', 'hcp_level4']
 LEVEL_LABELS = {
@@ -223,13 +233,13 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
         bar_color_quartile = C['red']
         bar_color_other = C['navy']
         title_kind = 'Worst'
-        sub_caption = 'Red = top quartile (highest pressure)'
+        sub_caption = '⚠ Red = top quartile (highest pressure) · bars past 1.0× line are in crisis'
     else:
         top_df = df_uniq.nsmallest(top_n, 'waitlist_pressure').sort_values('waitlist_pressure', ascending=False).copy()
         bar_color_quartile = C['teal']
         bar_color_other = C['navy']
         title_kind = 'Best'
-        sub_caption = 'Teal = bottom quartile (lowest pressure)'
+        sub_caption = '✓ Teal = bottom quartile (lowest pressure)'
 
     if top_df.empty:
         st.info(f"No SA3s with positive waitlist pressure in {year_sel}.")
@@ -245,6 +255,11 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
                 lambda x: bar_color_quartile if x <= threshold else bar_color_other
             )
         top_df['row_label'] = top_df['sa3_name'] + ' (' + top_df['state'] + ')'
+        # Icon prefix so the crisis threshold (1.0) is readable without colour —
+        # supports colourblind users and screen-zoom + greyscale printing.
+        top_df['bar_text'] = top_df['waitlist_pressure'].apply(
+            lambda v: f"⚠ {v:.3f}" if v >= 1.0 else f"✓ {v:.3f}"
+        )
 
         bar_col, drill_col = st.columns([1.4, 1])
 
@@ -253,7 +268,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
                 top_df,
                 x='waitlist_pressure', y='row_label', orientation='h',
                 color='colour', color_discrete_map='identity',
-                text='waitlist_pressure',
+                text='bar_text',
                 custom_data=['sa3_code', 'sa3_name', 'state',
                              'hcp_level1', 'hcp_level2', 'hcp_level3', 'hcp_level4',
                              'hcp_high_needs', 'residential_places'],
@@ -262,7 +277,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
                 labels={'waitlist_pressure': 'Waitlist Pressure Index', 'row_label': ''},
             )
             fig_wp.update_traces(
-                texttemplate='%{text:.3f}', textposition='outside',
+                texttemplate='%{text}', textposition='outside',
                 hovertemplate=(
                     '<b>%{customdata[1]} (%{customdata[2]})</b><br>'
                     'Waitlist pressure: %{x:.3f}<br>'
@@ -285,6 +300,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
                 selection_mode='points',
                 key=f'ch3_wp_bar_{year_sel}_{direction}_{top_n}',
             )
+            st.markdown(data_caption("AIHW GEN Home Care + Residential, SA3 × year · click a bar to drill into HCP levels"), unsafe_allow_html=True)
 
         selected_label = None
         selected_row = None
@@ -341,6 +357,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
                 margin=dict(t=70, b=100, l=10, r=10),
             )
             st.plotly_chart(fig_drill, use_container_width=True)
+            st.markdown(data_caption("AIHW GEN Home Care Package data, latest year · L1=basic → L4=very high need"), unsafe_allow_html=True)
 
             total = sum(row_for_donut[c] for c in HCP_COLS)
             st.metric('Total home-care users', f'{int(total):,d}')
@@ -395,6 +412,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
     fig_crisis.update_layout(legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1))
     theme(fig_crisis, height=380)
     st.plotly_chart(fig_crisis, use_container_width=True)
+    st.markdown(data_caption("AIHW GEN residential places by SA3, 2019–2024 · crisis = waitlist pressure > 1.0"), unsafe_allow_html=True)
 
     def _row(group, year):
         sel = sup_agg[(sup_agg['group'] == group) & (sup_agg['year'] == year)]
@@ -478,7 +496,11 @@ def render(df, supply, n_deficit: int, service_users=None, filter_active: bool =
         )
 
     if df.empty or service_users is None or service_users.empty:
-        st.warning("No data for the current filter selection.")
+        st.warning(
+            "**No SA3s match your current sidebar filter.** "
+            "Try expanding State or Remoteness in the left panel — "
+            "or clear the filter to see the national picture."
+        )
         return
 
     # Apply global filter via SA3 membership from master_filt — only when the
@@ -492,7 +514,11 @@ def render(df, supply, n_deficit: int, service_users=None, filter_active: bool =
             supply = supply[supply['sa3_code'].isin(_allowed_sa3)].copy()
 
     if service_users.empty or supply.empty:
-        st.warning("No service-user or supply data overlaps the current filter.")
+        st.warning(
+            "**No SA3s match your current sidebar filter** (State + Remoteness). "
+            "Try expanding the selection in the left panel — or clear the filter "
+            "to see the national picture."
+        )
         return
 
     # Compute deficit set per year — now scoped to the active filter

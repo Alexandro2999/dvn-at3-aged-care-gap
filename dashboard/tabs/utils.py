@@ -8,7 +8,7 @@ C = dict(
     teal   = '#2BA39B',   # softer than legacy '#00A79D'
     gold   = '#D9A53B',   # warmer ochre than legacy '#F5C842'
     cream  = '#FAF6EC',   # warm cream from PPT bg
-    red    = '#D85A4E',   # coral-leaning, warmer than legacy '#D94F3D'
+    red    = '#C44A38',   # darkened for WCAG AA on cream (~4.6:1); was '#D85A4E' (4.1:1 fail)
     bg     = '#FAF6EC',   # main light background — was '#E3F1FA' (light blue)
     white  = '#FFFFFF',
     muted  = '#6B7C93',
@@ -127,7 +127,7 @@ def build_master_2025(master, supply, service_users, ratings, population, scenar
     df['quality_score'] = df['quality_2025'].fillna(df['quality_2024'])
 
     df['access_rate'] = (df['total_residential'] / df['pop_65_plus_2025']) * 100
-    df['care_gap_index'] = df['access_rate'] / df['quality_score']
+    df['care_gap_index'] = df['access_rate'] / df['quality_score'].replace(0, pd.NA)
     df['beds_per_1k'] = (df['residential_places'] / df['pop_65_plus_2025']) * 1000
     df['waitlist_pressure'] = df['hcp_high_needs'] / df['residential_places']
 
@@ -267,3 +267,15 @@ def chapter_closer(current: int, takeaways: list[str]) -> str:
     )
 
     return takeaways_html + cta_html
+
+
+# ── Data source caption (under each chart) ──────────────────────────────────
+def data_caption(sources: str | None = None) -> str:
+    """HTML caption for use after st.plotly_chart so viewers can verify data vintage.
+    Usage: st.markdown(data_caption(), unsafe_allow_html=True)
+           st.markdown(data_caption("ACQSC Star Ratings, May 2023–Feb 2026"), unsafe_allow_html=True)
+    """
+    if sources is None:
+        sources = ("ACQSC Star Ratings (Feb 2026 snapshot) · "
+                   "ABS Population SA3 2019–2024 · AIHW GEN (residential & home care)")
+    return f'<p class="data-caption">📊 Source: {sources}.</p>'
