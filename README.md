@@ -10,6 +10,31 @@ A data journalism dashboard investigating which Australian SA3 regions face the 
 
 ---
 
+## 🔗 Deliverables
+
+| Artefact | Link |
+|---|---|
+| 🖥️ Live dashboard (Streamlit Cloud) | _pending — to be published before submission_ |
+| 🎬 Video walkthrough (3 min) | _pending — to be recorded before submission_ |
+| 📊 Source repository | https://github.com/Alexandro2999/dvn-at3-aged-care-gap |
+| 📒 Data dictionary | [data/clean/README.md](data/clean/README.md) |
+| 🎯 Interactive features | See _Advanced Features_ section below |
+
+---
+
+## 🎯 Advanced Features
+
+The dashboard implements **all four** of the rubric's advanced features. Each is also surfaced in the in-app Methodology page so markers can find them without reading source.
+
+| Feature | Where to see it | What changes |
+|---|---|---|
+| **Context-Aware Filtering** | Sidebar State + MMM picker (every chapter) | All chapter charts and narrative callouts recompute against the active scope |
+| **Click-to-Drill (Tooltip/Modal)** | Ch 3 — bar of worst-pressure SA3s | Clicking a bar updates the HCP-level (L1–L4) donut beside it |
+| **Narrative Scrollytelling** | 4-chapter detective arc | Breadcrumb + chapter-closer scaffolding guide the reader Gap → Cause → Victims → Verdict |
+| **What-If Parameterisation** | Ch 4 — What-if tab | RN-minutes-target slider recomputes compliant-facility counts and pass/fail callout live |
+
+---
+
 ## Team
 
 | Name | Role / Key contributions |
@@ -92,6 +117,7 @@ dvn-at3-aged-care-gap/
 │       ├── ch2_correlation.py            ← Chapter 2: The Cause
 │       ├── ch3_reveal.py                 ← Chapter 3: The Victims
 │       ├── ch4_mandate.py                ← Chapter 4: The Verdict
+│       ├── methodology.py                ← About page: data sources, formulas, caveats, advanced-features legend
 │       ├── fullmap.py                    ← interactive choropleth (embedded in Home + Ch1)
 │       └── utils.py                      ← shared constants, colour palettes, theme helper
 │
@@ -102,10 +128,7 @@ dvn-at3-aged-care-gap/
 │   └── chapter_04_mandate_effect.md
 │
 ├── slides_deck/                          ← Part 2 pitch deliverable
-│   ├── Australias-Aged-Care-Gap.pptx     ← final deck
-│   ├── pitch_master.md                   ← scripts, 52/52 data audit, Q&A, dashboard checklist
-│   ├── slide_storyboard.html
-│   └── visual_for_slides.ipynb
+│   └── Australias-Aged-Care-Gap.pptx     ← final deck
 │
 ├── requirements.txt
 ├── CLAUDE.md                             ← project context for Claude Code
@@ -115,6 +138,8 @@ dvn-at3-aged-care-gap/
 ---
 
 ## How to Run the Dashboard
+
+**Stack:** Python 3 · Streamlit · Plotly · Pandas · GeoPandas (clean pipeline) · Jupyter.
 
 ```bash
 # 1. Install dependencies (use a virtual environment)
@@ -148,6 +173,12 @@ jupyter notebook notebooks/clean_pipeline/
 | `hcp_high_needs` | hcp_level3 + hcp_level4 | SA3 × year |
 | `waitlist_pressure` | hcp_high_needs / residential_places | SA3 × year |
 | `beds_per_1000_elderly` | residential_places / pop_65_plus × 1000 | SA3 × year |
+
+---
+
+## 📒 Data Dictionary
+
+Per-CSV column definitions, types, and provenance live in [data/clean/README.md](data/clean/README.md) — one section per file produced by the clean pipeline (`notebooks/clean_pipeline/01` → `07`). Open that file for grain, formulas, and source-system notes for every column the dashboard loads.
 
 ---
 
