@@ -3,8 +3,9 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from tabs.utils import C, MMM_COLOURS, theme
+from tabs.utils import C, MMM_COLOURS, SCENARIO_GROWTH_RATES, chapter_breadcrumb, chapter_closer, theme
 from tabs import fullmap as pg_fullmap
+from tabs.fullmap import _project_df_to_2025
 
 MMM_ORDER  = ['MM1', 'MM2', 'MM3', 'MM4', 'MM5', 'MM6', 'MM7']
 MMM_LABELS = {
@@ -16,11 +17,12 @@ MMM_LABELS = {
 _RANK_METRICS = {
     'Care Gap Index': ('care_gap_index', True,  ':.2f', '',   C['red']),
     'Quality Score':  ('quality_score',  False, ':.2f', '★',  C['teal']),
-    'Residential Access Rate': ('access_rate', False, ':.1f', '%', '#4A7FC1'),
+    'Residential Access Rate': ('access_rate', False, ':.1f', '%', '#3D6FA0'),
 }
 
 
 def render(df, gdf, supply, population, ratings, service_users=None) -> None:
+    st.markdown(chapter_breadcrumb(1), unsafe_allow_html=True)
     st.markdown('<div class="sec-h1">Where do the patterns live?</div>', unsafe_allow_html=True)
     st.markdown(
         '<p class="sec-p">Zoom into state and remoteness patterns, then trace the '
@@ -38,8 +40,21 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
     # TAB A — Overview: care gap · quality · access × state / MMM + Top N rankings
     # ════════════════════════════════════════════════════════════════════════════
     with tab_a:
+        # Project to 2025 (idempotent if 2025 already present) — same pattern
+        # as Home Find-My-Area so the scenario picker stays a single source of truth.
+        if service_users is not None and supply is not None and population is not None:
+            scenario = st.session_state.get('fm_scenario', list(SCENARIO_GROWTH_RATES.keys())[0])
+            df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
+
+        _years = sorted(int(y) for y in df['year'].dropna().unique())
+        _year_label = {y: (f"📈 Forecast {y}" if y == 2025 else str(y)) for y in _years}
         year_sel = st.radio(
-            "Year", [2023, 2024], index=1, horizontal=True, key="a_year",
+            "Year",
+            options=_years,
+            format_func=lambda y: _year_label[y],
+            index=len(_years) - 1,
+            horizontal=True,
+            key="a_year",
         )
         df_yr = df[df['year'] == year_sel].copy()
 
@@ -102,7 +117,7 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             bar_specs = [
                 ('care_gap_index', f'Care Gap Index — {year_sel}',      C['red'],   '%{text:.2f}'),
                 ('quality_score',  f'Quality Score — {year_sel}',       C['teal'],  '%{text:.2f}★'),
-                ('access_rate',    f'Residential Access — {year_sel}',  '#4A7FC1',  '%{text:.1f}%'),
+                ('access_rate',    f'Residential Access — {year_sel}',  '#3D6FA0',  '%{text:.1f}%'),
             ]
 
             # Build a single subplot figure with shared Y-axis (states/MMM listed once on left)
@@ -285,8 +300,11 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
         mmm_beds = mmm_supply_src.groupby(['mmm_code', 'year'], as_index=False)['beds_per_1k'].mean()
         mmm_fac  = mmm_supply_src.groupby(['mmm_code', 'year'], as_index=False)['n_facilities'].sum()
 
-        # ── View toggle ───────────────────────────────────────────────────────
-        view_b = st.radio("View by", ["By State", "By MMM"], horizontal=True, key="decline_view")
+        # ── View toggle (default State — matches the warning callout below) ──
+        view_b = st.radio(
+            "View by", ["By State", "By MMM"],
+            horizontal=True, index=0, key="decline_view",
+        )
 
         ch1, ch2 = st.columns(2)
 
@@ -327,7 +345,6 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
         else:
             mmm_beds_idx = _index_to_base(mmm_beds, 'mmm_code', 'beds_per_1k')
             mmm_fac_idx  = _index_to_base(mmm_fac,  'mmm_code', 'n_facilities')
-            # Add full labels and preserve sort order
             label_order = [MMM_LABELS[m] for m in MMM_ORDER if m in mmm_beds_idx['mmm_code'].values]
             label_colours = {MMM_LABELS[k]: v for k, v in MMM_COLOURS.items()}
             for _df in [mmm_beds_idx, mmm_fac_idx]:
@@ -396,4 +413,17 @@ def render(df, gdf, supply, population, ratings, service_users=None) -> None:
             f"**{nat_grp.loc[nat_y1, 'b1k']:.1f}** ({nat_y1}), a **{nat_pct:.1f}% decline** "
             f"over {nat_y1 - nat_y0} years (denominator: pop 65+)."
         )
+
+    # ── Chapter closer: takeaways + next chapter CTA ──────────────────────────
+    st.markdown(
+        chapter_closer(1, [
+            "The worst care gaps cluster in <b>major cities</b>, not the outback — "
+            "all top-10 worst SA3s are MM1 metro suburbs.",
+            "Remote bands (MM5–MM7) actually score the <b>highest</b> on quality — "
+            "the rural penalty is access, not care quality.",
+            f"Beds per 1,000 elderly fell <b>{nat_pct:.1f}%</b> nationally "
+            f"({nat_y0}→{nat_y1}) — supply is contracting while demand grows.",
+        ]),
+        unsafe_allow_html=True,
+    )
 

@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 # pyrefly: ignore [missing-import]
 import plotly.express as px
-from tabs.utils import C, theme
+from tabs.utils import C, chapter_breadcrumb, chapter_closer, theme
 
 HCP_COLS = ['hcp_level1', 'hcp_level2', 'hcp_level3', 'hcp_level4']
 LEVEL_LABELS = {
@@ -15,10 +15,10 @@ LEVEL_LABELS = {
 LEVEL_ORDER = ['L1 — Basic', 'L2 — Moderate', 'L3 — High',
                'L4 — Very High']
 LEVEL_COLOURS = {
-    'L1 — Basic':                              '#A6C8FF',
-    'L2 — Moderate':                           '#4589FF',
-    'L3 — High':                               C['gold'],
-    'L4 — Very High':  C['red'],
+    'L1 — Basic':       '#A6C8FF',   # light blue (low need)
+    'L2 — Moderate':    '#3D6FA0',   # medium blue
+    'L3 — High':        '#D9A53B',   # ochre (PPT gold, warning)
+    'L4 — Very High':   '#B23A30',   # deep coral (alert — should be in residential)
 }
 
 
@@ -129,7 +129,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
             resolved_z = deficit_sets[prev_yr] - deficit_sets[yr]
             net = len(new_z) - len(resolved_z)
             sign = '+' if net > 0 else ('' if net == 0 else '−')
-            color = C['red'] if net > 0 else '#3D8B40' if net < 0 else '#6B7C93'
+            color = C['red'] if net > 0 else C['teal'] if net < 0 else C['muted']
             delta_block = (
                 f'<div style="color:{color};font-size:17px;margin-top:4px;font-weight:600">'
                 f'{sign}{abs(net)} net vs {prev_yr}'
@@ -204,13 +204,15 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
     n_deficit_yr = int((df_yr.drop_duplicates('sa3_name')['waitlist_pressure'] > 1.0).sum())
     worst = df_yr.drop_duplicates('sa3_name').nlargest(1, 'waitlist_pressure').iloc[0]
     st.markdown(
-        f'<p class="sec-p">In <b>{year_sel}</b>, '
-        f'<b>{n_deficit_yr} SA3 regions</b> have more high-needs home-care users '
-        f'than available residential beds. The worst is '
-        f'<b>{worst["sa3_name"]} ({worst["state"]})</b> with a pressure ratio of '
-        f'<b>{worst["waitlist_pressure"]:.2f}</b> — '
-        f'{int(worst["hcp_high_needs"]):,} high-needs people competing for '
-        f'{int(worst["residential_places"]):,} beds.</p>',
+        f'<div style="background:#FFF0F0;border-left:4px solid {C["red"]};'
+        f'padding:10px 16px;border-radius:6px;margin:0 0 14px;'
+        f'color:{C["navy"]};font-size:18px;line-height:1.5">'
+        f'🚨 <b>{n_deficit_yr} crisis SA3s</b> in {year_sel} · '
+        f'Worst: <b>{worst["sa3_name"]} ({worst["state"]})</b> '
+        f'<b style="color:{C["red"]}">{worst["waitlist_pressure"]:.2f}×</b> — '
+        f'{int(worst["hcp_high_needs"]):,} high-needs people / '
+        f'{int(worst["residential_places"]):,} beds'
+        f'</div>',
         unsafe_allow_html=True,
     )
 
@@ -355,7 +357,7 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
         unsafe_allow_html=True,
     )
     st.markdown(
-        '<p style="color:#3D4F63;font-size:20px;margin:0 0 12px;line-height:1.6">'
+        '<p style="color:#4A5A6E;font-size:20px;margin:0 0 12px;line-height:1.6">'
         'Hold the crisis-zone set fixed at the latest waitlist-pressure snapshot, '
         'then trace residential-bed supply from 2019 onward for those SA3s vs '
         'everyone else.</p>',
@@ -418,20 +420,35 @@ def _render_section_crisis_merged(df, service_users, supply, deficit_yrs, defici
         + ("\n\n*Scope: SA3s currently in the State + Remoteness filter.*" if filter_active else "")
     )
 
+    # ── Chapter closer: takeaways + next chapter CTA ──────────────────────────
+    # Numbers reuse upstream variables: nat L4 growth, latest deficit count, worst SA3
+    _latest_def_n = len(deficit_sets[deficit_yrs[-1]])
+    st.markdown(
+        chapter_closer(3, [
+            f"<b>{_latest_def_n} SA3 regions</b> have demand exceeding supply "
+            f"(waitlist pressure &gt; 1.0) in {deficit_yrs[-1]} — these are crisis zones.",
+            "The <b>L4 (very-high needs) cohort</b> is growing fastest — system is "
+            "becoming heavier-needs, not lighter.",
+            f"Crisis zones <b>lost {abs(crisis_delta):,} beds</b> while the rest of Australia "
+            f"{'gained' if rest_delta > 0 else 'lost'} {abs(rest_delta):,} — beds are "
+            f"flowing the <b>wrong direction</b>.",
+        ]),
+        unsafe_allow_html=True,
+    )
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Public entry point
 # ─────────────────────────────────────────────────────────────────────────────
 def render(df, supply, n_deficit: int, service_users=None, filter_active: bool = False) -> None:
+    st.markdown(chapter_breadcrumb(3), unsafe_allow_html=True)
     st.markdown(
-        f'<div style="display:inline-block;background:{C["red"]};color:white;'
-        f'padding:5px 14px;border-radius:14px;font-size:17px;font-weight:700;'
-        f'letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px">'
-        f'The Victims</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        '<div class="sec-h1">Which communities are being left behind?</div>',
+        f'<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 8px">'
+        f'<span style="background:{C["red"]};color:white;padding:3px 10px;'
+        f'border-radius:10px;font-size:13px;font-weight:700;letter-spacing:0.06em;'
+        f'text-transform:uppercase">The Victims</span>'
+        f'<span class="sec-h1" style="margin:0">Which communities are being left behind?</span>'
+        f'</div>',
         unsafe_allow_html=True,
     )
     st.markdown(

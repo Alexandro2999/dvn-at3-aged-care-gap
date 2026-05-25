@@ -27,8 +27,8 @@ import tabs.fullmap        as pg_fullmap
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Australia's Aged Care Gap",
-    page_icon="💙",
+    page_title="Australia's Aged-Care Gap · DVN AT3",
+    page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -164,7 +164,14 @@ header [data-testid="stMainMenu"],
 div[data-testid="stToolbar"] {{ display: none !important; }}
 
 html, body {{ font-size: 22px !important; }}
-.stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; font-size: 21px; }}
+/* Subtle paper-grain texture overlay on cream background — gives the page an editorial, printed-report feel without distracting from charts. */
+.stApp, section[data-testid="stAppViewContainer"] {{
+    background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.067 0 0 0 0 0.063 0 0 0 0 0.055 0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+        {C['bg']};
+    background-blend-mode: multiply;
+    font-size: 21px;
+}}
 
 .main .block-container {{
     padding-top: {NAV_H + 16}px !important;
@@ -329,6 +336,23 @@ body [data-testid="stMetricDelta"] {{ font-size: 17px !important; }}
 .kpi-card {{
     background: {C['white']}; border: 1px solid {C['border']};
     border-radius: 12px; padding: 20px 24px 18px;
+    box-shadow: 0 1px 3px rgba(17, 48, 78, 0.04);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}}
+.kpi-card:hover {{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(17, 48, 78, 0.10);
+}}
+/* Soft pop-in for KPI values + sparklines on initial render */
+@keyframes kpiPop {{
+    0%   {{ opacity: 0; transform: translateY(6px) scale(0.96); }}
+    100% {{ opacity: 1; transform: translateY(0)   scale(1);    }}
+}}
+.kpi-value {{
+    animation: kpiPop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}}
+.kpi-card svg {{
+    animation: kpiPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }}
 .kpi-label {{
     color: {C['navy']}; font-weight: 700; font-size: 19px;
@@ -513,6 +537,10 @@ with st.sidebar:
                                    label_visibility="collapsed")
 
     with st.expander("Remoteness (MMM)"):
+        st.caption(
+            "**MMM = Modified Monash Model** — ABS rural/urban classifier. "
+            "MM1 = Major city · MM4 = Remote · MM7 = Very remote."
+        )
         mmm_opts = sorted(master['mmm_code'].dropna().unique())
         mmm_sel = st.multiselect("MMM", mmm_opts, default=mmm_opts,
                                  label_visibility="collapsed")

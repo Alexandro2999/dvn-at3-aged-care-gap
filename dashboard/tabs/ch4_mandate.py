@@ -2,19 +2,18 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from tabs.utils import C, ORG_COLOURS, MANDATE, theme
+from tabs.utils import C, ORG_COLOURS, MANDATE, chapter_breadcrumb, chapter_closer, theme
 
 
 def render(ratings, master_filt, filter_active: bool = False) -> None:
+    st.markdown(chapter_breadcrumb(4), unsafe_allow_html=True)
     st.markdown(
-        f'<div style="display:inline-block;background:{C["gold"]};color:white;'
-        f'padding:5px 14px;border-radius:14px;font-size:17px;font-weight:700;'
-        f'letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px">'
-        f'The Verdict</div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        '<div class="sec-h1">Did the Oct 2023 staffing mandate work?</div>',
+        f'<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 8px">'
+        f'<span style="background:{C["gold"]};color:white;padding:3px 10px;'
+        f'border-radius:10px;font-size:13px;font-weight:700;letter-spacing:0.06em;'
+        f'text-transform:uppercase">The Verdict</span>'
+        f'<span class="sec-h1" style="margin:0">Did the Oct 2023 staffing mandate work?</span>'
+        f'</div>',
         unsafe_allow_html=True,
     )
 
@@ -40,42 +39,6 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
         unsafe_allow_html=True,
     )
 
-    with st.expander("📖 Glossary — key terms in this chapter", expanded=False):
-        st.markdown(
-            f'<div style="color:{C["navy"]};font-size:20px;line-height:1.7">'
-            f'<ul style="margin:0;padding-left:22px">'
-            f'<li><b>Oct 2023 staffing mandate</b> — federal rule requiring 200 care minutes '
-            f'per resident per day, 40 of which must come from a Registered Nurse.</li>'
-            f'<li><b>RN minutes</b> — Registered Nurse minutes per resident per day '
-            f'(mandate target: 44).</li>'
-            f'<li><b>Care minutes (total)</b> — total direct care minutes per resident per day '
-            f'(mandate target: 200).</li>'
-            f'<li><b>Quality Measures</b> — one of 4 ACQSC star-rating sub-dimensions; '
-            f'tracks clinical outcomes (pressure injuries, falls, weight loss, medications).</li>'
-            f'<li><b>Fully compliant</b> — facility meeting <i>both</i> RN-minutes AND '
-            f'total-care-minutes targets.</li>'
-            f'<li><b>Before / After mandate</b> — snapshot date &lt; or ≥ 2023-10-01.</li>'
-            f'</ul></div>',
-            unsafe_allow_html=True,
-        )
-
-    # Recap pulls Ch2's national structural finding — compute from full ratings,
-    # pre-filter, so it always shows the structural baseline regardless of sidebar.
-    _means = _known_nat.groupby('org_type')['quality_score'].mean()
-    if not _means.empty and 'government' in _means.index and 'profit' in _means.index:
-        _govt = float(_means['government'])
-        _profit = float(_means['profit'])
-        _gap = _govt - _profit
-        _n_snap = _known_nat['snapshot_date'].nunique()
-        st.info(
-            f"🔬 **Picking up from Chapter 2.** The structural ownership gap is "
-            f"government **{_govt:.2f}★** vs for-profit **{_profit:.2f}★** — a "
-            f"**{_gap:.2f}-point gap** stable across {_n_snap} quarterly snapshots. "
-            f"This chapter tests whether the **October 2023 staffing mandate** "
-            f"closed it. ← [Chapter 2: The Cause](?page=correlation) for "
-            f"the diagnostic."
-        )
-
     # Sidebar filter propagation: narrow ratings by the state + MMM set
     # carried by master_filt, so every chart in this tab respects the sidebar.
     # Only apply when the sidebar is actively narrowed — at default scope we
@@ -97,9 +60,9 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
 
     selected_states = sorted(ratings['state'].dropna().unique())
     if len(selected_states) == 1:
-        st.info(
-            f"📍 **Filter applied:** showing **{selected_states[0]}** only "
-            f"({ratings['Service Name'].nunique():,} facilities)."
+        st.caption(
+            f"📍 *Filter applied: showing **{selected_states[0]}** only "
+            f"({ratings['Service Name'].nunique():,} facilities).*"
         )
 
     # ── Pre-compute filtered pre/post for KPI cards + tabs ──────────────────
@@ -157,17 +120,28 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
         'profit': 'For profit',
     }
 
-    # ── Three sub-tabs ───────────────────────────────────────────────────────
-    tab_nat, tab_org, tab_wi = st.tabs([
-        "🧭 Timeline",
-        "👥 By owner",
+    # ── Two sub-tabs: combined mandate effect + interactive what-if ─────────
+    tab_effect, tab_wi = st.tabs([
+        "🧭 Mandate Effect",
         "🎚️ What-if",
     ])
 
     # ════════════════════════════════════════════════════════════════════════
-    # TAB National trend
+    # TAB Mandate Effect — national headline → ownership breakdown
     # ════════════════════════════════════════════════════════════════════════
-    with tab_nat:
+    with tab_effect:
+        st.caption(
+            "📍 *This tab has **2 sections**: **National headline** "
+            "(KPIs + quality trend) and **By ownership** (compliance gap). "
+            "Scroll to explore.*"
+        )
+        st.markdown(
+            f'<div style="display:inline-block;background:{C["navy"]};color:white;'
+            f'padding:3px 10px;border-radius:8px;font-size:13px;font-weight:700;'
+            f'letter-spacing:0.04em;margin:4px 0 10px">'
+            f'§ 1 / 2 · National headline</div>',
+            unsafe_allow_html=True,
+        )
         st.markdown(
             f"""
 <div class="kpi-grid">
@@ -227,25 +201,6 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
         theme(fig_time, height=320)
         st.plotly_chart(fig_time, use_container_width=True)
 
-        dims = ['residents_exp', 'staffing', 'compliance', 'quality_measures']
-        dim_labels = ['Residents exp.', 'Staffing', 'Compliance', 'Quality measures']
-        before_s = ratings[ratings['period'] == 'Before mandate'][dims].mean()
-        after_s = ratings[ratings['period'] == 'After mandate'][dims].mean()
-        sub_df = pd.DataFrame({
-            'Sub-rating': dim_labels,
-            'Before': before_s.values,
-            'After': after_s.values,
-        }).melt(id_vars='Sub-rating', var_name='Period', value_name='Score')
-        fig_sub = px.bar(
-            sub_df, x='Sub-rating', y='Score', color='Period',
-            barmode='group',
-            color_discrete_map={'Before': C['muted'], 'After': C['teal']},
-            title='Sub-rating change before vs after mandate',
-            labels={'Score': 'Avg score'},
-        )
-        theme(fig_sub, height=320)
-        st.plotly_chart(fig_sub, use_container_width=True)
-
         if not (pd.isna(q_delta_f) or pd.isna(qm_delta_f)):
             st.info(
                 f"⚖️ Quality rose **{q_delta_f:+.2f}** points after the mandate, but the "
@@ -253,10 +208,19 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
                 f"The mandate fixed inputs (staffing hours); it has not yet moved clinical outcomes."
             )
 
-    # ════════════════════════════════════════════════════════════════════════
-    # TAB By ownership
-    # ════════════════════════════════════════════════════════════════════════
-    with tab_org:
+        # ── Section 2: By-ownership breakdown ────────────────────────────
+        st.markdown("---")
+        st.markdown(
+            f'<div style="display:inline-block;background:{C["navy"]};color:white;'
+            f'padding:3px 10px;border-radius:8px;font-size:13px;font-weight:700;'
+            f'letter-spacing:0.04em;margin:0 0 8px">'
+            f'§ 2 / 2 · By ownership</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<div class="sub-h">Where the gap lives — by ownership</div>',
+            unsafe_allow_html=True,
+        )
         st.markdown(
             f"""
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 12px">
@@ -292,28 +256,6 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
             unsafe_allow_html=True,
         )
 
-        org_time = (
-            _known_f.groupby(['snapshot_date', 'org_type'])['quality_score']
-            .mean().reset_index()
-        )
-        fig_org_t = px.line(
-            org_time, x='snapshot_date', y='quality_score',
-            color='org_type', color_discrete_map=ORG_COLOURS,
-            title='Quality by ownership over time',
-            labels={
-                'quality_score': 'Avg quality score',
-                'snapshot_date': 'Quarter',
-                'org_type': 'Org type',
-            },
-        )
-        fig_org_t.add_vline(
-            x=MANDATE.timestamp() * 1000,
-            line_dash='dash', line_color=C['red'],
-            annotation_text='Oct 2023 mandate',
-        )
-        theme(fig_org_t, height=320)
-        st.plotly_chart(fig_org_t, use_container_width=True)
-
         comp_all_l = comp_all.copy()
         comp_all_l['cat_label'] = comp_all_l['category'].map(cat_labels)
         color_map = {cat_labels[k]: v for k, v in ORG_COLOURS.items()}
@@ -338,64 +280,6 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
                 f"**{profit_comp:.1f}%** vs government **{gov_comp:.1f}%** — a "
                 f"**{comp_gap:.0f}-point gap** in adherence to the same federal rule. "
                 f"Same regulator, same reporting, opposite outcomes by ownership."
-            )
-
-        # ── State quality slope: pre vs post mandate ────────────────────────
-        state_q = (
-            _known_f.groupby(['state', 'period'])['quality_score'].mean().reset_index()
-        )
-        pivot = (
-            state_q.pivot(index='state', columns='period', values='quality_score')
-            .dropna(subset=['Before mandate', 'After mandate'])
-        )
-        if len(pivot) >= 2:
-            pivot['delta'] = pivot['After mandate'] - pivot['Before mandate']
-            st.markdown("---")
-            st.markdown(
-                '<div class="sub-h">Which state moved most? Quality pre vs post mandate</div>',
-                unsafe_allow_html=True,
-            )
-
-            top_mover = pivot['delta'].idxmax()
-            slope_fig = go.Figure()
-            for state, row in pivot.iterrows():
-                is_top = (state == top_mover)
-                slope_fig.add_trace(go.Scatter(
-                    x=['Pre-mandate', 'Post-mandate'],
-                    y=[row['Before mandate'], row['After mandate']],
-                    mode='lines+markers+text',
-                    name=state,
-                    line=dict(color=C['red'] if is_top else '#C8DCF0',
-                              width=3 if is_top else 1.5),
-                    marker=dict(size=12 if is_top else 8,
-                                color=C['red'] if is_top else '#8FAFD0'),
-                    text=[state, state],
-                    textposition=['middle left', 'middle right'],
-                    textfont=dict(size=15 if is_top else 10,
-                                  color=C['red'] if is_top else C['muted']),
-                    showlegend=False,
-                    hovertemplate=f'<b>{state}</b><br>%{{x}}: %{{y:.2f}}★<extra></extra>',
-                ))
-            slope_fig.update_layout(
-                title=f'State quality score — pre vs post Oct 2023 mandate<br>'
-                      f'<sup>Largest mover highlighted in red</sup>',
-                yaxis_title='Avg quality score',
-                xaxis=dict(range=[-0.4, 1.4]),
-            )
-            theme(slope_fig, height=420)
-            st.plotly_chart(slope_fig, use_container_width=True)
-
-            mover_delta = float(pivot.loc[top_mover, 'delta'])
-            rank_pre = pivot['Before mandate'].rank(ascending=False)
-            rank_post = pivot['After mandate'].rank(ascending=False)
-            top_rank_pre = int(rank_pre.loc[top_mover])
-            top_rank_post = int(rank_post.loc[top_mover])
-            st.success(
-                f"💡 **{top_mover} rose {mover_delta:+.2f}★** — from rank "
-                f"**{top_rank_pre}** ({pivot.loc[top_mover, 'Before mandate']:.2f}★ pre) "
-                f"to rank **{top_rank_post}** "
-                f"({pivot.loc[top_mover, 'After mandate']:.2f}★ post). "
-                f"Proof case: ownership-level compliance moves outcomes."
             )
 
     # ════════════════════════════════════════════════════════════════════════
@@ -488,3 +372,16 @@ def render(ratings, master_filt, filter_active: bool = False) -> None:
                     f"⚠️ At a **{wi_target}**-minute threshold, only **{pct_comply:.1f}%** of facilities "
                     f"would meet the bar — below the 65% policy target."
                 )
+
+    # ── Chapter closer: takeaways + back-to-home CTA ─────────────────────────
+    st.markdown(
+        chapter_closer(4, [
+            f"National quality rose <b>{q_delta_nat:+.2f}★</b> after the Oct 2023 mandate — "
+            f"but driven by <b>staffing inputs</b>, not clinical outcomes (QM Δ {qm_delta_nat:+.3f}).",
+            "Ownership compliance gap remains: <b>government 81% vs for-profit 31%</b> — "
+            "same rule, opposite adherence.",
+            "<b>Verdict</b>: the mandate fixed inputs (staff hours bought), "
+            "but the ownership-quality gap is structural and still open.",
+        ]),
+        unsafe_allow_html=True,
+    )
