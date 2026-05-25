@@ -37,15 +37,17 @@ The dashboard implements **all four** of the rubric's advanced features. Each is
 
 ## Team
 
+**Lead author & primary build:** Andy Pham (Quan) — clean data pipeline, three of the four chapter analyses, the dashboard polish from prototype → submission-ready (chapter narrative scaffolding, Methodology page, advanced-features wiring, README + repo cleanup).
+
 | Name | Role / Key contributions |
 |---|---|
+| **Andy Pham (Quan)** _(lead)_ | Full clean pipeline (all 7 notebooks); Chapter 1, 3, and 4 analyses (mandate effect, waitlist-divergence, supply-collapse visuals); dashboard polish — chapter scaffolding, Methodology page, click-drill + What-if features, palette + accessibility passes; story/insight assets; README, repo hygiene, PRs / CI |
 | **Alexandro Sianipar** | Repo init & folder scaffold; architect notebooks (`01_eda`, `02_metrics`, `master_sa3`); Ch3 notebook draft; Ch1 chart label fixes; home-page legend clarity |
-| **Andy Pham (Quan)** | Clean pipeline (all 7 notebooks); story/insight assets; Chapter 4 mandate analysis; data quality fixes; supply-collapse and waitlist-divergence visuals (Ch1, Ch3); PRs/CI |
 | **Fajar (Facholhidayat)** | Chapter 2 analysis notebook; map rendering & GeoJSON deployment; dashboard cosmetics; Ch1 & Ch2 visualisation refinements |
 | **Rendra Hutama** | Basic EDA notebook; Streamlit dashboard design; dashboard iteration from Andy's presentation |
-| **Lavil** | Analysis and insights (Ch2–Ch3 scope) |
-| **Clarice** | Analysis and insights |
-| **Dhiraj** | Analysis and insights |
+| **Lavil** | Contributing analysis (Ch2–Ch3 scope) |
+| **Clarice** | Contributing analysis |
+| **Dhiraj** | Contributing analysis |
 
 ---
 
@@ -131,7 +133,6 @@ dvn-at3-aged-care-gap/
 │   └── Australias-Aged-Care-Gap.pptx     ← final deck
 │
 ├── requirements.txt
-├── CLAUDE.md                             ← project context for Claude Code
 └── README.md
 ```
 
