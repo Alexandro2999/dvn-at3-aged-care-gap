@@ -14,7 +14,7 @@ A data journalism dashboard investigating which Australian SA3 regions face the 
 
 | Artefact | Link |
 |---|---|
-| 🖥️ Live dashboard (Streamlit Cloud) | _pending — to be published before submission_ |
+| 🖥️ Live dashboard (Streamlit Cloud) | https://dvn-at3-aged-care-gap-ppbjk8yxyxtvjkrgxrycn2.streamlit.app/ |
 | 🎬 Video walkthrough (3 min) | https://www.youtube.com/watch?v=x1xw13D1Qh0 |
 | 📊 Source repository | https://github.com/Alexandro2999/dvn-at3-aged-care-gap |
 | 📒 Data dictionary | [data/clean/README.md](data/clean/README.md) |
