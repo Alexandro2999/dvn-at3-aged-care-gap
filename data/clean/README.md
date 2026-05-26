@@ -316,6 +316,26 @@ SA3 `10702` (Illawarra Catchment Reserve — conservation land, `pop_65_plus = 0
 
 ---
 
+## Manual override table — `data/manual/sa3_overrides.csv`
+
+Not a pipeline output (lives outside `data/clean/`) but documented here for completeness because the clean pipeline reads it.
+
+**Purpose:** when a facility's suburb maps to multiple SA3s — or to none — this table records the **canonical SA3** for that facility so the `groupby('sa3_code')` aggregations in the pipeline don't drop rows or split a facility across two regions.
+**Grain:** one row per facility · **Rows:** 77
+
+| Column | Type | Description |
+|---|---|---|
+| `service_name` | str | Facility name (matches `Service Name` in File 01) |
+| `service_suburb` | str | Suburb on the facility's address line |
+| `state` | str | State / territory |
+| `sa3_code` | float | Assigned SA3 code |
+| `sa3_name` | str | Assigned SA3 name |
+| `match_status` | str | How the assignment was resolved: `matched`, `matched_via_alias`, `matched_dominant`, `matched_dominant_via_alias` |
+| `dominance` | float | When the suburb mapped to multiple SA3s, the share of population in the chosen SA3 (0–1) |
+| `n_sa3` | float | How many SA3s the suburb originally mapped to |
+
+---
+
 ## Geographic units
 
 | Unit | Count | Used in |
