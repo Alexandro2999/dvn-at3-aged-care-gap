@@ -11,6 +11,10 @@ data/raw/abs_geography/*.qmd
 .DS_Store
 *.code-workspace
 
+# Local video recordings (walkthrough hosted on YouTube)
+*.mp4
+*.mov
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
