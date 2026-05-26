@@ -107,9 +107,7 @@ dvn-at3-aged-care-gap/
 │       ├── 01_chapter_the_map.ipynb
 │       ├── 02_chapter_the_correlation.ipynb
 │       ├── 03_chapter_the_reveal.ipynb
-│       ├── 04_chapter_mandate_effect.ipynb
-│       ├── eda_basic_additional.ipynb
-│       └── eda_revised.ipynb
+│       └── 04_chapter_mandate_effect.ipynb
 │
 ├── dashboard/                            ← Streamlit app
 │   ├── app.py                            ← entry point — loads data, routing, global CSS/nav
@@ -344,10 +342,8 @@ UI/UX design assets — no code, but feeds the dashboard's visual identity.
 | `02_chapter_the_correlation.ipynb` | Ch 2 — The Cause | Ownership quality gap; sub-rating breakdown; for-profit vs government scatter analysis |
 | `03_chapter_the_reveal.ipynb` | Ch 3 — The Victims | Waitlist pressure SA3 ranking; HCP-level mix; crisis-zone vs rest-of-Australia bed supply |
 | `04_chapter_mandate_effect.ipynb` | Ch 4 — The Verdict | Oct 2023 mandate effect; pre/post quality deltas; compliance by ownership |
-| `eda_basic_additional.ipynb` | — | Supplementary exploratory analysis |
-| `eda_revised.ipynb` | — | Revised EDA confirming all chapter numbers against source data |
 
-**Contributors:** Andy Pham (Quan) — Ch1 supply visuals, Ch3 waitlist divergence, Ch4 mandate; Fajar (Facholhidayat) — Ch2 analysis; Alexandro Sianipar — Ch3 draft, eda_revised; Rendra Budi Hutama — eda_basic_additional.
+**Contributors:** Andy Pham (Quan) — Ch1 supply visuals, Ch3 waitlist divergence, Ch4 mandate; Fajar (Facholhidayat) — Ch2 analysis; Alexandro Sianipar — Ch3 draft.
 ---
 
 ## Datasets
