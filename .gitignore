@@ -18,6 +18,9 @@ CLAUDE.md
 *.mp4
 *.mov
 
+# One-off submission artifact (regenerated from README.md when needed)
+README.html
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
