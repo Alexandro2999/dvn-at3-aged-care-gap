@@ -10,17 +10,44 @@ A data journalism dashboard investigating which Australian SA3 regions face the 
 
 ---
 
+## 🔗 Deliverables
+
+| Artefact | Link |
+|---|---|
+| 🖥️ Live dashboard (Streamlit Cloud) | _pending — to be published before submission_ |
+| 🎬 Video walkthrough (3 min) | _pending — to be recorded before submission_ |
+| 📊 Source repository | https://github.com/Alexandro2999/dvn-at3-aged-care-gap |
+| 📒 Data dictionary | [data/clean/README.md](data/clean/README.md) |
+| 🎯 Interactive features | See _Advanced Features_ section below |
+
+---
+
+## 🎯 Advanced Features
+
+The dashboard implements **all four** of the rubric's advanced features. Each is also surfaced in the in-app Methodology page so markers can find them without reading source.
+
+| Feature | Where to see it | What changes |
+|---|---|---|
+| **Context-Aware Filtering** | Sidebar State + MMM picker (every chapter) | All chapter charts and narrative callouts recompute against the active scope |
+| **Click-to-Drill (Tooltip/Modal)** | Ch 3 — bar of worst-pressure SA3s | Clicking a bar updates the HCP-level (L1–L4) donut beside it |
+| **Narrative Scrollytelling** | 4-chapter detective arc | Breadcrumb + chapter-closer scaffolding guide the reader Gap → Cause → Victims → Verdict |
+| **What-If Parameterisation** | Ch 4 — What-if tab | RN-minutes-target slider recomputes compliant-facility counts and pass/fail callout live |
+
+---
+
 ## Team
+
+**Lead author & primary build:** Andy Pham (Quan) — clean data pipeline, three of the four chapter analyses, the dashboard polish from prototype → submission-ready (chapter narrative scaffolding, Methodology page, advanced-features wiring, README + repo cleanup).
 
 | Name | Role / Key contributions |
 |---|---|
+| **Andy Pham (Quan)** _(lead)_ | Full clean pipeline (all 7 notebooks); Chapter 1, 3, and 4 analyses (mandate effect, waitlist-divergence, supply-collapse visuals); dashboard polish — chapter scaffolding, Methodology page, click-drill + What-if features, palette + accessibility passes; story/insight assets; README, repo hygiene, PRs / CI |
 | **Alexandro Sianipar** | Repo init & folder scaffold; architect notebooks (`01_eda`, `02_metrics`, `master_sa3`); Ch3 notebook draft; Ch1 chart label fixes; home-page legend clarity |
-| **Andy Pham (Quan)** | Clean pipeline (all 7 notebooks); story/insight assets; Chapter 4 mandate analysis; data quality fixes; supply-collapse and waitlist-divergence visuals (Ch1, Ch3); PRs/CI |
 | **Fajar (Facholhidayat)** | Chapter 2 analysis notebook; map rendering & GeoJSON deployment; dashboard cosmetics; Ch1 & Ch2 visualisation refinements |
 | **Rendra Hutama** | Basic EDA notebook; Streamlit dashboard design; dashboard iteration from Andy's presentation |
-| **Lavil** | Analysis and insights (Ch2–Ch3 scope) |
-| **Clarice** | Analysis and insights |
-| **Dhiraj** | Analysis and insights |
+| **Lavil** | Contributing analysis (Ch2–Ch3 scope) |
+| **Clarice** | Contributing analysis |
+| **Dhiraj** | Contributing analysis |
 
 ---
 
@@ -80,9 +107,7 @@ dvn-at3-aged-care-gap/
 │       ├── 01_chapter_the_map.ipynb
 │       ├── 02_chapter_the_correlation.ipynb
 │       ├── 03_chapter_the_reveal.ipynb
-│       ├── 04_chapter_mandate_effect.ipynb
-│       ├── eda_basic_additional.ipynb
-│       └── eda_revised.ipynb
+│       └── 04_chapter_mandate_effect.ipynb
 │
 ├── dashboard/                            ← Streamlit app
 │   ├── app.py                            ← entry point — loads data, routing, global CSS/nav
@@ -92,6 +117,7 @@ dvn-at3-aged-care-gap/
 │       ├── ch2_correlation.py            ← Chapter 2: The Cause
 │       ├── ch3_reveal.py                 ← Chapter 3: The Victims
 │       ├── ch4_mandate.py                ← Chapter 4: The Verdict
+│       ├── methodology.py                ← About page: data sources, formulas, caveats, advanced-features legend
 │       ├── fullmap.py                    ← interactive choropleth (embedded in Home + Ch1)
 │       └── utils.py                      ← shared constants, colour palettes, theme helper
 │
@@ -102,19 +128,17 @@ dvn-at3-aged-care-gap/
 │   └── chapter_04_mandate_effect.md
 │
 ├── slides_deck/                          ← Part 2 pitch deliverable
-│   ├── Australias-Aged-Care-Gap.pptx     ← final deck
-│   ├── pitch_master.md                   ← scripts, 52/52 data audit, Q&A, dashboard checklist
-│   ├── slide_storyboard.html
-│   └── visual_for_slides.ipynb
+│   └── Australias-Aged-Care-Gap.pptx     ← final deck
 │
 ├── requirements.txt
-├── CLAUDE.md                             ← project context for Claude Code
 └── README.md
 ```
 
 ---
 
 ## How to Run the Dashboard
+
+**Stack:** Python 3 · Streamlit · Plotly · Pandas · GeoPandas (clean pipeline) · Jupyter.
 
 ```bash
 # 1. Install dependencies (use a virtual environment)
@@ -148,6 +172,12 @@ jupyter notebook notebooks/clean_pipeline/
 | `hcp_high_needs` | hcp_level3 + hcp_level4 | SA3 × year |
 | `waitlist_pressure` | hcp_high_needs / residential_places | SA3 × year |
 | `beds_per_1000_elderly` | residential_places / pop_65_plus × 1000 | SA3 × year |
+
+---
+
+## 📒 Data Dictionary
+
+Per-CSV column definitions, types, and provenance live in [data/clean/README.md](data/clean/README.md) — one section per file produced by the clean pipeline (`notebooks/clean_pipeline/01` → `07`). Open that file for grain, formulas, and source-system notes for every column the dashboard loads.
 
 ---
 
@@ -312,10 +342,8 @@ UI/UX design assets — no code, but feeds the dashboard's visual identity.
 | `02_chapter_the_correlation.ipynb` | Ch 2 — The Cause | Ownership quality gap; sub-rating breakdown; for-profit vs government scatter analysis |
 | `03_chapter_the_reveal.ipynb` | Ch 3 — The Victims | Waitlist pressure SA3 ranking; HCP-level mix; crisis-zone vs rest-of-Australia bed supply |
 | `04_chapter_mandate_effect.ipynb` | Ch 4 — The Verdict | Oct 2023 mandate effect; pre/post quality deltas; compliance by ownership |
-| `eda_basic_additional.ipynb` | — | Supplementary exploratory analysis |
-| `eda_revised.ipynb` | — | Revised EDA confirming all chapter numbers against source data |
 
-**Contributors:** Andy Pham (Quan) — Ch1 supply visuals, Ch3 waitlist divergence, Ch4 mandate; Fajar (Facholhidayat) — Ch2 analysis; Alexandro Sianipar — Ch3 draft, eda_revised; Rendra Budi Hutama — eda_basic_additional.
+**Contributors:** Andy Pham (Quan) — Ch1 supply visuals, Ch3 waitlist divergence, Ch4 mandate; Fajar (Facholhidayat) — Ch2 analysis; Alexandro Sianipar — Ch3 draft.
 ---
 
 ## Datasets

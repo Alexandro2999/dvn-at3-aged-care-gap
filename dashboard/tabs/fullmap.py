@@ -1,3 +1,17 @@
+"""Standalone interactive SA3 choropleth — embedded in Home and Ch1.
+
+Renders a full-screen Australia map with:
+    - Metric toggle (Care Gap Index, Access Rate, Quality Score, Beds/1k,
+      Waitlist Pressure) via a radio that separates projected vs real metrics
+    - Year toggle 2023→2025; the 📈 marker indicates 2025 forecast values
+    - SA3 hover card with state, MMM band, and the active metric
+    - Session-state-driven re-render guard so the map renders on first load
+      (Streamlit map widgets normally need a first interaction to paint)
+
+2025 values are computed via `build_master_2025` against the selected
+scenario growth rate; pre-2025 years are always real data.
+"""
+
 import pandas as pd
 import streamlit as st
 import plotly.express as px
@@ -19,18 +33,18 @@ _CITIES = [
 # (label, col_name, cscale, colorbar_label, src, higher_is_better, projected_at_2025)
 # projected_at_2025 = True when 2025 isn't real data → relies on Ch5 build_master_2025.
 _METRIC_DEFS = [
-    ('Care Gap Index',         'care_gap_index',       [[0,'#E3F1FA'],[0.4,'#4A7FC1'],[1,'#1B3F6E']], 'Care Gap Index',      'df',           False, True),
-    ('Quality Score',          'quality_score',        [[0,'#FFF5E6'],[0.5,'#F5A623'],[1,'#8B4500']], 'Quality Score',       'df',           True,  False),
-    ('Residential Access Rate','access_rate',          [[0,'#F0FFF0'],[0.5,'#4CAF50'],[1,'#1B5E20']], 'Residential Access %','df',           True,  True),
-    ('Waitlist Pressure',      'waitlist_pressure',    [[0,'#FFF0F0'],[0.5,'#E57373'],[1,'#7F0000']], 'Waitlist Pressure',   'waitlist',      False, False),
-    ('Beds per 1,000 elderly', 'beds_per_1k',          [[0,'#E3F1FA'],[0.5,'#4A7FC1'],[1,'#1B3F6E']], 'Beds / 1k elderly',  'supply',        True,  True),
-    ('Number of Facilities',   'n_facilities',         [[0,'#E6F4F1'],[0.5,'#00A79D'],[1,'#005F5A']], 'Facilities',         'supply_nopop',  True,  False),
+    ('Care Gap Index',         'care_gap_index',       [[0,'#EAF0F5'],[0.4,'#3D6FA0'],[1,'#11304E']], 'Care Gap Index',      'df',           False, True),
+    ('Quality Score',          'quality_score',        [[0,'#FBF6E5'],[0.5,'#D9A53B'],[1,'#7A5A12']], 'Quality Score',       'df',           True,  False),
+    ('Residential Access Rate','access_rate',          [[0,'#E7F3F1'],[0.5,'#2BA39B'],[1,'#0E5A55']], 'Residential Access %','df',           True,  True),
+    ('Waitlist Pressure',      'waitlist_pressure',    [[0,'#FBEEEC'],[0.5,'#C44A38'],[1,'#7A2D24']], 'Waitlist Pressure',   'waitlist',      False, False),
+    ('Beds per 1,000 elderly', 'beds_per_1k',          [[0,'#EAF0F5'],[0.5,'#3D6FA0'],[1,'#11304E']], 'Beds / 1k elderly',  'supply',        True,  True),
+    ('Number of Facilities',   'n_facilities',         [[0,'#E7F3F1'],[0.5,'#2BA39B'],[1,'#0E5A55']], 'Facilities',         'supply_nopop',  True,  False),
 ]
 
 # Per-metric explainer: (formula, plain-English interpretation)
 _METRIC_INFO = {
     'Care Gap Index': (
-        'access_rate ÷ quality_score',
+        'residential_access_rate ÷ quality_score',
         'Composite indicator of unmet need. <b>Higher value = region is underserved</b> '
         '(high demand relative to low quality). Values &gt; 1 flag concern.',
     ),
@@ -219,6 +233,22 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
                  "(Care Gap, Access, Beds per 1k — they need pop_65_plus which ABS hasn't released). "
                  "Real 2025 = metrics where actual 2025 data exists (Quality, Waitlist, Facilities).",
         )
+        with st.expander("📈 What's real vs projected in 2025?"):
+            st.markdown(
+                "**✅ Real 2025 data** (used as-is)\n"
+                "- **Quality Score** — from the Feb 2026 star ratings snapshot\n"
+                "- **Waitlist Pressure** — from AIHW home-care user counts\n"
+                "- **Facilities** — from AIHW service list\n"
+                "\n"
+                "**🔮 Projected** (estimated, because ABS hasn't released 2025 population yet)\n"
+                "- **Population aged 65+** — 2024 figures grown forward using each state's "
+                "2023→2024 trend\n"
+                "- **Access Rate · Care Gap · Beds per 1,000** — recomputed using the projected "
+                "65+ population\n"
+                "\n"
+                "Use the **sidebar scenario picker** to test how fast the 65+ group grows: "
+                "*Baseline* (ABS trend), *Aggressive aging* (+4%/yr), or *Stagnation* (0%)."
+            )
     is_projected_mode = data_type.startswith("📈")
     metric_pool = [m for m in _METRIC_DEFS if (m[6] if is_projected_mode else not m[6])]
 
@@ -228,7 +258,8 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
         scenario = scenario_options[0]
 
     # ── Project df to include a 2025 row using selected scenario ───────────
-    df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
+    with st.spinner("Recomputing 2025 forecast..."):
+        df = _project_df_to_2025(df, supply, service_users, ratings, population, scenario)
 
     # ── Build waitlist frame (uses service_users + supply, no pop dependency) ─
     wp_frame = _build_waitlist_frame(service_users, supply)
@@ -304,18 +335,18 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
         if metric_sel in _METRIC_INFO:
             _formula, _interp = _METRIC_INFO[metric_sel]
             st.markdown(
-                f'<div style="background:linear-gradient(135deg,#E0F7F4 0%,#D6EAF8 100%);'
-                f'border-left:5px solid #00A79D;border-radius:8px;'
+                f'<div style="background:#F0F8F5;'
+                f'border-left:5px solid #2BA39B;border-radius:8px;'
                 f'padding:14px 18px;margin:20px 18px 12px;'
                 f'box-shadow:0 1px 3px rgba(0,0,0,0.06);'
                 f'color:{C["navy"]};font-size:20px;line-height:1.65">'
                 f'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px">'
-                f'<span style="font-weight:800;font-size:21px;color:#1B3F6E">📊 {metric_sel}</span>'
-                f'<span style="font-family:Consolas,Menlo,monospace;background:#1B3F6E;'
+                f'<span style="font-weight:800;font-size:21px;color:#11304E">📊 {metric_sel}</span>'
+                f'<span style="font-family:Consolas,Menlo,monospace;background:#11304E;'
                 f'color:#FFFFFF;padding:3px 10px;border-radius:14px;font-size:17.5px;'
                 f'font-weight:600;letter-spacing:0.2px">{_formula}</span>'
                 f'</div>'
-                f'<span style="color:#2C4257">{_interp}</span>'
+                f'<span style="color:#4A5A6E">{_interp}</span>'
                 f'</div>',
                 unsafe_allow_html=True,
             )
@@ -323,7 +354,7 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
     # ── Forecast note shown above the map (only when projected + 2025) ────────
     if is_proj_metric and year_c == 2025:
         st.markdown(
-            f'<div style="background:#FFF8E1;border-left:4px solid #F5A623;'
+            f'<div style="background:#FBF6E5;border-left:4px solid #D9A53B;'
             f'padding:14px 18px;border-radius:8px;margin:18px 0 16px;'
             f'color:{C["navy"]};font-size:19.5px;line-height:1.55">'
             f'📈 <b>You are viewing a 2025 forecast.</b> '
@@ -404,5 +435,8 @@ def render(df, gdf, supply, population, service_users=None, ratings=None, show_m
     elif not map_data.empty:
         st.info("GeoJSON not loaded — map unavailable.")
     else:
-        st.info("No data available for the current filter and year selection.")
+        st.warning(
+            "**No SA3s match your sidebar filter for this year/metric.** "
+            "Try expanding State or Remoteness in the left panel, or switch year/metric above."
+        )
 

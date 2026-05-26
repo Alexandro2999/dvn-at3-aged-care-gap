@@ -1,7 +1,21 @@
+"""Chapter 2 — The Cause: why quality varies across providers and dollars.
+
+Advanced feature implemented here:
+    Context-aware filtering. The sidebar State + MMM selection narrows the
+    SA3 universe upstream in `app.py`; this chapter then recomputes the
+    quality-by-ownership gap, funding-per-bed distribution, and the
+    quality-vs-funding scatter on the fly so the narrative callouts
+    (gap size, funding median, R²) rewrite to match the active scope.
+
+Structured as three sub-tabs — Quality (ownership gap), Funding (per-bed
+distribution by ownership), and Together (quality vs funding scatter with
+OLS trendline).
+"""
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from tabs.utils import C, ORG_COLOURS, theme
+from tabs.utils import C, ORG_COLOURS, chapter_breadcrumb, chapter_closer, theme, data_caption
 
 
 _ORG_ORDER = ['profit', 'not_for_profit', 'government']
@@ -24,13 +38,7 @@ def _beds_by_org_for_year(supply: pd.DataFrame, year: int) -> dict:
 
 
 def render(df, ratings, funding, supply) -> None:
-    st.markdown(
-        f'<div style="display:inline-block;background:{C["teal"]};color:white;'
-        f'padding:5px 14px;border-radius:14px;font-size:17px;font-weight:700;'
-        f'letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px">'
-        f'The Cause</div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown(chapter_breadcrumb(2), unsafe_allow_html=True)
 
     # Methodology per asset chapter_02_the_correlation.md Insights 1 & 2:
     # "mean across all snapshots" — this is the ownership-gap-over-time view.
@@ -80,7 +88,15 @@ def render(df, ratings, funding, supply) -> None:
 
     nfp_mean = float(org_means.get('not_for_profit', float('nan')))
 
-    st.markdown('<div class="sec-h1">Who runs the best facilities?</div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 8px">'
+        f'<span style="background:{C["teal"]};color:white;padding:3px 10px;'
+        f'border-radius:10px;font-size:13px;font-weight:700;letter-spacing:0.06em;'
+        f'text-transform:uppercase">The Cause</span>'
+        f'<span class="sec-h1" style="margin:0">Who runs the best facilities?</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(
         '<p class="sec-p">Quality is explained by <b>ownership</b>, not geography. '
         'Remote areas score higher <i>because</i> they have fewer for-profit providers.</p>',
@@ -128,12 +144,15 @@ def render(df, ratings, funding, supply) -> None:
     with tab_q:
         st.markdown(
             f"""
-<div class="kpi-grid">
+<div class="kpi-row-3">
   <div class="kpi-card">
     <div class="kpi-label">Government Avg
       <span class="kpi-help" data-tooltip="Mean quality score for government-run facilities">?</span>
     </div>
     <div class="kpi-value">{govt_mean:.2f}<span class="kpi-suffix"> ★</span></div>
+    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
+      Baseline · {n_snapshots} snapshots
+    </div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Non-Profit Avg
@@ -146,14 +165,8 @@ def render(df, ratings, funding, supply) -> None:
       <span class="kpi-help" data-tooltip="Mean quality score for for-profit facilities">?</span>
     </div>
     <div class="kpi-value">{profit_mean:.2f}<span class="kpi-suffix"> ★</span></div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">Ownership Gap
-      <span class="kpi-help" data-tooltip="Government minus for-profit, averaged across {n_snapshots} quarterly snapshots">?</span>
-    </div>
-    <div class="kpi-value">{ownership_gap:.2f}<span class="kpi-suffix"> pts</span></div>
-    <div style="color:#6B7C93;font-size:17px;margin-top:4px;font-weight:500">
-      {n_snapshots} snapshots · {span_label}
+    <div style="color:{C["red"]};font-size:17px;margin-top:4px;font-weight:600">
+      Gap vs govt: {ownership_gap:.2f} pts
     </div>
   </div>
 </div>
@@ -182,6 +195,7 @@ def render(df, ratings, funding, supply) -> None:
         )
         theme(fig_sub, height=360)
         st.plotly_chart(fig_sub, use_container_width=True)
+        st.markdown(data_caption("ACQSC Star Ratings, May 2023–Feb 2026 · 12 quarterly snapshots"), unsafe_allow_html=True)
 
         fp_staff_t1 = float(sub_means.loc['profit', 'staffing']) if 'profit' in sub_means.index else float('nan')
         gov_staff_t1 = float(sub_means.loc['government', 'staffing']) if 'government' in sub_means.index else float('nan')
@@ -252,7 +266,7 @@ def render(df, ratings, funding, supply) -> None:
         # ── KPI cards (3-column funding row) ─────────────────────────────────
         st.markdown(
             f"""
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 12px">
+<div class="kpi-row-3">
   <div class="kpi-card">
     <div class="kpi-label">Total Funding {latest_year}
       <span class="kpi-help" data-tooltip="Sum of all government funding across providers in {latest_year}">?</span>
@@ -285,21 +299,12 @@ def render(df, ratings, funding, supply) -> None:
             unsafe_allow_html=True,
         )
 
-        # ── Controls row: normalisation + pie year ──────────────────────────
-        ctl_l, ctl_r = st.columns([2, 1])
-        with ctl_l:
-            fund_norm = st.radio(
-                "Show funding bar as:",
-                options=["Per facility ($M)", "Per bed ($k)"],
-                horizontal=True, key="ch2_fund_norm",
-            )
-        with ctl_r:
-            pie_year = st.selectbox(
-                "Funding share — year",
-                options=fund_yrs,
-                index=len(fund_yrs) - 1,
-                key="ch2_pie_year",
-            )
+        # ── Control: normalisation toggle ───────────────────────────────────
+        fund_norm = st.radio(
+            "Show funding bar as:",
+            options=["Per facility ($M)", "Per bed ($k)"],
+            horizontal=True, key="ch2_fund_norm",
+        )
 
         # Compute funding-per-X for selected mode
         if fund_norm == "Per facility ($M)":
@@ -327,9 +332,14 @@ def render(df, ratings, funding, supply) -> None:
             bar_title_kind = 'bed'
             bar_value_unit = 'k'
 
-        c_fund_l, c_fund_r = st.columns([1, 1])
+        # Pre-compute values for both the bar and the right-hand takeaway box
+        bar_lookup = bar_df.set_index('org_type')['value'].to_dict()
+        fp_val = bar_lookup.get('profit', float('nan'))
+        gov_val = bar_lookup.get('government', float('nan'))
+        ratio = (fp_val / gov_val) if gov_val else float('nan')
 
-        with c_fund_l:
+        c_bar_l, c_bar_r = st.columns([3, 2])
+        with c_bar_l:
             fig_fund_bar = px.bar(
                 bar_df.sort_values('value'),
                 x='value', y='org_label', orientation='h',
@@ -344,33 +354,23 @@ def render(df, ratings, funding, supply) -> None:
             fig_fund_bar.update_layout(showlegend=False)
             theme(fig_fund_bar, height=360)
             st.plotly_chart(fig_fund_bar, use_container_width=True)
-
-        with c_fund_r:
-            pie_df = fund_trend[fund_trend['year'] == pie_year].copy()
-            pie_df['org_label'] = pie_df['org_type'].map(org_label_map)
-            total_pie_b = float(pie_df['funding_b'].sum())
-            pie_df['share_pct'] = pie_df['funding_b'] / total_pie_b * 100 if total_pie_b else 0
-
-            fig_pie = px.pie(
-                pie_df, names='org_label', values='funding_b',
-                color='org_type', color_discrete_map=ORG_COLOURS,
-                title=f'Funding share — {pie_year}<br><sup>Total: ${total_pie_b:.1f}B</sup>',
-                hole=0.4,
+            st.markdown(data_caption("AIHW GEN Service Funding by Facility, latest annual snapshot"), unsafe_allow_html=True)
+        with c_bar_r:
+            st.markdown(
+                f'<div style="background:#FFF7E6;border-left:4px solid #E67E22;'
+                f'padding:18px 20px;border-radius:8px;margin-top:60px;'
+                f'color:{C["navy"]};font-size:18px;line-height:1.55">'
+                f'<div style="font-size:13px;font-weight:700;letter-spacing:0.06em;'
+                f'text-transform:uppercase;color:#A04E00;margin-bottom:6px">'
+                f'Key takeaway · {latest_fund_yr}</div>'
+                f'<b>${fp_val:.2f}{bar_value_unit}</b> for-profit vs '
+                f'<b>${gov_val:.2f}{bar_value_unit}</b> government per {bar_title_kind} '
+                f'— a <b style="color:{C["red"]}">{ratio:.1f}× gap</b>.'
+                f'</div>',
+                unsafe_allow_html=True,
             )
-            fig_pie.update_traces(
-                textposition='inside',
-                texttemplate='%{label}<br>%{percent}',
-                hovertemplate='<b>%{label}</b><br>$%{value:.2f}B (%{percent})<extra></extra>',
-            )
-            fig_pie.update_layout(showlegend=False)
-            theme(fig_pie, height=360)
-            st.plotly_chart(fig_pie, use_container_width=True)
 
         # Live callout — toggle-aware narrative (numbers already surfaced in KPI cards)
-        bar_lookup = bar_df.set_index('org_type')['value'].to_dict()
-        fp_val = bar_lookup.get('profit', float('nan'))
-        gov_val = bar_lookup.get('government', float('nan'))
-        ratio = (fp_val / gov_val) if gov_val else float('nan')
 
         st.info(
             f"💰 In {latest_fund_yr}, for-profit receives **{ratio:.1f}× more public funding "
@@ -458,7 +458,7 @@ def render(df, ratings, funding, supply) -> None:
                 sc,
                 x='x_value', y='quality_score',
                 color='private_share',
-                color_continuous_scale=[[0, C['teal']], [0.5, '#F5C842'], [1, C['red']]],
+                color_continuous_scale=[[0, C['teal']], [0.5, C['gold']], [1, C['red']]],
                 size='residential_places', size_max=22,
                 hover_data={
                     'sa3_name': True, 'state': True,
@@ -476,26 +476,34 @@ def render(df, ratings, funding, supply) -> None:
             fig_fb.update_layout(coloraxis_colorbar=dict(title='Private %', ticksuffix='%'))
             theme(fig_fb, height=420)
             st.plotly_chart(fig_fb, use_container_width=True)
+            st.markdown(data_caption("ACQSC Star Ratings + AIHW Service List · joined at SA3 × year"), unsafe_allow_html=True)
 
             corr = sc[['x_value', 'quality_score']].corr().iloc[0, 1]
             avg_x = sc['x_value'].mean()
-            st.info(
-                f"🔍 Across **{len(sc)} SA3s** in {latest_fund_yr}, the SA3-level "
-                f"correlation between funding-per-{x_kind_in_title} and quality is "
-                f"**r = {corr:+.2f}**. "
-                f"Average: **${avg_x:,.2f}{x_unit_in_callout}**. "
-                f"More dollars does **not** translate cleanly to higher star ratings — "
-                f"ownership and management matter more than absolute spend."
+            st.caption(
+                f"🔍 *Across {len(sc)} SA3s in {latest_fund_yr}, correlation between "
+                f"funding-per-{x_kind_in_title} and quality is "
+                f"**r = {corr:+.2f}** (avg ${avg_x:,.2f}{x_unit_in_callout}). "
+                f"More dollars does not translate cleanly to higher star ratings — "
+                f"ownership and management matter more than absolute spend.*"
             )
         else:
-            st.info("No funding+supply overlap for the latest year.")
+            st.warning(
+                "**No funding + supply overlap for the latest year matches your sidebar filter.** "
+                "Try expanding the State or Remoteness selection in the left panel — "
+                "or clear the filter to see the national picture."
+            )
 
-    # ── Bridge to Ch4 (Part B) ───────────────────────────────────────────────
-    st.markdown("---")
-    st.info(
-        "🔬 **Diagnosis complete.** Ownership predicts quality more strongly than "
-        "geography or funding alone — and the gap is structural, not closing on its own. "
-        "**So can policy fix it?** Chapter 4 tests whether the October 2023 staffing "
-        "mandate moved the ownership gap. "
-        "→ [Chapter 4: The Verdict](?page=mandate)"
+    # ── Chapter closer: takeaways + next chapter CTA ─────────────────────────
+    st.markdown(
+        chapter_closer(2, [
+            f"<b>Ownership</b> predicts quality more than geography: government "
+            f"<b>{govt_mean:.2f}★</b> vs for-profit <b>{profit_mean:.2f}★</b> "
+            f"(<b>{ownership_gap:.2f}-pt</b> gap, stable across {n_snapshots} snapshots).",
+            "<b>Staffing</b> drives the entire gap — clinical Quality Measures "
+            "are nearly identical across ownership types.",
+            f"For-profit receives <b>{fund_ratio_fp_gov:.1f}× more</b> public funding "
+            f"per facility than government — but delivers lower quality.",
+        ]),
+        unsafe_allow_html=True,
     )

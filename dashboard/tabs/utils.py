@@ -3,27 +3,31 @@
 import pandas as pd
 
 C = dict(
-    navy   = '#1B3F6E',
-    teal   = '#00A79D',
-    gold   = '#F5C842',
-    cream  = '#FDF4D0',
-    red    = '#D94F3D',
-    bg     = '#E3F1FA',
+    # Synced with slides_deck/Australias-Aged-Care-Gap.pptx — warmer editorial palette
+    navy   = '#11304E',   # deeper than legacy '#1B3F6E'
+    teal   = '#2BA39B',   # softer than legacy '#00A79D'
+    gold   = '#D9A53B',   # warmer ochre than legacy '#F5C842'
+    cream  = '#FAF6EC',   # warm cream from PPT bg
+    red    = '#C44A38',   # darkened for WCAG AA on cream (~4.6:1); was '#D85A4E' (4.1:1 fail)
+    bg     = '#FAF6EC',   # main light background — was '#E3F1FA' (light blue)
     white  = '#FFFFFF',
     muted  = '#6B7C93',
-    border = '#C8DCF0',
-    light  = '#F3F9FE',
+    border = '#E5DDCB',   # warm border to match cream bg
+    light  = '#FDFAF3',   # very light warm cream
+    slate  = '#4A5A6E',   # secondary text from PPT
 )
 
 MMM_COLOURS = {
-    'MM1': '#1B3F6E', 'MM2': '#2E5FA3', 'MM3': '#4A7FC1',
-    'MM4': '#6B9ED4', 'MM5': '#8FBCE3', 'MM6': '#00A79D', 'MM7': '#7ECDC8',
+    # Single navy → teal ramp so all 7 bands sit on one continuous remoteness scale.
+    # Anchored at PPT-matched navy '#11304E' and teal '#2BA39B'.
+    'MM1': '#11304E', 'MM2': '#264E78', 'MM3': '#3D6FA0',
+    'MM4': '#5F92BC', 'MM5': '#85B4C5', 'MM6': '#9CC9C0', 'MM7': '#2BA39B',
 }
 
 ORG_COLOURS = {
-    'profit':         '#D94F3D',
-    'not_for_profit': '#1B3F6E',
-    'government':     '#00A79D',
+    'profit':         '#E67E22',   # orange — distinct from red (alert/crisis only)
+    'not_for_profit': '#11304E',   # PPT-synced navy
+    'government':     '#2BA39B',   # PPT-synced teal
 }
 
 SNAP_YEAR = {
@@ -44,17 +48,18 @@ SCENARIO_GROWTH_RATES = {
 
 
 def state_cagr_2019_2024(population: pd.DataFrame) -> dict:
-    """Per-state compound annual growth rate of pop_65_plus from 2019 to 2024.
+    """Per-state 1-year pop_65_plus growth from 2023 to 2024.
     Used as the Baseline scenario for projecting 2025.
-    Fallback rate 0.024 (~ABS national trend) if either endpoint missing."""
+    Fallback rate 0.024 (~ABS national trend) if either endpoint missing.
+    Name kept for backward-compatibility; semantically now '2023→2024'."""
     agg = population.groupby(['state', 'year'])['pop_65_plus'].sum().reset_index()
     rates = {}
     for state in agg['state'].dropna().unique():
         s = agg[agg['state'] == state]
-        start = s[s['year'] == 2019]['pop_65_plus'].sum()
+        start = s[s['year'] == 2023]['pop_65_plus'].sum()
         end   = s[s['year'] == 2024]['pop_65_plus'].sum()
         if start > 0 and end > 0:
-            rates[state] = (end / start) ** (1 / 5) - 1
+            rates[state] = (end / start) - 1
         else:
             rates[state] = 0.024
     return rates
@@ -123,7 +128,7 @@ def build_master_2025(master, supply, service_users, ratings, population, scenar
     df['quality_score'] = df['quality_2025'].fillna(df['quality_2024'])
 
     df['access_rate'] = (df['total_residential'] / df['pop_65_plus_2025']) * 100
-    df['care_gap_index'] = df['access_rate'] / df['quality_score']
+    df['care_gap_index'] = df['access_rate'] / df['quality_score'].replace(0, pd.NA)
     df['beds_per_1k'] = (df['residential_places'] / df['pop_65_plus_2025']) * 1000
     df['waitlist_pressure'] = df['hcp_high_needs'] / df['residential_places']
 
@@ -164,3 +169,114 @@ def theme(fig, height=None):
     if height:
         fig.update_layout(height=height)
     return fig
+
+
+# ── Chapter breadcrumb (top of each chapter page) ──────────────────────────
+_CHAPTERS = [
+    (1, 'map',         'The Gap'),
+    (2, 'correlation', 'The Cause'),
+    (3, 'reveal',      'The Victims'),
+    (4, 'mandate',     'The Verdict'),
+]
+
+
+def chapter_breadcrumb(current: int) -> str:
+    """Return HTML for the chapter-progress breadcrumb shown at top of each chapter.
+    Pass the chapter number (1–4) currently being viewed."""
+    crumbs = []
+    for num, page, name in _CHAPTERS:
+        if num == current:
+            crumbs.append(
+                f'<span style="background:{C["navy"]};color:white;padding:3px 10px;'
+                f'border-radius:8px;font-weight:700;font-size:13px">'
+                f'{num}. {name}</span>'
+            )
+        else:
+            crumbs.append(
+                f'<a href="?page={page}" target="_self" '
+                f'style="color:{C["muted"]};text-decoration:none;padding:3px 10px;'
+                f'font-size:13px">{num}. {name}</a>'
+            )
+    sep = '<span style="color:#E5DDCB">·</span>'
+    return (
+        f'<div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;'
+        f'margin:0 0 14px;font-size:13px;color:{C["muted"]}">'
+        f'<a href="?page=home" target="_self" '
+        f'style="color:{C["muted"]};text-decoration:none;padding:3px 8px">🏠 Home</a>'
+        f'<span style="color:#E5DDCB">›</span>'
+        f'{sep.join(crumbs)}'
+        f'</div>'
+    )
+
+
+# ── Chapter closer: Key takeaways + Next-chapter CTA ──────────────────────
+_NEXT_PREVIEW = {
+    1: 'Why some areas have the gap — ownership, funding, and quality',
+    2: 'Who pays the price when access falls behind demand',
+    3: 'Whether the Oct 2023 staffing mandate actually moved the needle',
+    4: None,  # last chapter — link back to Home instead
+}
+
+
+def chapter_closer(current: int, takeaways: list[str]) -> str:
+    """Render the bottom-of-chapter block: '💡 Key takeaways' bullets +
+    a large 'Next chapter →' CTA card (or 'Back to Home' on the final chapter)."""
+    # ── Key takeaways block ────────────────────────────────────────────
+    bullets_html = ''.join(
+        f'<li style="margin:6px 0;padding-left:6px">{t}</li>' for t in takeaways
+    )
+    takeaways_html = (
+        f'<div style="background:#FBF6E5;border-left:5px solid {C["gold"]};'
+        f'border-radius:8px;padding:16px 22px;margin:24px 0 18px;'
+        f'color:{C["navy"]};font-size:18px;line-height:1.55">'
+        f'<div style="font-weight:800;font-size:15px;letter-spacing:0.04em;'
+        f'text-transform:uppercase;color:#8B6914;margin-bottom:8px">'
+        f'💡 Key takeaways</div>'
+        f'<ul style="margin:0;padding-left:22px">{bullets_html}</ul>'
+        f'</div>'
+    )
+
+    # ── Next-chapter CTA card (or back-to-home on final chapter) ──────
+    if current >= 4 or _NEXT_PREVIEW.get(current) is None:
+        cta_label = '🏠 Back to overview'
+        cta_target = 'home'
+        cta_preview = 'Return to the national scoreboard and explore other chapters.'
+        cta_kicker = 'Wrap-up'
+    else:
+        nxt_num = current + 1
+        nxt_page, nxt_name = _CHAPTERS[nxt_num - 1][1], _CHAPTERS[nxt_num - 1][2]
+        cta_label = f'Chapter {nxt_num}: {nxt_name} →'
+        cta_target = nxt_page
+        cta_preview = _NEXT_PREVIEW[current]
+        cta_kicker = f'Next · Chapter {nxt_num} of 4'
+
+    cta_html = (
+        f'<a href="?page={cta_target}" target="_self" '
+        f'style="display:block;text-decoration:none;color:inherit">'
+        f'<div style="background:{C["navy"]};color:white;border-radius:10px;'
+        f'padding:20px 26px;margin:0 0 8px;display:flex;align-items:center;'
+        f'justify-content:space-between;gap:18px;transition:transform 0.15s ease">'
+        f'<div>'
+        f'<div style="font-size:13px;font-weight:700;letter-spacing:0.06em;'
+        f'text-transform:uppercase;opacity:0.65;margin-bottom:6px">{cta_kicker}</div>'
+        f'<div style="font-size:24px;font-weight:800;margin-bottom:4px">{cta_label}</div>'
+        f'<div style="font-size:16px;opacity:0.85;font-weight:400">{cta_preview}</div>'
+        f'</div>'
+        f'<div style="font-size:38px;opacity:0.85">›</div>'
+        f'</div>'
+        f'</a>'
+    )
+
+    return takeaways_html + cta_html
+
+
+# ── Data source caption (under each chart) ──────────────────────────────────
+def data_caption(sources: str | None = None) -> str:
+    """HTML caption for use after st.plotly_chart so viewers can verify data vintage.
+    Usage: st.markdown(data_caption(), unsafe_allow_html=True)
+           st.markdown(data_caption("ACQSC Star Ratings, May 2023–Feb 2026"), unsafe_allow_html=True)
+    """
+    if sources is None:
+        sources = ("ACQSC Star Ratings (Feb 2026 snapshot) · "
+                   "ABS Population SA3 2023–2024 · AIHW GEN (residential & home care)")
+    return f'<p class="data-caption">📊 Source: {sources}.</p>'

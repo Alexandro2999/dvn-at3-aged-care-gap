@@ -2,6 +2,15 @@
 Australia's Aged Care Gap — DVN AT3 Dashboard
 Design system: blue-spectrum / teal / gold / cream / care-gap-red
 Navigation: query-param routing (?page=home|map|correlation|reveal|mandate|fullmap)
+
+Advanced features (per pitch S9):
+    1. Context-aware filtering — sidebar State + MMM choices flow into every
+       chapter; SA3 'current MMM' resolution preserves cross-year continuity.
+       Implementation: this file, lines ~548–577.
+    2. What-if slider — Chapter 4 staffing-minutes target. See tabs/ch4_mandate.py.
+    3. Click-drill — Chapter 3 waitlist bar → HCP level donut. See tabs/ch3_reveal.py.
+    4. Forecast scenario toggle — 2025 projection across Home/Ch1/fullmap with
+       sidebar-driven Baseline / Aggressive aging / Stagnation scenarios.
 """
 
 import streamlit as st
@@ -22,13 +31,14 @@ import tabs.ch1_map        as pg_map
 import tabs.ch2_correlation as pg_corr
 import tabs.ch3_reveal     as pg_reveal
 import tabs.ch4_mandate    as pg_mandate
+import tabs.methodology    as pg_methodology
 import tabs.fullmap        as pg_fullmap
 
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Australia's Aged Care Gap",
-    page_icon="💙",
+    page_title="Australia's Aged-Care Gap · DVN AT3",
+    page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -50,9 +60,20 @@ def _b64(path: str) -> str:
 
 
 # ── Data loading (cached) ──────────────────────────────────────────────────────
+# Dashboard scope — strict 3-year window (2023→2025). Pre-2023 rows are
+# dropped at the loader so nothing downstream can reference inconsistent data.
+MIN_YEAR = 2023
+
+
+def _filter_year(df: pd.DataFrame, col: str = 'year') -> pd.DataFrame:
+    """Trim a dataframe to the dashboard's 3-year window (year >= MIN_YEAR).
+    No-op when the column is missing."""
+    return df[df[col] >= MIN_YEAR].copy() if col in df.columns else df
+
+
 @st.cache_data
 def load_master():
-    return pd.read_csv(os.path.join(CLEAN, 'master_sa3.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'master_sa3.csv')))
 
 
 @st.cache_data
@@ -70,12 +91,12 @@ def load_ratings():
     df['period'] = df['snapshot_date'].apply(
         lambda d: 'After mandate' if d >= MANDATE else 'Before mandate'
     )
-    return df
+    return df[df['snap_year'] >= MIN_YEAR].copy()
 
 
 @st.cache_data
 def load_funding():
-    return pd.read_csv(os.path.join(CLEAN, 'service_funding_by_facility.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'service_funding_by_facility.csv')))
 
 
 _GEOJSON_URL = (
@@ -100,27 +121,27 @@ def load_geojson():
 
 @st.cache_data
 def load_supply():
-    return pd.read_csv(os.path.join(CLEAN, 'service_supply_by_sa3.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'service_supply_by_sa3.csv')))
 
 
 @st.cache_data
 def load_population():
-    return pd.read_csv(os.path.join(CLEAN, 'abs_population_by_sa3.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'abs_population_by_sa3.csv')))
 
 
 @st.cache_data
 def load_acpr_residential_users():
-    return pd.read_csv(os.path.join(CLEAN, 'residential_users_by_acpr.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'residential_users_by_acpr.csv')))
 
 
 @st.cache_data
 def load_acpr_homecare_users():
-    return pd.read_csv(os.path.join(CLEAN, 'home_care_users_by_acpr.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'home_care_users_by_acpr.csv')))
 
 
 @st.cache_data
 def load_service_users():
-    return pd.read_csv(os.path.join(CLEAN, 'service_users_by_sa3.csv'))
+    return _filter_year(pd.read_csv(os.path.join(CLEAN, 'service_users_by_sa3.csv')))
 
 
 master        = load_master()
@@ -163,13 +184,25 @@ header [data-testid="stMainMenu"],
 .stDeployButton,
 div[data-testid="stToolbar"] {{ display: none !important; }}
 
-html, body {{ font-size: 22px !important; }}
-.stApp, section[data-testid="stAppViewContainer"] {{ background: {C['bg']}; font-size: 21px; }}
+html, body {{ font-size: 18px !important; }}
+/* Subtle paper-grain texture overlay on cream background — gives the page an editorial, printed-report feel without distracting from charts. */
+.stApp, section[data-testid="stAppViewContainer"] {{
+    background:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.067 0 0 0 0 0.063 0 0 0 0 0.055 0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+        {C['bg']};
+    background-blend-mode: multiply;
+    font-size: 18px;
+}}
 
+/* Main content fills the viewport-after-sidebar to align flush with the
+   fixed nav-bar above. Inner padding gives visual gutter without centering
+   the column away from the sidebar (which created an awkward cream gap). */
 .main .block-container {{
     padding-top: {NAV_H + 16}px !important;
     padding-bottom: 56px !important;
-    max-width: 1380px;
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+    max-width: 100% !important;
 }}
 
 section[data-testid="stSidebar"] {{
@@ -287,11 +320,11 @@ body [data-testid="stMetricValue"] {{ color: {C['navy']} !important; font-size: 
 body [data-testid="stMetricDelta"] {{ font-size: 17px !important; }}
 
 .nav-bar {{
-    position: fixed; top: 0; left: calc(21rem - 16px); right: 0;
+    position: fixed; top: 0; left: 19rem; right: 0;
     height: {NAV_H}px; background: {C['navy']};
     display: flex; align-items: center; padding: 0 28px;
     z-index: 9999; box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-    border-radius: 0 0 10px 10px; margin: 0 10px 0 0;
+    border-radius: 0 0 10px 10px;
 }}
 .nav-bar a {{ text-decoration: none !important; }}
 .nav-home-btn {{
@@ -324,11 +357,38 @@ body [data-testid="stMetricDelta"] {{ font-size: 17px !important; }}
 }}
 .nav-ch-link:hover {{ color: white !important; background: rgba(255,255,255,0.1); }}
 .nav-ch.active .nav-ch-link {{ background: {C['teal']}; color: white !important; font-weight: 600; }}
+.nav-meta-link {{ text-decoration: none; margin-left: 14px; }}
+.nav-meta-btn {{
+    display: inline-block; color: rgba(255,255,255,0.55) !important; font-size: 16px;
+    padding: 6px 12px; border-radius: 6px; white-space: nowrap; transition: all 0.15s;
+    border: 1px solid rgba(255,255,255,0.18);
+}}
+.nav-meta-btn:hover {{ color: white !important; background: rgba(255,255,255,0.1); }}
+.nav-meta-btn.active {{ background: {C['gold']}; color: white !important; font-weight: 600; border-color: transparent; }}
 
 .kpi-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 0 0 8px; }}
+.kpi-row-3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 0 12px; }}
+.kpi-scoreboard {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 8px 0 18px; }}
 .kpi-card {{
     background: {C['white']}; border: 1px solid {C['border']};
     border-radius: 12px; padding: 20px 24px 18px;
+    box-shadow: 0 1px 3px rgba(17, 48, 78, 0.04);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}}
+.kpi-card:hover {{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(17, 48, 78, 0.10);
+}}
+/* Soft pop-in for KPI values + sparklines on initial render */
+@keyframes kpiPop {{
+    0%   {{ opacity: 0; transform: translateY(6px) scale(0.96); }}
+    100% {{ opacity: 1; transform: translateY(0)   scale(1);    }}
+}}
+.kpi-value {{
+    animation: kpiPop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}}
+.kpi-card svg {{
+    animation: kpiPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }}
 .kpi-label {{
     color: {C['navy']}; font-weight: 700; font-size: 19px;
@@ -415,6 +475,27 @@ li[role="option"] span[data-baseweb="checkbox"] > div {{ border-color: {C['teal'
 li[role="option"][aria-selected="true"] span[data-baseweb="checkbox"] > div {{
     background-color: {C['teal']} !important; border-color: {C['teal']} !important;
 }}
+
+/* ── Responsive breakpoints — keep dashboard usable on narrow screens ── */
+@media (max-width: 1024px) {{
+    .kpi-grid, .kpi-scoreboard {{ grid-template-columns: repeat(2, 1fr) !important; }}
+    .kpi-row-3 {{ grid-template-columns: repeat(2, 1fr) !important; }}
+    .main .block-container {{ padding-left: 14px !important; padding-right: 14px !important; }}
+    .nav-bar {{ padding: 0 14px !important; gap: 4px !important; }}
+    .nav-ch-link {{ font-size: 14px !important; padding: 4px 8px !important; }}
+    .nav-meta-link {{ margin-left: 6px !important; }}
+    .nav-meta-btn {{ font-size: 13px !important; padding: 4px 8px !important; }}
+}}
+@media (max-width: 640px) {{
+    /* Sidebar collapses on phone → nav-bar must hug the left edge */
+    .nav-bar {{ left: 0 !important; }}
+    .kpi-grid, .kpi-scoreboard, .kpi-row-3 {{ grid-template-columns: 1fr !important; }}
+    .kpi-value {{ font-size: 2rem !important; }}
+    .hero-h {{ font-size: 1.5rem !important; }}
+    .sec-h1 {{ font-size: 22px !important; }}
+    .sub-h {{ font-size: 18px !important; }}
+    .nav-chapters {{ display: none !important; }}  /* hide chapter strip on phone, nav stays Home + Methodology */
+}}
 </style>"""
 
 st.markdown(
@@ -466,12 +547,16 @@ ch_html = "".join(
     f'</div>'
     for lbl, k in NAV_CHAPTERS
 )
+_meta_active = page == "methodology"
 st.markdown(
     f'<div class="nav-bar">'
     f'<a href="?page=home" target="_self">'
     f'<span class="nav-home-btn {"active" if page == "home" else ""}">Home</span>'
     f'</a>'
     f'<div class="nav-chapters">{ch_html}</div>'
+    f'<a href="?page=methodology" target="_self" class="nav-meta-link">'
+    f'<span class="nav-meta-btn {"active" if _meta_active else ""}">📖 Methodology</span>'
+    f'</a>'
     f'</div>',
     unsafe_allow_html=True,
 )
@@ -480,8 +565,10 @@ st.markdown(
 with st.sidebar:
     if ico_b64:
         st.markdown(
-            f'<a href="?page=home" target="_self" style="display:inline-block;margin-bottom:12px">'
+            f'<a href="?page=home" target="_self" aria-label="Return to dashboard home"'
+            f' style="display:inline-block;margin-bottom:12px">'
             f'<img src="data:image/png;base64,{ico_b64}" width="52"'
+            f' alt="Australia\'s Aged Care Gap dashboard logo"'
             f' style="display:block;cursor:pointer;'
             f'filter:brightness(0) saturate(100%) invert(53%) sepia(68%) saturate(380%)'
             f' hue-rotate(136deg) brightness(90%);">'
@@ -513,6 +600,10 @@ with st.sidebar:
                                    label_visibility="collapsed")
 
     with st.expander("Remoteness (MMM)"):
+        st.caption(
+            "**MMM = Modified Monash Model** — ABS rural/urban classifier. "
+            "MM1 = Major city · MM4 = Remote · MM7 = Very remote."
+        )
         mmm_opts = sorted(master['mmm_code'].dropna().unique())
         mmm_sel = st.multiselect("MMM", mmm_opts, default=mmm_opts,
                                  label_visibility="collapsed")
@@ -520,6 +611,19 @@ with st.sidebar:
 # ── Filter slices ──────────────────────────────────────────────────────────────
 _states = state_sel if state_sel else states
 _mmm    = mmm_sel   if mmm_sel   else mmm_opts
+
+# Active-filter badge — shown only when user has narrowed the default scope
+if (set(_states) != set(states)) or (set(_mmm) != set(mmm_opts)):
+    with st.sidebar:
+        st.markdown(
+            f'<div style="background:{C["gold"]};color:white;padding:9px 14px;'
+            f'border-radius:8px;font-size:14px;font-weight:600;margin:10px 0 6px;'
+            f'box-shadow:0 1px 4px rgba(217,165,59,0.25)">'
+            f'🔍 Active filter: {len(_states)}/{len(states)} states · '
+            f'{len(_mmm)}/{len(mmm_opts)} MMM'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
 
 # SA3-level "current" mmm_code (latest year) — used for filtering so that an SA3
 # whose mmm_code drifted across years is treated by its most-recent classification.
@@ -566,6 +670,9 @@ elif page == "reveal":
 
 elif page == "mandate":
     pg_mandate.render(ratings, master_filt, filter_active=filter_active)
+
+elif page == "methodology":
+    pg_methodology.render()
 
 else:
     pg_home.render(hero_b64, master_filt, gdf, supply, population, ratings, service_users)
