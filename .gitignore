@@ -11,6 +11,9 @@ data/raw/abs_geography/*.qmd
 .DS_Store
 *.code-workspace
 
+# Claude Code agent context (kept local, not part of the deliverable)
+CLAUDE.md
+
 # Local video recordings (walkthrough hosted on YouTube)
 *.mp4
 *.mov
